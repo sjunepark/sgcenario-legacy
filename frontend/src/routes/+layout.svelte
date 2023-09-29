@@ -1,5 +1,9 @@
 <script>
-    import "../app.css";
+	import '../app.css';
+	import TheHeader from './TheHeader/TheHeader.svelte';
 </script>
 
-<slot />
+<div>
+	<TheHeader />
+	<slot />
+</div>
