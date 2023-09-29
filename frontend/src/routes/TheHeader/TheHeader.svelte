@@ -1,5 +1,5 @@
 <header class="border-b border-b-stone-500/20">
-	<div class="container mx-auto flex justify-between py-6 text-xl font-normal">
+	<div class="container mx-auto flex justify-between py-6 text-base font-normal text-gray-500">
 		<h1>SGcenario</h1>
 		<nav>
 			<ul class="flex gap-20">
