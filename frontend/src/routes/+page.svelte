@@ -2,11 +2,8 @@
 	import BlockLine from "$lib/components/blocks/BlockLine.svelte";
 </script>
 
-<div
-	class="container relative mx-auto mt-[3.25rem] grid gap-4"
-	style="grid-template-columns: 1fr 240px"
->
-	<section>
+<div class="relative mx-auto mt-20 max-w-max border pt-16">
+	<section class="px-16">
 		<BlockLine />
 		<BlockLine />
 		<BlockLine />
@@ -15,7 +12,4 @@
 		<BlockLine />
 		<BlockLine />
 	</section>
-	<div class="">
-		<aside class="sticky top-[4.25rem] w-60">Configuration Menus and TOC</aside>
-	</div>
 </div>

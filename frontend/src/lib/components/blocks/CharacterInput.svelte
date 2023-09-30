@@ -68,7 +68,7 @@
 		{...$input}
 		use:input
 		type="text"
-		class="group-hover:ring-inside inline-block w-4/5 rounded-md border-0 bg-transparent py-1.5 text-base leading-6 ring-0 ring-inset placeholder:text-gray-400 focus:bg-white focus:ring-2 focus:ring-stone-500 group-hover:ring-2 group-hover:ring-stone-500"
+		class="group-hover:ring-inside inline-block w-full rounded-md border-0 bg-transparent py-1.5 text-base leading-6 ring-0 ring-inset placeholder:text-gray-400 focus:bg-white focus:ring-2 focus:ring-stone-500 group-hover:ring-2 group-hover:ring-stone-500"
 		placeholder="인물"
 	/>
 </div>
