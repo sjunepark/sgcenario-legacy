@@ -30,8 +30,6 @@
 		return $inputValue.length > 0 && !$open;
 	});
 
-	$: console.log($fixed);
-
 	$: filteredCharacters = $touchedInput
 		? characters.filter((character) => {
 				const normalizedInput = $inputValue.toLowerCase();
