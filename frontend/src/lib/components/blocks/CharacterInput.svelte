@@ -2,6 +2,7 @@
 	import { createCombobox } from "@melt-ui/svelte";
 	import { Check } from "lucide-svelte";
 	import { fly } from "svelte/transition";
+	import { derived } from "svelte/store";
 
 	const {
 		elements: { menu, input, option, label },
@@ -25,6 +26,12 @@
 		"세기"
 	];
 
+	const fixed = derived([open, inputValue], ([$open, $inputValue]) => {
+		return $inputValue.length > 0 && !$open;
+	});
+
+	$: console.log($fixed);
+
 	$: filteredCharacters = $touchedInput
 		? characters.filter((character) => {
 				const normalizedInput = $inputValue.toLowerCase();
@@ -46,7 +53,7 @@
 
 <!-- svelte-ignore a11y-interactive-supports-focus -->
 <div
-	class="group w-full cursor-pointer"
+	class="group inline-block cursor-pointer"
 	on:click={handleClickOrKeyPress}
 	on:keydown={handleClickOrKeyPress}
 	role="button"
@@ -63,7 +70,7 @@
 		{...$input}
 		use:input
 		type="text"
-		class="group-hover:ring-inside block w-full rounded-md border-0 bg-transparent py-1.5 text-base leading-6 ring-0 ring-inset placeholder:text-gray-400 focus:bg-white focus:ring-2 focus:ring-stone-500 group-hover:ring-2 group-hover:ring-stone-500"
+		class="group-hover:ring-inside inline-block w-4/5 rounded-md border-0 bg-transparent py-1.5 text-base leading-6 ring-0 ring-inset placeholder:text-gray-400 focus:bg-white focus:ring-2 focus:ring-stone-500 group-hover:ring-2 group-hover:ring-stone-500"
 		placeholder="인물"
 	/>
 </div>
@@ -88,7 +95,10 @@
           data-[disabled]:opacity-50"
 				>
 					{#if $isSelected(character)}
-						<Check class="square-4 absolute right-2" />
+						<Check
+							class="square-4 absolute right-2 top-1/2 text-stone-500"
+							style="translate: 0 calc(-50% + 1px)"
+						/>
 					{/if}
 					<div class="pl-0">
 						<span class="font-normal">{character}</span>
@@ -111,10 +121,3 @@
 		</div>
 	</ul>
 {/if}
-
-<style lang="postcss">
-	.check {
-		@apply absolute left-2 top-1/2 text-gray-500;
-		translate: 0 calc(-50% + 1px);
-	}
-</style>
