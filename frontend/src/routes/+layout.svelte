@@ -1,9 +1,11 @@
-<script>
+<script lang="ts">
 	import "../app.css";
 	import NavHeader from "./NavHeader.svelte";
 </script>
 
-<div class="">
+<div class="flex h-[100dvh] flex-col">
 	<NavHeader />
-	<slot />
+	<main class="flex-grow">
+		<slot />
+	</main>
 </div>

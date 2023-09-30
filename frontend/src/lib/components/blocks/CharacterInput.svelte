@@ -24,19 +24,22 @@
 
 	let inputElement: HTMLInputElement;
 
-	function handleClickOrKeyPress(event) {
-		if (event.type === "click" || event.key === "Enter" || event.key === " ") {
+	function handleClickOrKeyPress(event: MouseEvent | KeyboardEvent) {
+		if (
+			event instanceof MouseEvent ||
+			(event instanceof KeyboardEvent && (event.key === "Enter" || event.key === " "))
+		) {
 			inputElement.focus();
 		}
 	}
 </script>
 
+<!-- svelte-ignore a11y-interactive-supports-focus -->
 <div
 	class="group w-full cursor-pointer"
 	on:click={handleClickOrKeyPress}
 	on:keydown={handleClickOrKeyPress}
 	role="button"
-	tabindex="0"
 	aria-label="인물 편집"
 >
 	<!-- eslint-disable-next-line svelte/no-unused-svelte-ignore -->

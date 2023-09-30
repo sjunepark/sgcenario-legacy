@@ -1,4 +1,10 @@
-<header class="border-b border-b-stone-500/20">
+<script lang="ts">
+</script>
+
+<header
+	class="fixed w-full border-b border-b-stone-500/20 bg-stone-50/80"
+	style="backdrop-filter: blur(8px)"
+>
 	<div class="container mx-auto flex justify-between py-4 text-sm font-normal text-gray-500">
 		<h1>SGcenario</h1>
 		<nav>
