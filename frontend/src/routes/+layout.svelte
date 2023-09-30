@@ -1,9 +1,9 @@
 <script>
-	import '../app.css';
-	import TheHeader from './TheHeader/TheHeader.svelte';
+	import "../app.css";
+	import NavHeader from "./NavHeader.svelte";
 </script>
 
-<div>
-	<TheHeader />
+<div class="">
+	<NavHeader />
 	<slot />
 </div>

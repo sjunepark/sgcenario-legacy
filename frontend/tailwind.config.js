@@ -1,14 +1,14 @@
-import defaultTheme from 'tailwindcss/defaultTheme';
+import defaultTheme from "tailwindcss/defaultTheme";
 
-/** @type {import('tailwindcss').Config} */
+/** @type {import("tailwindcss").Config} */
 export default {
-	content: ['./src/**/*.{html,js,svelte,ts}', './node_modules/sjpui/dist/**/*.{html,js,svelte,ts}'],
+	content: ["./src/**/*.{html,js,svelte,ts}", "./node_modules/sjpui/dist/**/*.{html,js,svelte,ts}"],
 	theme: {
 		extend: {
 			fontFamily: {
-				sans: ['Inter', 'Noto Sans Kr', ...defaultTheme.fontFamily.sans]
+				sans: ["Inter", "Noto Sans Kr", ...defaultTheme.fontFamily.sans]
 			}
 		}
 	},
-	plugins: []
+	plugins: [require("@tailwindcss/forms")]
 };
