@@ -2,7 +2,7 @@
 </script>
 
 <header
-	class="fixed w-full border-b border-b-stone-500/20 bg-stone-50/80"
+	class="fixed z-10 w-full border-b border-b-stone-500/20 bg-stone-50/80"
 	style="backdrop-filter: blur(8px)"
 >
 	<div class="container mx-auto flex justify-between py-4 text-sm font-normal text-gray-500">

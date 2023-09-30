@@ -8,12 +8,22 @@
 		states: { open, inputValue, touchedInput },
 		helpers: { isSelected }
 	} = createCombobox({
-		preventScroll: true,
+		preventScroll: false,
 		forceVisible: true
 	});
 
 	type Character = string;
-	let characters: Character[] = ["세준", "슬기", "동걸"];
+	let characters: Character[] = [
+		"세준",
+		"슬기",
+		"동걸",
+		"순현",
+		"다원",
+		"도현",
+		"연재",
+		"소담",
+		"세기"
+	];
 
 	$: filteredCharacters = $touchedInput
 		? characters.filter((character) => {
@@ -40,7 +50,7 @@
 	on:click={handleClickOrKeyPress}
 	on:keydown={handleClickOrKeyPress}
 	role="button"
-	aria-label="인물 편집"
+	aria-label="인물 선택"
 >
 	<!-- eslint-disable-next-line svelte/no-unused-svelte-ignore -->
 	<!-- svelte-ignore a11y-label-has-associated-control - $label contains the 'for' attribute -->
@@ -59,16 +69,13 @@
 </div>
 {#if $open}
 	<ul
-		class="z-10 flex max-h-[300px] flex-col overflow-hidden rounded-lg ring-1 ring-stone-300"
+		class="z-10 flex max-h-[300px] flex-col overflow-hidden rounded-lg shadow-lg ring-1 ring-stone-500/50"
 		{...$menu}
 		use:menu
 		transition:fly={{ duration: 150, y: -5 }}
 	>
 		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-		<div
-			class="flex max-h-full flex-col gap-0 overflow-y-auto bg-white px-2 py-2 text-black"
-			tabindex="0"
-		>
+		<div class="flex max-h-full flex-col gap-0 overflow-y-auto bg-white p-4" tabindex="0">
 			{#each filteredCharacters as character, index (index)}
 				<li
 					{...$option({
@@ -76,25 +83,29 @@
 						label: character
 					})}
 					use:option
-					class="relative cursor-pointer scroll-my-2 rounded-md py-2 pl-4 pr-4
-        data-[highlighted]:bg-gray-200 data-[highlighted]:text-gray-900
+					class="relative cursor-pointer scroll-my-2 rounded-md p-2
+        data-[highlighted]:bg-stone-200
           data-[disabled]:opacity-50"
 				>
 					{#if $isSelected(character)}
-						<div class="check absolute left-2 top-1/2 z-10 text-gray-900">
-							<Check class="square-4" />
-						</div>
+						<Check class="square-4 absolute right-2" />
 					{/if}
-					<div class="pl-4">
-						<span class="font-medium">{character}</span>
+					<div class="pl-0">
+						<span class="font-normal">{character}</span>
 					</div>
 				</li>
 			{:else}
 				<li
-					class="relative cursor-pointer rounded-md py-1 pl-8 pr-4
-        data-[highlighted]:bg-gray-100 data-[highlighted]:text-gray-700"
+					class="relative cursor-pointer scroll-my-2 rounded-md p-2
+        data-[highlighted]:bg-stone-200
+          data-[disabled]:opacity-50"
+					{...$option({
+						value: $inputValue,
+						label: $inputValue
+					})}
+					use:option
 				>
-					No results found
+					추가
 				</li>
 			{/each}
 		</div>
