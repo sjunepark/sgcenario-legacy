@@ -2,8 +2,8 @@
 	import BlockLine from "$lib/components/blocks/BlockLine.svelte";
 </script>
 
-<div class="relative mx-auto mt-20 max-w-max border pt-16">
-	<section class="px-16">
+<div class="relative mx-auto mt-20 max-w-max border px-6 py-12">
+	<article class="prose min-w-[45ch] max-w-[75ch]">
 		<BlockLine />
 		<BlockLine />
 		<BlockLine />
@@ -11,5 +11,5 @@
 		<BlockLine />
 		<BlockLine />
 		<BlockLine />
-	</section>
+	</article>
 </div>
