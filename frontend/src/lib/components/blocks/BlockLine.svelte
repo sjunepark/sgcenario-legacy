@@ -29,14 +29,27 @@
 	<span>{textAreaValue}</span>
 </p>
 
+<div class="max-h-48 overflow-y-auto">
+	<ul>
+		<li><span>Content</span></li>
+		<li><span>Content</span></li>
+		<li><span>Content</span></li>
+		<li><span>Content</span></li>
+		<li><span>Content</span></li>
+		<li><span>Content</span></li>
+		<li><span>Content</span></li>
+		<li><span>Content</span></li>
+	</ul>
+</div>
+
 {#if $open}
-	<div>
-		<ul
-			class="prose z-10 max-h-48 min-w-max overflow-y-auto bg-stone-50 shadow-lg ring-1 ring-stone-500/50"
-			{...$menu}
-			use:menu
-			transition:fly={{ duration: 150, y: -5 }}
-		>
+	<ul
+		class="prose z-10 flex max-h-48 w-48 flex-col overflow-hidden bg-stone-50 shadow-lg ring-1 ring-stone-500/50"
+		{...$menu}
+		use:menu
+		transition:fly={{ duration: 150, y: -5 }}
+	>
+		<div class="flex max-h-full flex-col items-stretch overflow-y-auto">
 			{#each filteredCharacters as character, index (index)}
 				<li
 					{...$option({
@@ -44,10 +57,10 @@
 						label: character
 					})}
 					use:option
-					class="not-prose relative cursor-pointer scroll-my-2 whitespace-nowrap data-[highlighted]:bg-stone-200 data-[disabled]:opacity-50"
+					class="not-prose relative cursor-pointer scroll-my-2 whitespace-nowrap pl-4 data-[highlighted]:bg-stone-200 data-[disabled]:opacity-50"
 					class:bg-stone-200={$isSelected(character)}
 				>
-					<span>{character}</span>
+					<div>{character}</div>
 				</li>
 			{:else}
 				<li
@@ -61,6 +74,6 @@
 					<span>추가</span>
 				</li>
 			{/each}
-		</ul>
-	</div>
+		</div>
+	</ul>
 {/if}
