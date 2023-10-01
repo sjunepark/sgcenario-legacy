@@ -3,9 +3,9 @@
 	import NavHeader from "./NavHeader.svelte";
 </script>
 
-<div class="h-screen">
+<div>
 	<NavHeader />
-	<main class="flex-grow">
+	<main class="px-4 md:px-8 lg:px-12">
 		<slot />
 	</main>
 </div>
