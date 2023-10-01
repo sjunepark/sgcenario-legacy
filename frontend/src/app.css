@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    .prose input {
+        font-size: inherit;
+        line-height: inherit;
+        @apply outline-none break-words
+    }
+}

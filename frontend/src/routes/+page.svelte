@@ -1,5 +1,6 @@
 <script lang="ts">
 	import BlockLine from "$lib/components/blocks/BlockLine.svelte";
+	import { characters } from "$lib/stores/charactersStore";
 </script>
 
 <div
@@ -8,12 +9,9 @@
 >
 	<article class="prose prose-stone mx-auto min-w-[45ch] max-w-[75ch]">
 		<h2>플랜더스의 개</h2>
-		<BlockLine />
-		<BlockLine />
-		<BlockLine />
-		<BlockLine />
-		<BlockLine />
-		<BlockLine />
-		<BlockLine />
+		<!--DEV: for dev purpose only-->
+		{#each $characters as character (character)}
+			<BlockLine {character} />
+		{/each}
 	</article>
 </div>

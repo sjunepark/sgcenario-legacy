@@ -1,6 +1,8 @@
+import type { Config } from "tailwindcss";
+import typography from "@tailwindcss/typography";
+import forms from "@tailwindcss/forms";
 import defaultTheme from "tailwindcss/defaultTheme";
 
-/** @type {import("tailwindcss").Config} */
 export default {
 	content: ["./src/**/*.{html,js,svelte,ts}", "./node_modules/sjpui/dist/**/*.{html,js,svelte,ts}"],
 	theme: {
@@ -10,5 +12,10 @@ export default {
 			}
 		}
 	},
-	plugins: [require("@tailwindcss/forms"), require("@tailwindcss/typography")]
-};
+	plugins: [
+		forms({
+			strategy: "class"
+		}),
+		typography
+	]
+} satisfies Config;

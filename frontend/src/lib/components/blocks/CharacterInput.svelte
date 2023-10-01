@@ -9,8 +9,7 @@
 		states: { open, inputValue, touchedInput },
 		helpers: { isSelected }
 	} = createCombobox({
-		preventScroll: false,
-		forceVisible: true
+		forceVisible: false
 	});
 
 	type Character = string;
