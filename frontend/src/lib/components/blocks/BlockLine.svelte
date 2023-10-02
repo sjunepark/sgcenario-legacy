@@ -40,7 +40,7 @@
 </script>
 
 <p class="flex items-start gap-x-4 break-keep text-justify">
-	<input {...$input} use:input class="w-[9ch]" contenteditable="true" />
+	<input {...$input} use:input class="w-[9ch]" />
 	<span>{textAreaValue}</span>
 </p>
 
