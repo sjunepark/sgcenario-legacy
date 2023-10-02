@@ -8,6 +8,17 @@
 		<AutoComplete />
 	{/each}
 
+	<p
+		on:paste={(event) => {
+			console.log(event.clipboardData?.types);
+			console.log(event.clipboardData?.items);
+		}}
+		contenteditable="true"
+	>
+		TRy here
+	</p>
+
+	<!--eslint-disable-next-line @typescript-eslint/no-unused-vars-->
 	{#each Array(30) as _, i}
 		<p>
 			Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto dolores excepturi itaque
