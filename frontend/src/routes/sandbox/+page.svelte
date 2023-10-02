@@ -2,4 +2,18 @@
 	import AutoComplete from "$lib/components/blocks/AutoComplete.svelte";
 </script>
 
-<AutoComplete />
+<div class="prose prose-gray">
+	<!--eslint-disable-next-line @typescript-eslint/no-unused-vars-->
+	{#each Array(1) as _, i}
+		<AutoComplete />
+	{/each}
+
+	{#each Array(30) as _, i}
+		<p>
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto dolores excepturi itaque
+			maxime quod, totam vel! Minima omnis sequi voluptatem! Aliquam asperiores distinctio, dolor et
+			fugiat iste magni quidem recusandae reiciendis repudiandae, suscipit ut voluptatem voluptatum.
+			Atque deleniti inventore laboriosam.
+		</p>
+	{/each}
+</div>
