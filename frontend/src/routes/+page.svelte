@@ -11,7 +11,7 @@
 		<h2>플랜더스의 개</h2>
 		<!--DEV: for dev purpose only-->
 		{#each $characters as character (character)}
-			<BlockLine {character} />
+			<BlockLine />
 		{/each}
 	</article>
 </div>

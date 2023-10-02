@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 @layer base {
-    .prose input {
-        font-size: inherit;
-        line-height: inherit;
-        @apply outline-none break-words
-    }
+	.prose input {
+		font-size: inherit;
+		line-height: inherit;
+		@apply break-words outline-none;
+	}
 }

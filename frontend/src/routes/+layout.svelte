@@ -2,22 +2,33 @@
 	import "../app.css";
 	import "overlayscrollbars/overlayscrollbars.css";
 	import NavHeader from "./NavHeader.svelte";
-	import { OverlayScrollbars } from "overlayscrollbars";
-	import { onMount } from "svelte";
+	import { type Options, OverlayScrollbars } from "overlayscrollbars";
+	import { onDestroy, onMount, setContext } from "svelte";
+	import type { DeepPartial } from "$lib/types";
+
+	const scrollbarStyle: DeepPartial<Options> = {
+		scrollbars: {
+			theme: "os-theme-dark",
+			autoHide: "scroll",
+			autoHideSuspend: true,
+			autoHideDelay: 500,
+		},
+	};
+	setContext("scrollbarStyle", scrollbarStyle);
+
+	let osInstance: OverlayScrollbars;
 
 	onMount(() => {
-		OverlayScrollbars(document.body, {
-			scrollbars: {
-				visibility: "auto",
-				autoHide: "scroll",
-				autoHideDelay: 500,
-				autoHideSuspend: true
-			}
-		});
+		osInstance = OverlayScrollbars(document.body, scrollbarStyle);
+	});
+	onDestroy(() => {
+		osInstance && osInstance.destroy();
 	});
 </script>
 
-<NavHeader />
-<main class="px-4 md:px-8 lg:px-12">
-	<slot />
-</main>
+<div>
+	<NavHeader />
+	<main class="px-4 md:px-8 lg:px-12">
+		<slot />
+	</main>
+</div>
