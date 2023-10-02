@@ -11,8 +11,8 @@
 			theme: "os-theme-dark",
 			autoHide: "scroll",
 			autoHideSuspend: true,
-			autoHideDelay: 500
-		}
+			autoHideDelay: 500,
+		},
 	};
 	setContext("scrollbarStyle", scrollbarStyle);
 
