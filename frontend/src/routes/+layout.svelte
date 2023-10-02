@@ -28,7 +28,7 @@
 
 <div>
 	<NavHeader />
-	<main class="px-4 md:px-8 lg:px-12">
+	<main class="global-container mt-20">
 		<slot />
 	</main>
 </div>

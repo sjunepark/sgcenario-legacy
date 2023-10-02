@@ -4,23 +4,27 @@
 	const navLinks = [
 		{
 			name: "서재",
-			url: "/"
+			url: "/",
 		},
 		{
 			name: "도움말",
-			url: "/"
+			url: "/",
 		},
 		{
 			name: "프로필",
-			url: "/"
-		}
+			url: "/",
+		},
+		{
+			name: "놀이터",
+			url: "/sandbox",
+		},
 	];
 
 	let activeLink = writable(0);
 </script>
 
 <header
-	class="container fixed left-1/2 top-0 z-10 mx-auto min-w-max -translate-x-1/2 transform px-4 py-4 md:px-8 lg:px-12"
+	class="global-container fixed left-1/2 top-0 z-10 min-w-max -translate-x-1/2 transform py-4"
 >
 	<div class="flex items-center">
 		<h1 class="flex-1 text-xl"><span class="font-semibold text-emerald-600">SG</span>cenario</h1>
