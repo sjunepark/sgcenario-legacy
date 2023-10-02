@@ -27,7 +27,7 @@ function createCharactersStore(initialCharacters: SortedCharacters) {
 		subscribe,
 		addCharacter,
 		deleteCharacter,
-		clearCharacters
+		clearCharacters,
 	};
 }
 
@@ -40,6 +40,8 @@ const sampleCharacters = [
 	"박혁거세",
 	"이름이아주긴친구",
 	"철수",
+	"철심",
+	"철부지",
 	"영희",
 	"맹구",
 	"훈이",
@@ -47,33 +49,5 @@ const sampleCharacters = [
 	"도우너",
 	"또치",
 	"고길동",
-	"둘리",
-	"도우너",
-	"또치",
-	"고길동",
-	"둘리",
-	"도우너",
-	"또치",
-	"고길동",
-	"둘리",
-	"도우너",
-	"또치",
-	"고길동",
-	"둘리",
-	"도우너",
-	"또치",
-	"고길동",
-	"둘리",
-	"도우너",
-	"또치",
-	"고길동",
-	"둘리",
-	"도우너",
-	"또치",
-	"고길동",
-	"둘리",
-	"도우너",
-	"또치",
-	"고길동"
 ];
 export const characters = createCharactersStore(sampleCharacters);
