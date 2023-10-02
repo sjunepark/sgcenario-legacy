@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @layer base {
-	.prose input {
+	.prose input, .prose span {
 		font-size: inherit;
 		line-height: inherit;
 		@apply break-words outline-none;

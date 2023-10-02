@@ -1,6 +1,6 @@
 import { writable } from "svelte/store";
 
-type SortedCharacters = string[];
+export type SortedCharacters = string[];
 
 function createCharactersStore(initialCharacters: SortedCharacters) {
 	const sortedInitialCharacters = [...new Set(initialCharacters)].sort();
