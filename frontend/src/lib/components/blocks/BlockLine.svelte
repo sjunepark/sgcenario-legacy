@@ -25,10 +25,14 @@
 		},
 	});
 
-	let filteredCharacters = derived([touchedInput, inputValue, characters], ($touchedInput) =>
-		$touchedInput
-			? $characters.filter((c) => c.toLowerCase().includes($inputValue.toLowerCase()))
-			: $characters,
+	// noinspection JSUnusedLocalSymbols
+	let filteredCharacters = derived(
+		[touchedInput, inputValue, characters],
+		([$touchedInput, $inputValue, $characters]) => {
+			return $touchedInput
+				? $characters.filter((c) => c.toLowerCase().includes($inputValue.toLowerCase()))
+				: $characters;
+		},
 	);
 
 	$: if ($filteredCharacters.length === 0) {
@@ -52,6 +56,7 @@
 	>
 		<OverlayScrollbarsComponent options={scrollbarStyle} defer>
 			{#each $filteredCharacters as character, index (index)}
+				<!--suppress JSCheckFunctionSignatures -->
 				<li
 					{...$option({
 						value: character,
@@ -64,6 +69,7 @@
 					<span>{character}</span>
 				</li>
 			{:else}
+				<!--suppress JSCheckFunctionSignatures -->
 				<li
 					class="not-prose relative cursor-pointer scroll-my-2 whitespace-nowrap pl-2 data-[highlighted]:bg-stone-200 data-[disabled]:opacity-50"
 					{...$option({
