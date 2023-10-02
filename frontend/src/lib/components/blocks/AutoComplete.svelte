@@ -20,7 +20,9 @@
 	});
 </script>
 
-<p id="content" bind:this={content}>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+<button id="content" bind:this={content}>
+	Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+</button>
 <div
 	id="tooltip"
 	bind:this={tooltip}
