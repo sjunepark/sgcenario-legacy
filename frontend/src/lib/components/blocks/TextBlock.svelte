@@ -1,71 +1,175 @@
 <script lang="ts">
-	import { twMerge } from "tailwind-merge";
-	import { createTextBlock } from "$lib/components/blocks/textblockBuilder";
 	import { generateId } from "$lib/id";
+	import { createFloatingActions } from "svelte-floating-ui";
+	import { derived, writable } from "svelte/store";
+	import { createSortedListStore } from "$lib/store/storeBuilders";
+	import type { ValueWithId } from "$lib/types";
+	import { sampleCharacters } from "$lib/store/stores";
+	import Hangul from "hangul-js";
+	import { isEmpty } from "$lib/utils/string";
 
+	/*!
+	Element
+	 */
 	export let tag: "p" | "span" | "div" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
-	export let classes: string = "";
-	const popoverId = generateId();
+	let textbox: HTMLElement;
+	let popup: HTMLUListElement;
+	const popupId = generateId();
 
-	const {
-		action: { referenceAction, floatingAction },
-		stateStore: { notFound, open, touched },
-		valueStore: { textContent, filtered },
-		handler: { handleIn, handleOut, handleInput, handlePaste },
-	} = createTextBlock(
-		{ returnDefaults: false },
-		{
-			strategy: "absolute",
-			placement: "bottom-end",
-			autoUpdate: true,
-		},
-	);
+	/*!
+	Floating-ui
+	 */
+	const [textboxAction, popupAction] = createFloatingActions({
+		strategy: "absolute",
+		placement: "bottom-end",
+		autoUpdate: true,
+	});
 
-	$: classes = twMerge(classes, "break-all min-w-[15ch] outline-none");
-	$: console.log(`notFound: ${$notFound}, open: ${$open}, touched: ${$touched}`);
+	/*!
+	States: elements
+	*/
+	const textboxIsFocused = writable(false);
+	// noinspection JSUnusedLocalSymbols
+	const isOpen = derived([textboxIsFocused], ($textboxIsFocused) => {
+		return $textboxIsFocused;
+	});
+	const textContent = writable("");
+
+	/*!
+	Options
+	 */
+	const options = createSortedListStore<ValueWithId>(sampleCharacters); // DEV: For development purposes only
+	// noinspection JSUnusedLocalSymbols
+	const notFound = writable(false);
+	const filtered = derived([options, textContent], ([$options, $textContent]) => {
+		// return: Early return when no textContent
+		if (isEmpty($textContent)) {
+			return [];
+		}
+
+		// return: option found
+		// Computed in advance to prevent unnecessary additional computation
+		const disassembled = Hangul.disassemble($textContent).join("").trim();
+
+		const filteredOptions = $options.filter((v) => {
+			const disassembledV = Hangul.disassemble(v.value).join("").trim();
+			return disassembledV.indexOf(disassembled) >= 0;
+		});
+
+		if (filteredOptions.length > 0) {
+			notFound.set(false);
+			return filteredOptions;
+			// return: no option
+		} else {
+			notFound.set(true);
+			return [];
+		}
+	});
+
+	/*!
+	Handlers
+	 */
+
+	// Without this handler, raw html or contents could be pasted
+	function handlePaste(event: ClipboardEvent) {
+		const targetElement = event.target;
+		if (!(targetElement instanceof HTMLElement)) return;
+		const selection = window.getSelection();
+		if (!selection) return;
+		const clipboardData = event.clipboardData;
+		if (!clipboardData) return;
+
+		const mimeTypes = clipboardData.types;
+
+		let textToPaste: string | undefined;
+
+		if (mimeTypes.includes("text/plain")) {
+			textToPaste = clipboardData.getData("text/plain");
+			event.preventDefault();
+		} else if (mimeTypes.includes("text/html")) {
+			textToPaste = clipboardData.getData("text/html");
+			event.preventDefault();
+		} else if (mimeTypes.includes("application/x-moz-file") || mimeTypes.includes("Files")) {
+			const items = clipboardData.items;
+			const textsToPaste: string[] = [];
+			for (let i = 0; i < items.length; i++) {
+				if (items[i].kind === "file") {
+					const file = items[i].getAsFile();
+					if (file) {
+						textsToPaste.push(file.name);
+						event.preventDefault();
+					}
+				}
+			}
+			textToPaste = textsToPaste.join(", ");
+		} else {
+			alert("붙여 넣을 수 없는 형식입니다.");
+			return;
+		}
+
+		targetElement.textContent += textToPaste;
+
+		const range = document.createRange();
+		range.selectNodeContents(targetElement);
+		range.collapse(false);
+		selection.removeAllRanges();
+		selection.addRange(range);
+	}
+
+	/*!
+	DEV
+	 */
+	$: console.log(`notFound: ${$notFound}, open: ${$isOpen}, textIsEmpty: ${isEmpty($textContent)}`);
 </script>
 
 <!--suppress RequiredAttributes -->
 <svelte:element
 	this={tag}
+	bind:this={textbox}
+	id={generateId()}
 	bind:innerText={$textContent}
-	class={classes}
-	use:referenceAction
-	on:focus={handleIn}
-	on:blur={handleOut}
+	class="min-w-[15ch] break-all outline-none"
+	use:textboxAction
+	on:focus={() => {
+		textboxIsFocused.set(true);
+	}}
+	on:blur={() => {
+		textboxIsFocused.set(false);
+	}}
 	on:paste={handlePaste}
-	on:input={handleInput}
 	contenteditable="true"
 	aria-autocomplete="list"
 	role="textbox"
 />
-{#if $open}
+{#if $isOpen}
 	<ul
-		use:floatingAction
-		class="not-prose absolute left-0 top-0 z-10 max-w-[10rem] bg-stone-500"
+		bind:this={popup}
+		use:popupAction
+		class="z-10 flex max-h-48 w-[15ch] flex-col overflow-hidden bg-stone-50 shadow-lg ring-1 ring-stone-500/50"
 		aria-expanded="true"
 		role="listbox"
-		id={popoverId}
+		id={popupId}
 	>
 		{#each $filtered as { id, value }}
 			<li
-				id="{popoverId}-{id}"
+				id="{popupId}-{id}"
 				role="option"
-				class="truncate whitespace-nowrap"
+				class="not-prose relative cursor-pointer scroll-my-2 whitespace-nowrap pl-2 data-[highlighted]:bg-stone-200 data-[disabled]:opacity-50"
 				aria-selected="false"
 			>
-				{id}. {value}
+				<span>{id}. {value}</span>
 			</li>
+		{:else}
+			{#if $isOpen && !isEmpty($textContent)}
+				<li
+					id="{popupId}-{generateId()}"
+					role="option"
+					class="relative cursor-pointer scroll-my-2 whitespace-nowrap pl-2 data-[highlighted]:bg-stone-200 data-[disabled]:opacity-50"
+					aria-selected="false"
+				>
+					추가
+				</li>
+			{/if}
 		{/each}
-		{#if $notFound && $touched}
-			<li
-				id="{popoverId}-{generateId()}"
-				role="option"
-				class="truncate whitespace-nowrap"
-				aria-selected="false"
-			>
-				추가
-			</li>
-		{/if}
 	</ul>
 {/if}

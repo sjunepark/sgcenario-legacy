@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { characters } from "$lib/store/stores";
+	import BlockLine from "$lib/components/blocks/BlockLine.svelte";
 </script>
 
 <div
@@ -10,7 +11,7 @@
 		<h2>플랜더스의 개</h2>
 		<!--DEV: for dev purpose only-->
 		{#each $characters as character (character)}
-			{character.value}
+			<BlockLine />
 		{/each}
 	</article>
 </div>
