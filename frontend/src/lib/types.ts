@@ -3,7 +3,7 @@ export type DeepPartial<T> = {
 };
 
 export type ValueWithId = {
-	id: string;
+	id: number;
 	value: string;
 };
 

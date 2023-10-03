@@ -5,6 +5,7 @@
 
 	export let tag: "p" | "span" | "div" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 	export let classes: string = "";
+	const popoverId = generateId();
 
 	const {
 		stateStore: { open },
@@ -39,10 +40,17 @@
 		class="not-prose absolute left-0 top-0 z-10 max-w-[10rem] bg-stone-500"
 		aria-expanded="true"
 		role="listbox"
-		id={generateId()}
+		id={popoverId}
 	>
 		{#each $filtered as { id, value }}
-			<li role="option" class="truncate whitespace-nowrap" aria-selected="false">{id}. {value}</li>
+			<li
+				id="{popoverId}-{id}"
+				role="option"
+				class="truncate whitespace-nowrap"
+				aria-selected="false"
+			>
+				{id}. {value}
+			</li>
 		{:else}
 			<!--TODO: Implement "Add" option-->
 		{/each}
