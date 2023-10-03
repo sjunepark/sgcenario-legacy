@@ -1,13 +1,39 @@
-import { createListStore } from "$lib/stores/builder";
+import { createSortedListStore } from "$lib/store/storeBuilders";
+import { sampleCharacters } from "$lib/store/stores";
+import type { ValueWithId } from "$lib/types";
+import * as Hangul from "hangul-js";
 import { createFloatingActions, type ComputeConfig } from "svelte-floating-ui";
-import { writable } from "svelte/store";
+import { derived, writable } from "svelte/store";
 
 export function createTextBlock(floatingConfig: ComputeConfig | undefined) {
 	const [referenceAction, floatingAction] = createFloatingActions(floatingConfig);
 
 	const open = writable(false);
 	const textContent = writable("");
-	const autoCompletes = createListStore<string>([]);
+	// DEV: For development purposes only
+	const autoCompletes = createSortedListStore<ValueWithId>(sampleCharacters);
+	// TODO: implement touched state
+	const filtered = derived([autoCompletes, textContent], ([$autoCompletes, $textContent]) => {
+		// DEV
+		console.log(
+			JSON.stringify({
+				autoCompletes: $autoCompletes.slice(0, 5),
+				textContent: $textContent,
+			}),
+		);
+
+		if ($textContent.trim().length === 0) return $autoCompletes;
+
+		const disassembled = Hangul.disassemble($textContent).join("").trim();
+
+		const filteredAutoCompletes = $autoCompletes.filter((v) => {
+			const disassembledV = Hangul.disassemble(v.value).join("").trim();
+			const result = disassembledV.indexOf(disassembled) >= 0;
+			console.log(`Comparing ${disassembledV} and ${disassembled}: ${result}`);
+			return result;
+		});
+		return filteredAutoCompletes.length > 0 ? filteredAutoCompletes : $autoCompletes;
+	});
 
 	const handleIn = () => {
 		open.set(true);
@@ -63,7 +89,8 @@ export function createTextBlock(floatingConfig: ComputeConfig | undefined) {
 	}
 
 	return {
-		stateStore: { open, textContent, autoCompletes },
+		stateStore: { open },
+		valueStore: { textContent, autoCompletes, filtered },
 		action: { referenceAction, floatingAction },
 		handler: { handleIn, handleOut, handlePaste },
 	};
