@@ -1,11 +1,11 @@
 <script>
-	import AutoComplete from "$lib/components/blocks/AutoComplete.svelte";
+	import TextBlock from "$lib/components/blocks/TextBlock.svelte";
 </script>
 
 <div class="prose prose-gray">
 	<!--eslint-disable-next-line @typescript-eslint/no-unused-vars-->
 	{#each Array(1) as _, i}
-		<AutoComplete />
+		<TextBlock tag="p" />
 	{/each}
 
 	<p
