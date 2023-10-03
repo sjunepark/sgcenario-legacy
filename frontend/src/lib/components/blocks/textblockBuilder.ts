@@ -5,44 +5,62 @@ import * as Hangul from "hangul-js";
 import { createFloatingActions, type ComputeConfig } from "svelte-floating-ui";
 import { derived, writable } from "svelte/store";
 
-export function createTextBlock(floatingConfig: ComputeConfig | undefined) {
+export function createTextBlock(
+	stateConfig: { returnDefaults: boolean },
+	floatingConfig: ComputeConfig | undefined,
+) {
+	// Actions
 	const [referenceAction, floatingAction] = createFloatingActions(floatingConfig);
 
+	// States
 	const open = writable(false);
+	const notFound = writable(false);
+	const touched = writable(false);
+
+	// Values
 	const textContent = writable("");
 	// DEV: For development purposes only
 	const autoCompletes = createSortedListStore<ValueWithId>(sampleCharacters);
 	// TODO: implement touched state
 	const filtered = derived([autoCompletes, textContent], ([$autoCompletes, $textContent]) => {
-		// DEV
-		console.log(
-			JSON.stringify({
-				autoCompletes: $autoCompletes.slice(0, 5),
-				textContent: $textContent,
-			}),
-		);
+		const defaultReturns = stateConfig.returnDefaults ? $autoCompletes : [];
+		// RETURN1: Empty textContent
+		if ($textContent.trim().length === 0) {
+			notFound.set(false);
+			return defaultReturns;
+		}
 
-		if ($textContent.trim().length === 0) return $autoCompletes;
-
+		// Defined in advance to prevent additional disassembling
 		const disassembled = Hangul.disassemble($textContent).join("").trim();
 
 		const filteredAutoCompletes = $autoCompletes.filter((v) => {
 			const disassembledV = Hangul.disassemble(v.value).join("").trim();
-			const result = disassembledV.indexOf(disassembled) >= 0;
-			console.log(`Comparing ${disassembledV} and ${disassembled}: ${result}`);
-			return result;
+			return disassembledV.indexOf(disassembled) >= 0;
 		});
-		return filteredAutoCompletes.length > 0 ? filteredAutoCompletes : $autoCompletes;
+
+		// RETURN2: Autocomplete found
+		if (filteredAutoCompletes.length > 0) {
+			notFound.set(false);
+			return filteredAutoCompletes;
+			// RETURN3: Autocomplete not found
+		} else {
+			notFound.set(true);
+			return [];
+		}
 	});
 
-	const handleIn = () => {
+	// Handlers
+	function handleIn() {
 		open.set(true);
-	};
-	const handleOut = () => {
+	}
+	function handleOut() {
 		open.set(false);
-	};
+	}
+	function handleInput() {
+		touched.set(true);
+	}
 
-	// Without this handler, sometimes html tags can be pasted into the  element.
+	// Without this handler, raw html or contents could be pasted
 	function handlePaste(event: ClipboardEvent) {
 		const targetElement = event.target;
 		if (!(targetElement instanceof HTMLElement)) return;
@@ -89,9 +107,9 @@ export function createTextBlock(floatingConfig: ComputeConfig | undefined) {
 	}
 
 	return {
-		stateStore: { open },
-		valueStore: { textContent, autoCompletes, filtered },
 		action: { referenceAction, floatingAction },
-		handler: { handleIn, handleOut, handlePaste },
+		stateStore: { notFound, open, touched },
+		valueStore: { textContent, autoCompletes, filtered },
+		handler: { handleIn, handleOut, handleInput, handlePaste },
 	};
 }

@@ -8,17 +8,21 @@
 	const popoverId = generateId();
 
 	const {
-		stateStore: { open },
-		valueStore: { textContent, filtered },
 		action: { referenceAction, floatingAction },
-		handler: { handleIn, handleOut, handlePaste },
-	} = createTextBlock({
-		strategy: "absolute",
-		placement: "bottom-end",
-		autoUpdate: true,
-	});
+		stateStore: { notFound, open, touched },
+		valueStore: { textContent, filtered },
+		handler: { handleIn, handleOut, handleInput, handlePaste },
+	} = createTextBlock(
+		{ returnDefaults: false },
+		{
+			strategy: "absolute",
+			placement: "bottom-end",
+			autoUpdate: true,
+		},
+	);
 
 	$: classes = twMerge(classes, "break-all min-w-[15ch] outline-none");
+	$: console.log(`notFound: ${$notFound}, open: ${$open}, touched: ${$touched}`);
 </script>
 
 <!--suppress RequiredAttributes -->
@@ -30,6 +34,7 @@
 	on:focus={handleIn}
 	on:blur={handleOut}
 	on:paste={handlePaste}
+	on:input={handleInput}
 	contenteditable="true"
 	aria-autocomplete="list"
 	role="textbox"
@@ -51,8 +56,16 @@
 			>
 				{id}. {value}
 			</li>
-		{:else}
-			<!--TODO: Implement "Add" option-->
 		{/each}
+		{#if $notFound && $touched}
+			<li
+				id="{popoverId}-{generateId()}"
+				role="option"
+				class="truncate whitespace-nowrap"
+				aria-selected="false"
+			>
+				추가
+			</li>
+		{/if}
 	</ul>
 {/if}
