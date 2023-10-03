@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { twMerge } from "tailwind-merge";
-	import { createTextBlock } from "$lib/components/blocks/textblock";
+	import { createTextBlock } from "$lib/components/blocks/textblockBuilder";
 
 	export let tag: "p" | "span" | "div" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 	export let classes: string = "";
 
 	const {
-		stateStore: { open, textContent },
+		stateStore: { open, textContent, autoCompletes },
 		action: { referenceAction, floatingAction },
 		handler: { handleIn, handleOut, handlePaste },
 	} = createTextBlock({

@@ -1,3 +1,4 @@
+import { createListStore } from "$lib/stores/builder";
 import { createFloatingActions, type ComputeConfig } from "svelte-floating-ui";
 import { writable } from "svelte/store";
 
@@ -6,6 +7,7 @@ export function createTextBlock(floatingConfig: ComputeConfig | undefined) {
 
 	const open = writable(false);
 	const textContent = writable("");
+	const autoCompletes = createListStore<string>([]);
 
 	const handleIn = () => {
 		open.set(true);
@@ -61,7 +63,7 @@ export function createTextBlock(floatingConfig: ComputeConfig | undefined) {
 	}
 
 	return {
-		stateStore: { open, textContent },
+		stateStore: { open, textContent, autoCompletes },
 		action: { referenceAction, floatingAction },
 		handler: { handleIn, handleOut, handlePaste },
 	};
