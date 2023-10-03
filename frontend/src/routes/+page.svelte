@@ -1,6 +1,6 @@
 <script lang="ts">
 	import BlockLine from "$lib/components/blocks/BlockLine.svelte";
-	import { characters } from "$lib/stores/charactersStore";
+	import { characters } from "$lib/stores/builder";
 </script>
 
 <div

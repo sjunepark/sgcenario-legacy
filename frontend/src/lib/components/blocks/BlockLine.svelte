@@ -4,9 +4,9 @@
 	import { OverlayScrollbarsComponent } from "overlayscrollbars-svelte";
 	import type { Options } from "overlayscrollbars";
 	import type { DeepPartial } from "$lib/types";
-	import { characters } from "$lib/stores/charactersStore";
 	import { getContext } from "svelte";
 	import { derived } from "svelte/store";
+	import { characters } from "$lib/stores/stores";
 
 	// DEV: For development purposes only
 	export let textAreaValue = `이 세상은 참 복잡하고, 때로는 혼란스럽다. 사람들은 각자의 삶에서 행복을 찾기 위해 안간힘을 쓰고, 나 또한 그러하다. 사람들 사이에서 사랑과 이해를 주고받으며 살아가려 하지만, 때로는 이 세상이 내게 너무나 거대하고 무한한 것처럼 느껴진다.	내 인생의 방향을 잡으려 애쓰지만, 정작 중요한 것들은 늘 모호한 선상에 놓여 있다. 나는 이런 세상에서
