@@ -3,41 +3,41 @@
 	import { createFloatingActions } from "svelte-floating-ui";
 	import { derived, writable } from "svelte/store";
 	import { createSortedListStore } from "$lib/store/storeBuilders";
-	import type { ValueWithId } from "$lib/types";
+	import type { TextboxTag, ValueWithId } from "$lib/types";
 	import { sampleCharacters } from "$lib/store/stores";
 	import Hangul from "hangul-js";
 	import { isEmpty } from "$lib/utils/string";
-	import { handlePaste } from "$lib/utils/event";
+	import { textBoxBuilder } from "$lib/components/blocks/textboxBuilder";
 
 	/*!
 	Element
 	 */
-	export let tag: "p" | "span" | "div" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
-	let textbox: HTMLElement;
-	let popup: HTMLUListElement;
+	export let tag: TextboxTag;
 	const popupId = generateId();
 
 	/*!
-	Floating-ui
+	Builders and textbox
 	 */
 	const [textboxAction, popupAction] = createFloatingActions({
 		strategy: "absolute",
 		placement: "bottom-end",
 		autoUpdate: true,
 	});
+	let textboxProps = textBoxBuilder(tag, textboxAction);
+	const {
+		state: { textContent, textboxIsFocused },
+	} = textboxProps;
 
 	/*!
-	States: elements
-	*/
-	const textboxIsFocused = writable(false);
+	state
+	 */
 	// noinspection JSUnusedLocalSymbols
 	const isOpen = derived([textboxIsFocused], ($textboxIsFocused) => {
 		return $textboxIsFocused;
 	});
-	const textContent = writable("");
 
 	/*!
-	Options
+	options
 	 */
 	const options = createSortedListStore<ValueWithId>(sampleCharacters); // DEV: For development purposes only
 	// noinspection JSUnusedLocalSymbols
@@ -68,34 +68,14 @@
 		}
 	});
 
-	/*!
-	DEV
-	 */
+	// dev:
 	$: console.log(`notFound: ${$notFound}, open: ${$isOpen}, textIsEmpty: ${isEmpty($textContent)}`);
 </script>
 
 <!--suppress RequiredAttributes -->
-<svelte:element
-	this={tag}
-	bind:this={textbox}
-	id={generateId()}
-	bind:innerText={$textContent}
-	class="min-w-[15ch] break-all outline-none"
-	use:textboxAction
-	on:focus={() => {
-		textboxIsFocused.set(true);
-	}}
-	on:blur={() => {
-		textboxIsFocused.set(false);
-	}}
-	on:paste={handlePaste}
-	contenteditable="true"
-	aria-autocomplete="list"
-	role="textbox"
-/>
+<slot {textboxProps} />
 {#if $isOpen}
 	<ul
-		bind:this={popup}
 		use:popupAction
 		class="not-prose z-10 flex max-h-48 w-[15ch] flex-col overflow-hidden bg-stone-50 shadow-lg ring-1 ring-stone-500/50"
 		aria-expanded="true"

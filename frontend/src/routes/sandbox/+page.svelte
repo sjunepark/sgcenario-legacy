@@ -1,11 +1,14 @@
 <script>
-	import TextBlock from "$lib/components/blocks/TextBlock.svelte";
+	import TextBox from "$lib/components/blocks/TextBox.svelte";
+	import ListPopup from "$lib/components/blocks/ListPopup.svelte";
 </script>
 
 <div class="prose prose-gray">
 	<!--eslint-disable-next-line @typescript-eslint/no-unused-vars-->
 	{#each Array(1) as _, i}
-		<TextBlock tag="p" />
+		<ListPopup tag="p" let:textboxProps>
+			<TextBox props={textboxProps} />
+		</ListPopup>
 	{/each}
 
 	<p
@@ -15,7 +18,7 @@
 		}}
 		contenteditable="true"
 	>
-		TRy here
+		Try here
 	</p>
 
 	<!--eslint-disable-next-line @typescript-eslint/no-unused-vars-->
