@@ -1,8 +1,11 @@
+import type { ReadableExtended } from "$lib/types";
 import { writable } from "svelte/store";
 
 export type SortedCharacters = string[];
 
-function createCharactersStore(initialCharacters: SortedCharacters) {
+function createCharactersStore(
+	initialCharacters: SortedCharacters,
+): ReadableExtended<SortedCharacters> {
 	const sortedInitialCharacters = [...new Set(initialCharacters)].sort();
 	const { subscribe, set, update } = writable<SortedCharacters>(sortedInitialCharacters);
 

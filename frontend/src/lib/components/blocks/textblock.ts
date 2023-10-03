@@ -6,6 +6,7 @@ export function createTextBlock(floatingConfig: ComputeConfig | undefined) {
 
 	const open = writable(false);
 	const textContent = writable("");
+
 	const handleIn = () => {
 		open.set(true);
 	};

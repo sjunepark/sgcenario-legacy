@@ -15,7 +15,7 @@
 		autoUpdate: true,
 	});
 
-	$: classes = twMerge(classes, "break-all min-w-[15ch]");
+	$: classes = twMerge(classes, "break-all min-w-[15ch] outline-none");
 </script>
 
 <!--suppress RequiredAttributes -->
