@@ -41,10 +41,11 @@
 	const options = createSortedListStore<ValueWithId>(sampleCharacters); // DEV: For development purposes only
 	// noinspection JSUnusedLocalSymbols
 	const notFound = writable(false);
+	// noinspection JSUnusedLocalSymbols
 	const filtered = derived([options, textContent], ([$options, $textContent]) => {
 		// return: Early return when no textContent
 		if (isEmpty($textContent)) {
-			return [];
+			return $options;
 		}
 
 		// return: option found
@@ -145,7 +146,7 @@
 	<ul
 		bind:this={popup}
 		use:popupAction
-		class="z-10 flex max-h-48 w-[15ch] flex-col overflow-hidden bg-stone-50 shadow-lg ring-1 ring-stone-500/50"
+		class="not-prose z-10 flex max-h-48 w-[15ch] flex-col overflow-hidden bg-stone-50 shadow-lg ring-1 ring-stone-500/50"
 		aria-expanded="true"
 		role="listbox"
 		id={popupId}
@@ -154,10 +155,10 @@
 			<li
 				id="{popupId}-{id}"
 				role="option"
-				class="not-prose relative cursor-pointer scroll-my-2 whitespace-nowrap pl-2 data-[highlighted]:bg-stone-200 data-[disabled]:opacity-50"
+				class="relative cursor-pointer scroll-my-2 whitespace-nowrap pl-2 data-[highlighted]:bg-stone-200 data-[disabled]:opacity-50"
 				aria-selected="false"
 			>
-				<span>{id}. {value}</span>
+				{value}
 			</li>
 		{:else}
 			{#if $isOpen && !isEmpty($textContent)}
