@@ -33,10 +33,12 @@
 	/*!
 	options
 	 */
-	const filtered = derived([options, innerText], ([oStoreValue, tStoreValue]) => {
+	const filtered = derived([options, innerText], ([options$, innerText$]) => {
 		// return: Early return when no innerText
 		if (isEmpty(tStoreValue)) {
 			return oStoreValue;
+		if (isEmpty(innerText$)) {
+			return options$;
 		}
 
 		// return: option found

@@ -31,6 +31,18 @@
 			return tiStoreValue
 				? cStoreValue.filter((c) => c.value.toLowerCase().includes(ivStoreValue.toLowerCase()))
 				: cStoreValue;
+		([touchedInput$, inputValue$, characters$]) => {
+			if (isEmpty(inputValue$)) {
+				return characters$;
+			}
+
+			// return: option found
+			// Computed in advance to prevent unnecessary additional computation
+			const disassembled = Hangul.disassemble($innerText).join("").trim();
+
+			return touchedInput$
+				? characters$.filter((c) => c.value.toLowerCase().includes(inputValue$.toLowerCase()))
+				: characters$;
 		},
 	);
 
