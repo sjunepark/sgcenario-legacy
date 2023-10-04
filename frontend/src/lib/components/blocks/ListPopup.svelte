@@ -1,23 +1,26 @@
 <script lang="ts">
-	import { derived, type Readable, type Writable } from "svelte/store";
+	import { derived, type Writable } from "svelte/store";
 	import type { WritableSortedList } from "$lib/store/storeBuilders";
 	import type { ValueWithId } from "$lib/types";
+	import type { PopupProps } from "$lib/types";
 	import Hangul from "hangul-js";
 	import { isEmpty } from "$lib/utils/string";
-	import type { Action } from "svelte/action";
 	import { generateId } from "$lib/utils/id";
 	import { kbd } from "$lib/utils/keyboard";
 
 	/*!
 	Props
 	 */
-	export let popupId: string;
-	export let isOpen: Readable<boolean>;
-	export let action: Action = () => {};
 	export let textContent: Writable<string>;
 	export let options: WritableSortedList<ValueWithId>;
-	export let selectedOption: Writable<ValueWithId | undefined>;
-	export let popupIsFocused: Writable<boolean>;
+
+	export let popupProps: PopupProps;
+
+	const {
+		popupId,
+		state: { isOpen, popupIsFocused, selectedOption },
+		action: { popupAction },
+	} = popupProps;
 
 	/*!
 	options
@@ -74,7 +77,7 @@
 </script>
 
 <ul
-	use:action
+	use:popupAction
 	class="not-prose z-10 flex max-h-48 w-[15ch] flex-col overflow-hidden bg-stone-50 shadow-lg ring-1 ring-stone-500/50"
 	role="listbox"
 	id={popupId}

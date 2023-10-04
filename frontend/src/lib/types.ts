@@ -1,5 +1,5 @@
 import type { Action } from "svelte/action";
-import type { Writable } from "svelte/store";
+import type { Readable, Writable } from "svelte/store";
 
 export type DeepPartial<T> = {
 	[P in keyof T]?: T[P] extends Record<string, unknown> ? DeepPartial<T[P]> : T[P];
@@ -33,4 +33,14 @@ export type TextboxProps = {
 		handleTextboxFocus: () => void;
 		handleTextboxBlur: () => void;
 	};
+};
+
+export type PopupProps = {
+	popupId: string | undefined;
+	state: {
+		isOpen: Readable<boolean>;
+		popupIsFocused: Writable<boolean>;
+		selectedOption: Writable<ValueWithId | undefined>;
+	};
+	action: { popupAction: Action };
 };
