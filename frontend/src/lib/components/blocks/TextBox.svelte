@@ -9,7 +9,6 @@
 	import { createSortedListStore } from "$lib/store/sortedListStore";
 	import { sampleCharacters } from "$lib/store/stores";
 	import { kbd } from "$lib/utils/keyboard";
-	import { tick } from "svelte";
 
 	let focusFirstList = () => {};
 
@@ -34,7 +33,7 @@
 	};
 
 	// !Stores
-	const textContent = writable(defaultText);
+	const innerText = writable(defaultText);
 	const textboxIsFocused = writable(false);
 	// dev: For development purposes only
 	const characters = createSortedListStore<ValueWithId>(sampleCharacters);
@@ -102,7 +101,7 @@
 	id={generateId()}
 	class="break-all outline-none"
 	use:popupTextboxAction
-	bind:innerText={$textContent}
+	bind:innerText={$innerText}
 	on:focus={() => {
 		textboxIsFocused.set(true);
 	}}
@@ -118,6 +117,6 @@
 	aria-expanded={hasPopup ? $isOpen : undefined}
 	aria-activedescendant={hasPopup ? popupId : undefined}
 />
-<!--{#if hasPopup && $isOpen}-->
-<ListPopup bind:focusFirstList {textContent} options={characters} {popupProps} />
-<!--{/if}-->
+{#if hasPopup && $isOpen}
+	<ListPopup bind:focusFirstList {innerText} options={characters} {popupProps} />
+{/if}

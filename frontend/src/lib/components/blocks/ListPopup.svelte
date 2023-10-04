@@ -10,7 +10,7 @@
 	/*!
 	Props
 	 */
-	export let textContent: Writable<string>;
+	export let innerText: Writable<string>;
 	export let options: WritableSortedList<ValueWithId>;
 
 	export let popupProps: PopupProps;
@@ -24,15 +24,15 @@
 	/*!
 	options
 	 */
-	const filtered = derived([options, textContent], ([oStoreValue, tStoreValue]) => {
-		// return: Early return when no textContent
+	const filtered = derived([options, innerText], ([oStoreValue, tStoreValue]) => {
+		// return: Early return when no innerText
 		if (isEmpty(tStoreValue)) {
 			return oStoreValue;
 		}
 
 		// return: option found
 		// Computed in advance to prevent unnecessary additional computation
-		const disassembled = Hangul.disassemble($textContent).join("").trim();
+		const disassembled = Hangul.disassemble($innerText).join("").trim();
 
 		const filteredOptions = $options.filter((v) => {
 			const disassembledV = Hangul.disassemble(v.value).join("").trim();
@@ -99,7 +99,7 @@
 
 	/* eslint-disable @typescript-eslint/no-unused-vars */
 	// noinspection JSUnusedLocalSymbols
-	function createLink(node: LinkedHTMLLIElement, props: { $textContent: string; isLast: boolean }) {
+	function createLink(node: LinkedHTMLLIElement, props: { $innerText: string; isLast: boolean }) {
 		function setLink() {
 			const previous = node.previousElementSibling as LinkedHTMLLIElement;
 			if (!previous) {
@@ -118,7 +118,7 @@
 
 		// noinspection JSUnusedGlobalSymbols,JSUnusedLocalSymbols,ES6ShorthandObjectProperty
 		return {
-			update(props: { $textContent: string; isLast: boolean }) {
+			update(props: { $innerText: string; isLast: boolean }) {
 				setLink();
 			},
 			destroy() {},
@@ -149,7 +149,7 @@
 		<li
 			id="{popupId}-{index}"
 			class="relative cursor-pointer scroll-my-2 whitespace-nowrap pl-2 data-[highlighted]:bg-stone-200 data-[disabled]:opacity-50"
-			use:createLink={{ $textContent, isLast }}
+			use:createLink={{ $innerText, isLast }}
 			tabindex="0"
 			on:focus={() => {
 				console.log(`li ${value} focused`);
@@ -167,7 +167,7 @@
 			{value}
 		</li>
 	{:else}
-		{#if $isOpen && !isEmpty($textContent)}
+		{#if $isOpen && !isEmpty($innerText)}
 			<li
 				id="{popupId}-{generateId()}"
 				role="option"

@@ -3,7 +3,7 @@ import type { Action } from "svelte/action";
 import { writable } from "svelte/store";
 
 export function textBoxBuilder(tag: TextboxTag, action: Action): TextboxProps {
-	const textContent = writable("");
+	const innerText = writable("");
 	const textboxIsFocused = writable(false);
 
 	function handleTextboxFocus() {
@@ -17,7 +17,7 @@ export function textBoxBuilder(tag: TextboxTag, action: Action): TextboxProps {
 	return {
 		tag,
 		state: {
-			textContent,
+			innerText,
 			textboxIsFocused,
 		},
 		action,

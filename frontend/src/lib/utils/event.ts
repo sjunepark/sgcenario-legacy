@@ -35,7 +35,7 @@ export function handlePaste(event: ClipboardEvent) {
 		return;
 	}
 
-	targetElement.textContent += textToPaste;
+	targetElement.innerText += textToPaste;
 
 	const range = document.createRange();
 	range.selectNodeContents(targetElement);

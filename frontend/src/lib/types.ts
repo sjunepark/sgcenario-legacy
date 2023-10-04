@@ -25,7 +25,7 @@ export type TextboxTag = "p" | "span" | "div" | "h1" | "h2" | "h3" | "h4" | "h5"
 export type TextboxProps = {
 	tag: TextboxTag;
 	state: {
-		textContent: Writable<string>;
+		innerText: Writable<string>;
 		textboxIsFocused: Writable<boolean>;
 	};
 	action: Action;
