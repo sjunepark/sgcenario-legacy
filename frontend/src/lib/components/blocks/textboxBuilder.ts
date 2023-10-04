@@ -10,8 +10,6 @@ export function textBoxBuilder(tag: TextboxTag, action: Action): TextboxProps {
 		textboxIsFocused.set(true);
 	}
 
-	// noinspection JSUnusedLocalSymbols
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	function handleTextboxBlur() {
 		textboxIsFocused.set(false);
 	}

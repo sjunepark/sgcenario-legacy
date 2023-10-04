@@ -1,5 +1,5 @@
 // DEV: For development purposes only
-import { createSortedListStore } from "$lib/store/storeBuilders";
+import { createSortedListStore } from "$lib/store/sortedListStore";
 import type { ValueWithId } from "$lib/types";
 
 // DEV: For development purposes only

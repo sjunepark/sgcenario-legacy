@@ -6,7 +6,7 @@
 	import { generateId } from "$lib/utils/id";
 	import { handlePaste } from "$lib/utils/event";
 	import ListPopup from "$lib/components/blocks/ListPopup.svelte";
-	import { createSortedListStore } from "$lib/store/storeBuilders";
+	import { createSortedListStore } from "$lib/store/sortedListStore";
 	import { sampleCharacters } from "$lib/store/stores";
 
 	// !Props
@@ -37,12 +37,11 @@
 
 	function createPopupStore() {
 		const popupId = generateId();
-		// noinspection JSUnusedLocalSymbols
-		const isOpen = derived([textboxIsFocused], ([$textboxIsFocused]) => {
-			return $textboxIsFocused;
-		});
-		const selectedOption = writable<ValueWithId | undefined>();
 		const popupIsFocused = writable(false);
+		const selectedOption = writable<ValueWithId | undefined>();
+		const isOpen = derived([textboxIsFocused, popupIsFocused], ([tifStoreValue, pifStoreValue]) => {
+			return tifStoreValue || pifStoreValue;
+		});
 
 		const [popupTextboxAction, popupAction] = createFloatingActions({
 			strategy: "absolute",

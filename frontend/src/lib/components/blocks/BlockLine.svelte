@@ -25,13 +25,12 @@
 		},
 	});
 
-	// noinspection JSUnusedLocalSymbols
 	let filteredCharacters = derived(
 		[touchedInput, inputValue, characters],
-		([$touchedInput, $inputValue, $characters]) => {
-			return $touchedInput
-				? $characters.filter((c) => c.value.toLowerCase().includes($inputValue.toLowerCase()))
-				: $characters;
+		([tiStoreValue, ivStoreValue, cStoreValue]) => {
+			return tiStoreValue
+				? cStoreValue.filter((c) => c.value.toLowerCase().includes(ivStoreValue.toLowerCase()))
+				: cStoreValue;
 		},
 	);
 

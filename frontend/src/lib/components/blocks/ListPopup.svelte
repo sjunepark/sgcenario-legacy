@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { derived, type Writable } from "svelte/store";
-	import type { WritableSortedList } from "$lib/store/storeBuilders";
+	import type { WritableSortedList } from "$lib/store/sortedListStore";
 	import type { ValueWithId } from "$lib/types";
 	import type { PopupProps } from "$lib/types";
 	import Hangul from "hangul-js";
@@ -25,11 +25,10 @@
 	/*!
 	options
 	 */
-	// noinspection JSUnusedLocalSymbols
-	const filtered = derived([options, textContent], ([$options, $textContent]) => {
+	const filtered = derived([options, textContent], ([oStoreValue, tStoreValue]) => {
 		// return: Early return when no textContent
-		if (isEmpty($textContent)) {
-			return $options;
+		if (isEmpty(tStoreValue)) {
+			return oStoreValue;
 		}
 
 		// return: option found
