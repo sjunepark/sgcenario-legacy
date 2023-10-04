@@ -40,7 +40,7 @@ export type PopupProps = {
 	state: {
 		isOpen: Readable<boolean>;
 		popupIsFocused: Writable<boolean>;
-		selectedOption: Writable<ValueWithId | undefined>;
+		focusedOption: Writable<ValueWithId | undefined>;
 	};
 	action: { popupAction: Action };
 };

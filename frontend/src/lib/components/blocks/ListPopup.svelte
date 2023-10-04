@@ -18,7 +18,7 @@
 
 	const {
 		popupId,
-		state: { isOpen, popupIsFocused, selectedOption },
+		state: { isOpen, popupIsFocused, focusedOption },
 		action: { popupAction },
 	} = popupProps;
 
@@ -92,7 +92,8 @@
 				handleKeyDown(event);
 			}}
 			role="option"
-			aria-selected="false"
+			aria-selected={$focusedOption ? $focusedOption.id === id : false}
+			data-highlighted={$focusedOption ? $focusedOption.id === id : false}
 		>
 			{value}
 		</li>

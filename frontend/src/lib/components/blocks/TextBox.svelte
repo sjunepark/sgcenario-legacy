@@ -22,7 +22,7 @@
 		state: {
 			isOpen: readable(false),
 			popupIsFocused: writable(false),
-			selectedOption: writable(undefined),
+			focusedOption: writable(undefined),
 		},
 		action: {
 			popupAction: () => {},
@@ -38,7 +38,7 @@
 	function createPopupStore() {
 		const popupId = generateId();
 		const popupIsFocused = writable(false);
-		const selectedOption = writable<ValueWithId | undefined>();
+		const focusedOption = writable<ValueWithId | undefined>();
 		const isOpen = derived([textboxIsFocused, popupIsFocused], ([tifStoreValue, pifStoreValue]) => {
 			return tifStoreValue || pifStoreValue;
 		});
@@ -52,7 +52,7 @@
 		return {
 			popup: {
 				popupId,
-				state: { isOpen, popupIsFocused, selectedOption },
+				state: { isOpen, popupIsFocused, focusedOption },
 				action: { popupAction },
 			},
 			textbox: {
