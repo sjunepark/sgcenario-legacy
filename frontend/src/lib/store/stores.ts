@@ -9,7 +9,7 @@ export const sampleCharacters: ValueWithId[] = [
 	{ id: 3, value: "지수" },
 	{ id: 4, value: "재현" },
 	{ id: 5, value: "박혁거세" },
-	{ id: 6, value: "이름이아주긴친구" },
+	{ id: 6, value: "이름이아주긴친구라고하는데이렇게까지길어야하나" },
 	{ id: 7, value: "철수" },
 	{ id: 8, value: "철심" },
 	{ id: 9, value: "철부지" },

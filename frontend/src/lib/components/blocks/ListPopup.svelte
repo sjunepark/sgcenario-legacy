@@ -1,11 +1,12 @@
 <script lang="ts">
-	import { derived, type Writable } from "svelte/store";
+	import { derived, writable, type Writable } from "svelte/store";
 	import type { WritableSortedList } from "$lib/store/sortedListStore";
 	import type { PopupProps, ValueWithId } from "$lib/types";
 	import Hangul from "hangul-js";
 	import { isEmpty } from "$lib/utils/string";
 	import { generateId } from "$lib/utils/id";
 	import { kbd } from "$lib/utils/keyboard";
+	import type { SelectedOption } from "$lib/components/blocks/types";
 
 	/*! To prevent warning: "was created with unknown prop"
 			refer: https://github.com/sveltejs/svelte/issues/4652
@@ -74,14 +75,35 @@
 		} else if (event.key === kbd.ENTER) {
 			event.preventDefault();
 			event.stopPropagation();
-			// noinspection JSIgnoredPromiseFromCall
-			// todo: close
+			selected.setWithElement(current);
 		}
 	}
 
-	export function focusFirstList() {
+	/*!
+	bind:property
+	 */
+	// noinspection JSUnusedGlobalSymbols
+	export function focusFirstOption() {
 		firstLinkedList.focus();
-		console.log("Focused first list");
+	}
+	export let selected = createSelected(undefined);
+
+	function createSelected(defaultValue: ValueWithId | undefined): SelectedOption {
+		const { subscribe, set, update } = writable<ValueWithId | undefined>(defaultValue);
+
+		function setWithElement(elementWithData: HTMLElement) {
+			const dataset = elementWithData.dataset;
+			let id = dataset.id;
+			let value = dataset.value;
+			if (!id || !value) return;
+			set({ id: Number(id), value: value });
+		}
+		return {
+			subscribe,
+			set,
+			update,
+			setWithElement,
+		};
 	}
 
 	function nextList(listElement: LinkedHTMLLIElement) {
@@ -106,7 +128,7 @@
 
 	/* eslint-disable @typescript-eslint/no-unused-vars */
 	// noinspection JSUnusedLocalSymbols
-	function createLink(node: LinkedHTMLLIElement, props: { $innerText: string; isLast: boolean }) {
+	function createLink(node: LinkedHTMLLIElement, props: { value: string; isLast: boolean }) {
 		function setLink() {
 			const previous = node.previousElementSibling as LinkedHTMLLIElement;
 			if (!previous) {
@@ -125,7 +147,7 @@
 
 		// noinspection JSUnusedGlobalSymbols,JSUnusedLocalSymbols,ES6ShorthandObjectProperty
 		return {
-			update(props: { $innerText: string; isLast: boolean }) {
+			update(props: { value: string; isLast: boolean }) {
 				setLink();
 			},
 			destroy() {},
@@ -138,7 +160,7 @@
 
 <ul
 	id={popupId}
-	class="not-prose absolute left-0 top-0 z-10 flex max-h-48 w-[15ch] flex-col overflow-hidden bg-stone-50 shadow-lg ring-1 ring-stone-500/50"
+	class="not-prose absolute left-0 top-0 z-10 flex max-h-48 w-[15ch] flex-col overflow-y-auto overflow-x-hidden text-ellipsis bg-stone-50 shadow-lg ring-1 ring-stone-500/50"
 	use:popupAction
 	on:focusin={() => {
 		isOpen.set(true);
@@ -155,8 +177,8 @@
 		{@const isLast = index === $filtered.length - 1}
 		<li
 			id="{popupId}-{index}"
-			class="relative cursor-pointer scroll-my-2 whitespace-nowrap pl-2 data-[highlighted]:bg-stone-200 data-[disabled]:opacity-50"
-			use:createLink={{ $innerText, isLast }}
+			class="cursor-pointer space-y-2 whitespace-nowrap px-2 focus:bg-stone-200 focus:outline-none data-[disabled]:opacity-50"
+			use:createLink={{ value, isLast }}
 			tabindex="0"
 			on:focus={() => {
 				console.log(`li ${value} focused`);
@@ -169,7 +191,9 @@
 			on:keydown={handleKeyDown}
 			role="option"
 			aria-selected={isSelected}
-			data-highlighted={isSelected ? true : undefined}
+			data-id={id}
+			data-value={value}
+			data-index={index}
 		>
 			{value}
 		</li>

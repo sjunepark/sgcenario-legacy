@@ -9,7 +9,13 @@
 	import { createSortedListStore } from "$lib/store/sortedListStore";
 	import { sampleCharacters } from "$lib/store/stores";
 	import { kbd } from "$lib/utils/keyboard";
-	let focusFirstList = () => {};
+	import type { SelectedOption } from "$lib/components/blocks/types";
+
+	/*!
+	bind:property
+	 */
+	let focusFirstOption: () => void;
+	let selected: SelectedOption;
 
 	// !Props
 	export let tag: TextboxTag;
@@ -42,7 +48,7 @@
 
 		const [popupTextboxAction, popupAction] = createFloatingActions({
 			strategy: "absolute",
-			placement: "bottom-end",
+			placement: "bottom-start",
 			autoUpdate: true,
 		});
 
@@ -76,11 +82,12 @@
 		if (e.key === kbd.ARROW_DOWN) {
 			e.preventDefault();
 			e.stopPropagation();
-			focusFirstList();
+			focusFirstOption();
 		}
 	}
 </script>
 
+<!--dev:-->
 {#key [hasPopup, $isOpen]}
 	<p>
 		hasPopup: {hasPopup}, isOpen: {$isOpen}
@@ -108,8 +115,8 @@
 	aria-autocomplete={hasPopup ? "list" : undefined}
 	aria-controls={hasPopup ? popupId : undefined}
 	aria-expanded={hasPopup ? $isOpen : undefined}
-	aria-activedescendant={hasPopup ? popupId : undefined}
+	aria-activedescendant={hasPopup ? $selected?.value : undefined}
 />
 {#if hasPopup && $isOpen}
-	<ListPopup bind:focusFirstList {innerText} options={characters} {popupProps} />
+	<ListPopup bind:selected bind:focusFirstOption {innerText} options={characters} {popupProps} />
 {/if}
