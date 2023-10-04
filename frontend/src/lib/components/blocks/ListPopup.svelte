@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { derived, type Readable, type Writable } from "svelte/store";
-	import { createSortedListStore } from "$lib/store/storeBuilders";
+	import type { WritableSortedList } from "$lib/store/storeBuilders";
 	import type { ValueWithId } from "$lib/types";
-	import { sampleCharacters } from "$lib/store/stores";
 	import Hangul from "hangul-js";
 	import { isEmpty } from "$lib/utils/string";
 	import type { Action } from "svelte/action";
@@ -15,11 +14,12 @@
 	export let isOpen: Readable<boolean>;
 	export let action: Action = () => {};
 	export let textContent: Writable<string>;
+	export let options: WritableSortedList<ValueWithId>;
+	export let selectedOptions: WritableSortedList<ValueWithId>;
 
 	/*!
 	options
 	 */
-	const options = createSortedListStore<ValueWithId>(sampleCharacters); // DEV: For development purposes only
 	// noinspection JSUnusedLocalSymbols
 	const filtered = derived([options, textContent], ([$options, $textContent]) => {
 		// return: Early return when no textContent
@@ -54,8 +54,15 @@
 	{#each $filtered as { id, value }}
 		<li
 			id="{id}-{id}"
-			role="option"
 			class="relative cursor-pointer scroll-my-2 whitespace-nowrap pl-2 data-[highlighted]:bg-stone-200 data-[disabled]:opacity-50"
+			on:focus={() => {
+				selectedOptions.addElement({ id, value });
+			}}
+			on:blur={() => {
+				selectedOptions.removeElement({ id, value });
+			}}
+			on:keydown={() => {}}
+			role="option"
 			aria-selected="false"
 		>
 			{value}

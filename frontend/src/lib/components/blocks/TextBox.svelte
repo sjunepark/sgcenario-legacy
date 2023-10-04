@@ -6,6 +6,9 @@
 	import { generateId } from "$lib/utils/id";
 	import { handlePaste } from "$lib/utils/event";
 	import ListPopup from "$lib/components/blocks/ListPopup.svelte";
+	import { createSortedListStore, type WritableSortedList } from "$lib/store/storeBuilders";
+	import type { ValueWithId } from "$lib/types";
+	import { sampleCharacters } from "$lib/store/stores";
 
 	// !Props
 	export let tag: TextboxTag;
@@ -17,10 +20,13 @@
 	let isOpen: Readable<boolean>;
 	let popupAction: Action = () => {};
 	let popupTextboxAction: Action = () => {};
+	let selectedOptions: WritableSortedList<ValueWithId>;
 
 	// !Stores
 	const textContent = writable(defaultText);
 	const textboxIsFocused = writable(false);
+	// dev: For development purposes only
+	const characters = createSortedListStore<ValueWithId>(sampleCharacters);
 
 	function createPopupStore() {
 		const id = generateId();
@@ -28,6 +34,8 @@
 		const isOpen = derived([textboxIsFocused], ([$textboxIsFocused]) => {
 			return $textboxIsFocused;
 		});
+		const selectedOptions = createSortedListStore<ValueWithId>([]);
+
 		const [popupTextboxAction, popupAction] = createFloatingActions({
 			strategy: "absolute",
 			placement: "bottom-end",
@@ -37,6 +45,7 @@
 		return {
 			id,
 			isOpen,
+			selectedOptions,
 			action: {
 				popupTextboxAction,
 				popupAction,
@@ -49,12 +58,14 @@
 			id: _popupId,
 			isOpen: _isOpen,
 			action: { popupTextboxAction: _popupTextboxAction, popupAction: _popupAction },
+			selectedOptions: _selectedOptions,
 		} = createPopupStore();
 
 		popupId = _popupId;
 		isOpen = _isOpen;
 		popupAction = _popupAction;
 		popupTextboxAction = _popupTextboxAction;
+		selectedOptions = _selectedOptions;
 	}
 </script>
 
@@ -86,5 +97,12 @@
 	aria-activedescendant={hasPopup ? popupId : undefined}
 />
 {#if hasPopup && $isOpen}
-	<ListPopup id={popupId} action={popupAction} {isOpen} {textContent} />
+	<ListPopup
+		id={popupId}
+		action={popupAction}
+		{isOpen}
+		{textContent}
+		options={characters}
+		{selectedOptions}
+	/>
 {/if}

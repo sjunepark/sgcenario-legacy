@@ -1,17 +1,24 @@
-import { compareValueWithId, type ValueWithId } from "$lib/types";
+import { compareDefault, compareValueWithId, isValueWithId } from "$lib/types";
 import { writable, type Readable } from "svelte/store";
 
 type WritableList<T> = {
 	addElement: (element: T) => void;
 	addElements: (elements: Iterable<T>) => void;
-	deleteElement: (element: T) => void;
+	removeElement: (element: T) => void;
 	clearElements: () => void;
 } & Readable<T[]>;
 
-export function createSortedListStore<T extends ValueWithId>(
-	initialElements: T[],
-): WritableList<T> {
-	const sortedInitialElements = [...new Set(initialElements)].sort(compareValueWithId);
+export type WritableSortedList<T> = WritableList<T>;
+
+export function createSortedListStore<T>(initialElements: T[]): WritableSortedList<T> {
+	function compare(a: T, b: T) {
+		if (isValueWithId(a) && isValueWithId(b)) {
+			return compareValueWithId(a, b);
+		}
+		return compareDefault(a, b);
+	}
+
+	const sortedInitialElements = [...new Set(initialElements)].sort(compare);
 	const { subscribe, set, update } = writable<T[]>(sortedInitialElements);
 
 	function addElement(element: T) {
@@ -19,7 +26,7 @@ export function createSortedListStore<T extends ValueWithId>(
 			if (elements.includes(element)) {
 				return elements;
 			}
-			return [...elements, element].sort(compareValueWithId);
+			return [...elements, element].sort(compare);
 		});
 	}
 
@@ -27,12 +34,19 @@ export function createSortedListStore<T extends ValueWithId>(
 		update((oldElements) => {
 			const newElements = [...new Set(elements)];
 			const mergedElements = [...oldElements, ...newElements];
-			return mergedElements.sort(compareValueWithId);
+			return mergedElements.sort(compare);
 		});
 	}
 
-	function deleteElement(element: T) {
-		update((elements) => elements.filter((c) => c !== element));
+	function removeElement(element: T) {
+		function compare(a: T, b: T) {
+			if (isValueWithId(a) && isValueWithId(b)) {
+				return a.id === b.id;
+			}
+			return a === b;
+		}
+
+		update((elements) => elements.filter((originalElement) => compare(originalElement, element)));
 	}
 
 	function clearElements() {
@@ -43,7 +57,7 @@ export function createSortedListStore<T extends ValueWithId>(
 		subscribe,
 		addElement,
 		addElements,
-		deleteElement,
+		removeElement,
 		clearElements,
 	};
 }
