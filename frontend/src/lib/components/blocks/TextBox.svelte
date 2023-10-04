@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { derived, writable, type Readable, Writable } from "svelte/store";
+	import { derived, writable, type Readable, type Writable } from "svelte/store";
 	import type { Action } from "svelte/action";
 	import { createFloatingActions } from "svelte-floating-ui";
 	import type { TextboxTag } from "$lib/types";
 	import { generateId } from "$lib/utils/id";
 	import { handlePaste } from "$lib/utils/event";
 	import ListPopup from "$lib/components/blocks/ListPopup.svelte";
-	import { createSortedListStore, type WritableSortedList } from "$lib/store/storeBuilders";
+	import { createSortedListStore } from "$lib/store/storeBuilders";
 	import type { ValueWithId } from "$lib/types";
 	import { sampleCharacters } from "$lib/store/stores";
 
@@ -18,9 +18,10 @@
 	// !Popup
 	let popupId: string;
 	let isOpen: Readable<boolean>;
+	let popupIsFocused: Writable<boolean>;
+	let selectedOption: Writable<ValueWithId | undefined>;
 	let popupAction: Action = () => {};
 	let popupTextboxAction: Action = () => {};
-	let selectedOption: Writable<ValueWithId | undefined>;
 
 	// !Stores
 	const textContent = writable(defaultText);
@@ -29,12 +30,13 @@
 	const characters = createSortedListStore<ValueWithId>(sampleCharacters);
 
 	function createPopupStore() {
-		const id = generateId();
+		const popupId = generateId();
 		// noinspection JSUnusedLocalSymbols
 		const isOpen = derived([textboxIsFocused], ([$textboxIsFocused]) => {
 			return $textboxIsFocused;
 		});
 		const selectedOption = writable<ValueWithId | undefined>();
+		const popupIsFocused = writable(false);
 
 		const [popupTextboxAction, popupAction] = createFloatingActions({
 			strategy: "absolute",
@@ -43,9 +45,12 @@
 		});
 
 		return {
-			id,
-			isOpen,
-			selectedOption,
+			popupId,
+			state: {
+				isOpen,
+				popupIsFocused,
+				selectedOption,
+			},
 			action: {
 				popupTextboxAction,
 				popupAction,
@@ -55,17 +60,17 @@
 
 	if (hasPopup) {
 		const {
-			id: _popupId,
-			isOpen: _isOpen,
+			popupId: _popupId,
+			state: { isOpen: _isOpen, popupIsFocused: _popupIsFocused, selectedOption: _selectedOption },
 			action: { popupTextboxAction: _popupTextboxAction, popupAction: _popupAction },
-			selectedOption: _selectedOption,
 		} = createPopupStore();
 
 		popupId = _popupId;
 		isOpen = _isOpen;
+		popupIsFocused = _popupIsFocused;
+		selectedOption = _selectedOption;
 		popupAction = _popupAction;
 		popupTextboxAction = _popupTextboxAction;
-		selectedOption = _selectedOption;
 	}
 </script>
 
@@ -98,10 +103,11 @@
 />
 {#if hasPopup && $isOpen}
 	<ListPopup
-		id={popupId}
-		action={popupAction}
+		{popupId}
 		{isOpen}
+		{popupIsFocused}
 		{textContent}
+		action={popupAction}
 		options={characters}
 		{selectedOption}
 	/>

@@ -6,16 +6,18 @@
 	import { isEmpty } from "$lib/utils/string";
 	import type { Action } from "svelte/action";
 	import { generateId } from "$lib/utils/id";
+	import { kbd } from "$lib/utils/keyboard";
 
 	/*!
 	Props
 	 */
-	export let id: string;
+	export let popupId: string;
 	export let isOpen: Readable<boolean>;
 	export let action: Action = () => {};
 	export let textContent: Writable<string>;
 	export let options: WritableSortedList<ValueWithId>;
-	export let selectedOption: ValueWithId | undefined;
+	export let selectedOption: Writable<ValueWithId | undefined>;
+	export let popupIsFocused: Writable<boolean>;
 
 	/*!
 	options
@@ -43,21 +45,50 @@
 			return [];
 		}
 	});
+
+	/*!
+	Navigation
+	 */
+	// const optionRefs: HTMLLIElement[]
+	// function next(currentIndex: number) {
+	// 	return currentIndex + 1;
+	// }
+
+	function handleKeyDown(event: KeyboardEvent) {
+		if (event.key === kbd.ARROW_DOWN) {
+			event.preventDefault();
+			event.stopPropagation();
+			// noinspection JSIgnoredPromiseFromCall
+			// todo: next
+		} else if (event.key === "ArrowUp") {
+			event.preventDefault();
+			event.stopPropagation();
+			// todo: prev
+		} else if (event.key === "Enter") {
+			event.preventDefault();
+			event.stopPropagation();
+			// noinspection JSIgnoredPromiseFromCall
+			// todo: close
+		}
+	}
 </script>
 
 <ul
 	use:action
 	class="not-prose z-10 flex max-h-48 w-[15ch] flex-col overflow-hidden bg-stone-50 shadow-lg ring-1 ring-stone-500/50"
 	role="listbox"
-	{id}
+	id={popupId}
 >
-	{#each $filtered as { id, value }}
+	{#each $filtered as { id, value }, index (id)}
 		<li
-			id="{id}-{id}"
+			id="{popupId}-{index}"
 			class="relative cursor-pointer scroll-my-2 whitespace-nowrap pl-2 data-[highlighted]:bg-stone-200 data-[disabled]:opacity-50"
+			tabindex="0"
 			on:focus={() => {}}
 			on:blur={() => {}}
-			on:keydown={() => {}}
+			on:keydown={(event) => {
+				handleKeyDown(event);
+			}}
 			role="option"
 			aria-selected="false"
 		>
@@ -66,7 +97,7 @@
 	{:else}
 		{#if $isOpen && !isEmpty($textContent)}
 			<li
-				id="{id}-{generateId()}"
+				id="{popupId}-{generateId()}"
 				role="option"
 				class="relative cursor-pointer scroll-my-2 whitespace-nowrap pl-2 data-[highlighted]:bg-stone-200 data-[disabled]:opacity-50"
 				aria-selected="false"
