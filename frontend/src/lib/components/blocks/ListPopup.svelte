@@ -32,7 +32,7 @@
 	state
 	 */
 	// noinspection JSUnusedLocalSymbols
-	const isOpen = derived([textboxIsFocused], ($textboxIsFocused) => {
+	const isOpen = derived([textboxIsFocused], ([$textboxIsFocused]) => {
 		return $textboxIsFocused;
 	});
 

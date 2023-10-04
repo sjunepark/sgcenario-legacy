@@ -17,7 +17,7 @@
 	this={tag}
 	id={generateId()}
 	bind:innerText={$textContent}
-	class="min-w-[15ch] break-all outline-none"
+	class="break-all outline-none"
 	use:action
 	on:focus={handleTextboxFocus}
 	on:blur={handleTextboxBlur}
