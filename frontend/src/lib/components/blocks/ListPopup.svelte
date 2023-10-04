@@ -15,7 +15,7 @@
 	export let action: Action = () => {};
 	export let textContent: Writable<string>;
 	export let options: WritableSortedList<ValueWithId>;
-	export let selectedOptions: WritableSortedList<ValueWithId>;
+	export let selectedOption: ValueWithId | undefined;
 
 	/*!
 	options
@@ -55,12 +55,8 @@
 		<li
 			id="{id}-{id}"
 			class="relative cursor-pointer scroll-my-2 whitespace-nowrap pl-2 data-[highlighted]:bg-stone-200 data-[disabled]:opacity-50"
-			on:focus={() => {
-				selectedOptions.addElement({ id, value });
-			}}
-			on:blur={() => {
-				selectedOptions.removeElement({ id, value });
-			}}
+			on:focus={() => {}}
+			on:blur={() => {}}
 			on:keydown={() => {}}
 			role="option"
 			aria-selected="false"

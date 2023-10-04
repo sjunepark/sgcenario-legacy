@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { derived, writable, type Readable } from "svelte/store";
+	import { derived, writable, type Readable, Writable } from "svelte/store";
 	import type { Action } from "svelte/action";
 	import { createFloatingActions } from "svelte-floating-ui";
 	import type { TextboxTag } from "$lib/types";
@@ -20,7 +20,7 @@
 	let isOpen: Readable<boolean>;
 	let popupAction: Action = () => {};
 	let popupTextboxAction: Action = () => {};
-	let selectedOptions: WritableSortedList<ValueWithId>;
+	let selectedOption: Writable<ValueWithId | undefined>;
 
 	// !Stores
 	const textContent = writable(defaultText);
@@ -34,7 +34,7 @@
 		const isOpen = derived([textboxIsFocused], ([$textboxIsFocused]) => {
 			return $textboxIsFocused;
 		});
-		const selectedOptions = createSortedListStore<ValueWithId>([]);
+		const selectedOption = writable<ValueWithId | undefined>();
 
 		const [popupTextboxAction, popupAction] = createFloatingActions({
 			strategy: "absolute",
@@ -45,7 +45,7 @@
 		return {
 			id,
 			isOpen,
-			selectedOptions,
+			selectedOption,
 			action: {
 				popupTextboxAction,
 				popupAction,
@@ -58,14 +58,14 @@
 			id: _popupId,
 			isOpen: _isOpen,
 			action: { popupTextboxAction: _popupTextboxAction, popupAction: _popupAction },
-			selectedOptions: _selectedOptions,
+			selectedOption: _selectedOption,
 		} = createPopupStore();
 
 		popupId = _popupId;
 		isOpen = _isOpen;
 		popupAction = _popupAction;
 		popupTextboxAction = _popupTextboxAction;
-		selectedOptions = _selectedOptions;
+		selectedOption = _selectedOption;
 	}
 </script>
 
@@ -103,6 +103,6 @@
 		{isOpen}
 		{textContent}
 		options={characters}
-		{selectedOptions}
+		{selectedOption}
 	/>
 {/if}
