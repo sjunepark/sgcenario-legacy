@@ -44,3 +44,9 @@ export type PopupProps = {
 	};
 	action: { popupAction: Action };
 };
+
+export type LinkedElement = {
+	previous: HTMLElement;
+	current: HTMLElement;
+	next: HTMLElement;
+};

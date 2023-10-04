@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { derived, type Writable } from "svelte/store";
 	import type { WritableSortedList } from "$lib/store/sortedListStore";
-	import type { ValueWithId } from "$lib/types";
-	import type { PopupProps } from "$lib/types";
+	import type { PopupProps, ValueWithId } from "$lib/types";
 	import Hangul from "hangul-js";
 	import { isEmpty } from "$lib/utils/string";
 	import { generateId } from "$lib/utils/id";
@@ -57,43 +56,113 @@
 	// }
 
 	function handleKeyDown(event: KeyboardEvent) {
+		const current = event.currentTarget as HTMLLIElement;
 		if (event.key === kbd.ARROW_DOWN) {
 			event.preventDefault();
 			event.stopPropagation();
-			// noinspection JSIgnoredPromiseFromCall
-			// todo: next
-		} else if (event.key === "ArrowUp") {
+			nextList(current).focus();
+		} else if (event.key === kbd.ARROW_UP) {
 			event.preventDefault();
 			event.stopPropagation();
-			// todo: prev
-		} else if (event.key === "Enter") {
+			previousList(current).focus();
+		} else if (event.key === kbd.ENTER) {
 			event.preventDefault();
 			event.stopPropagation();
 			// noinspection JSIgnoredPromiseFromCall
 			// todo: close
 		}
 	}
+
+	export function focusFirstList() {
+		firstLinkedList.focus();
+	}
+
+	function nextList(listElement: LinkedHTMLLIElement) {
+		const next = listElement.llNext;
+		if (next) return next;
+		else return firstLinkedList;
+	}
+
+	function previousList(listElement: LinkedHTMLLIElement) {
+		const previous = listElement.llPrevious;
+		if (previous) return previous;
+		else return lastLinkedList;
+	}
+
+	let firstLinkedList: LinkedHTMLLIElement;
+	let lastLinkedList: LinkedHTMLLIElement;
+
+	type LinkedHTMLLIElement = HTMLLIElement & {
+		llPrevious?: HTMLLIElement | null;
+		llNext?: HTMLLIElement | null;
+	};
+
+	/* eslint-disable @typescript-eslint/no-unused-vars */
+	// noinspection JSUnusedLocalSymbols
+	function createLink(node: LinkedHTMLLIElement, props: { $textContent: string; isLast: boolean }) {
+		function setLink() {
+			const previous = node.previousElementSibling as LinkedHTMLLIElement;
+			if (!previous) {
+				firstLinkedList = node;
+			} else {
+				node.llPrevious = previous as HTMLLIElement;
+				previous.llNext = node;
+			}
+
+			if (props.isLast) {
+				node.llNext = firstLinkedList;
+				firstLinkedList.llPrevious = node;
+			}
+		}
+		setLink();
+
+		// noinspection JSUnusedGlobalSymbols,JSUnusedLocalSymbols,ES6ShorthandObjectProperty
+		return {
+			update(props: { $textContent: string; isLast: boolean }) {
+				setLink();
+			},
+			destroy() {},
+		};
+	}
+	/* eslint-enable @typescript-eslint/no-unused-vars */
+
+	// dev:
 </script>
 
 <ul
-	use:popupAction
-	class="not-prose z-10 flex max-h-48 w-[15ch] flex-col overflow-hidden bg-stone-50 shadow-lg ring-1 ring-stone-500/50"
-	role="listbox"
 	id={popupId}
+	class="not-prose z-10 flex max-h-48 w-[15ch] flex-col overflow-hidden bg-stone-50 shadow-lg ring-1 ring-stone-500/50"
+	use:popupAction
+	on:focusin={() => {
+		popupIsFocused.set(true);
+		console.log("ul focused");
+	}}
+	on:focusout={() => {
+		popupIsFocused.set(false);
+		console.log("ul blurred");
+	}}
+	role="listbox"
 >
 	{#each $filtered as { id, value }, index (id)}
+		{@const isSelected = $focusedOption ? $focusedOption.id === id : false}
+		{@const isLast = index === $filtered.length - 1}
 		<li
 			id="{popupId}-{index}"
 			class="relative cursor-pointer scroll-my-2 whitespace-nowrap pl-2 data-[highlighted]:bg-stone-200 data-[disabled]:opacity-50"
+			use:createLink={{ $textContent, isLast }}
 			tabindex="0"
-			on:focus={() => {}}
-			on:blur={() => {}}
-			on:keydown={(event) => {
-				handleKeyDown(event);
+			on:focus={() => {
+				console.log(`li ${value} focused`);
+				focusedOption.set({ id, value });
 			}}
+			on:blur={() => {
+				console.log(`li ${value} blurred`);
+				focusedOption.set(undefined);
+			}}
+			on:keydown={handleKeyDown}
 			role="option"
-			aria-selected={$focusedOption ? $focusedOption.id === id : false}
-			data-highlighted={$focusedOption ? $focusedOption.id === id : false}
+			aria-selected={isSelected}
+			data-highlighted={isSelected ? true : undefined}
 		>
 			{value}
 		</li>

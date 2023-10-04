@@ -8,6 +8,10 @@
 	import ListPopup from "$lib/components/blocks/ListPopup.svelte";
 	import { createSortedListStore } from "$lib/store/sortedListStore";
 	import { sampleCharacters } from "$lib/store/stores";
+	import { kbd } from "$lib/utils/keyboard";
+	import { tick } from "svelte";
+
+	let focusFirstList = () => {};
 
 	// !Props
 	export let tag: TextboxTag;
@@ -72,14 +76,24 @@
 
 	const {
 		popupId,
-		state: { isOpen },
+		state: { isOpen, popupIsFocused },
 	} = popupProps;
+
+	async function handleKeydown(e: KeyboardEvent) {
+		if (e.key === kbd.ARROW_DOWN) {
+			e.preventDefault();
+			e.stopPropagation();
+			focusFirstList();
+		}
+	}
+	$: console.log(`isOpen: ${$isOpen}`);
 </script>
 
-<!--dev: -->
-<p>
-	isOpen: {$isOpen}
-</p>
+{#key [$isOpen, $popupIsFocused]}
+	<p>
+		hasPopup: {hasPopup}, isOpen: {$isOpen}, popupIsFocused: {$popupIsFocused}
+	</p>
+{/key}
 
 <!--todo: change "aria-activedescendant" to selected element's id -->
 <!--suppress RequiredAttributes -->
@@ -95,6 +109,7 @@
 	on:blur={() => {
 		textboxIsFocused.set(false);
 	}}
+	on:keydown={handleKeydown}
 	on:paste={handlePaste}
 	contenteditable="true"
 	role={hasPopup ? "combobox" : "textbox"}
@@ -103,6 +118,6 @@
 	aria-expanded={hasPopup ? $isOpen : undefined}
 	aria-activedescendant={hasPopup ? popupId : undefined}
 />
-{#if hasPopup && $isOpen}
-	<ListPopup {textContent} options={characters} {popupProps} />
-{/if}
+<!--{#if hasPopup && $isOpen}-->
+<ListPopup bind:focusFirstList {textContent} options={characters} {popupProps} />
+<!--{/if}-->
