@@ -7,6 +7,12 @@
 	import { generateId } from "$lib/utils/id";
 	import { kbd } from "$lib/utils/keyboard";
 
+	/*! To prevent warning: "was created with unknown prop"
+			refer: https://github.com/sveltejs/svelte/issues/4652
+	 */
+	$$restProps;
+	$: console.log("restProps", JSON.stringify($$restProps));
+
 	/*!
 	Props
 	 */
@@ -17,7 +23,7 @@
 
 	const {
 		popupId,
-		state: { isOpen, popupIsFocused, focusedOption },
+		state: { isOpen, focusedOption },
 		action: { popupAction },
 	} = popupProps;
 
@@ -75,6 +81,7 @@
 
 	export function focusFirstList() {
 		firstLinkedList.focus();
+		console.log("Focused first list");
 	}
 
 	function nextList(listElement: LinkedHTMLLIElement) {
@@ -131,14 +138,14 @@
 
 <ul
 	id={popupId}
-	class="not-prose z-10 flex max-h-48 w-[15ch] flex-col overflow-hidden bg-stone-50 shadow-lg ring-1 ring-stone-500/50"
+	class="not-prose absolute left-0 top-0 z-10 flex max-h-48 w-[15ch] flex-col overflow-hidden bg-stone-50 shadow-lg ring-1 ring-stone-500/50"
 	use:popupAction
 	on:focusin={() => {
-		popupIsFocused.set(true);
+		isOpen.set(true);
 		console.log("ul focused");
 	}}
 	on:focusout={() => {
-		popupIsFocused.set(false);
+		isOpen.set(false);
 		console.log("ul blurred");
 	}}
 	role="listbox"

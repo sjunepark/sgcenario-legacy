@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { derived, readable, writable } from "svelte/store";
+	import { writable } from "svelte/store";
 	import type { Action } from "svelte/action";
 	import { createFloatingActions } from "svelte-floating-ui";
 	import type { PopupProps, TextboxTag, ValueWithId } from "$lib/types";
@@ -9,7 +9,6 @@
 	import { createSortedListStore } from "$lib/store/sortedListStore";
 	import { sampleCharacters } from "$lib/store/stores";
 	import { kbd } from "$lib/utils/keyboard";
-
 	let focusFirstList = () => {};
 
 	// !Props
@@ -23,8 +22,7 @@
 	let popupProps: PopupProps = {
 		popupId: undefined,
 		state: {
-			isOpen: readable(false),
-			popupIsFocused: writable(false),
+			isOpen: writable(false),
 			focusedOption: writable(undefined),
 		},
 		action: {
@@ -34,17 +32,13 @@
 
 	// !Stores
 	const innerText = writable(defaultText);
-	const textboxIsFocused = writable(false);
 	// dev: For development purposes only
 	const characters = createSortedListStore<ValueWithId>(sampleCharacters);
 
 	function createPopupStore() {
 		const popupId = generateId();
-		const popupIsFocused = writable(false);
 		const focusedOption = writable<ValueWithId | undefined>();
-		const isOpen = derived([textboxIsFocused, popupIsFocused], ([tifStoreValue, pifStoreValue]) => {
-			return tifStoreValue || pifStoreValue;
-		});
+		const isOpen = writable(false);
 
 		const [popupTextboxAction, popupAction] = createFloatingActions({
 			strategy: "absolute",
@@ -55,7 +49,7 @@
 		return {
 			popup: {
 				popupId,
-				state: { isOpen, popupIsFocused, focusedOption },
+				state: { isOpen, focusedOption },
 				action: { popupAction },
 			},
 			textbox: {
@@ -75,7 +69,7 @@
 
 	const {
 		popupId,
-		state: { isOpen, popupIsFocused },
+		state: { isOpen },
 	} = popupProps;
 
 	async function handleKeydown(e: KeyboardEvent) {
@@ -85,12 +79,11 @@
 			focusFirstList();
 		}
 	}
-	$: console.log(`isOpen: ${$isOpen}`);
 </script>
 
-{#key [$isOpen, $popupIsFocused]}
+{#key [hasPopup, $isOpen]}
 	<p>
-		hasPopup: {hasPopup}, isOpen: {$isOpen}, popupIsFocused: {$popupIsFocused}
+		hasPopup: {hasPopup}, isOpen: {$isOpen}
 	</p>
 {/key}
 
@@ -103,10 +96,10 @@
 	use:popupTextboxAction
 	bind:innerText={$innerText}
 	on:focus={() => {
-		textboxIsFocused.set(true);
+		isOpen.set(true);
 	}}
 	on:blur={() => {
-		textboxIsFocused.set(false);
+		isOpen.set(false);
 	}}
 	on:keydown={handleKeydown}
 	on:paste={handlePaste}

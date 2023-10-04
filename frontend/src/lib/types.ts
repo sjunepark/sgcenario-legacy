@@ -1,5 +1,5 @@
 import type { Action } from "svelte/action";
-import type { Readable, Writable } from "svelte/store";
+import type { Writable } from "svelte/store";
 
 export type DeepPartial<T> = {
 	[P in keyof T]?: T[P] extends Record<string, unknown> ? DeepPartial<T[P]> : T[P];
@@ -22,31 +22,12 @@ export function compareDefault(a: unknown, b: unknown): number {
 }
 
 export type TextboxTag = "p" | "span" | "div" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
-export type TextboxProps = {
-	tag: TextboxTag;
-	state: {
-		innerText: Writable<string>;
-		textboxIsFocused: Writable<boolean>;
-	};
-	action: Action;
-	handlers: {
-		handleTextboxFocus: () => void;
-		handleTextboxBlur: () => void;
-	};
-};
 
 export type PopupProps = {
 	popupId: string | undefined;
 	state: {
-		isOpen: Readable<boolean>;
-		popupIsFocused: Writable<boolean>;
+		isOpen: Writable<boolean>;
 		focusedOption: Writable<ValueWithId | undefined>;
 	};
 	action: { popupAction: Action };
-};
-
-export type LinkedElement = {
-	previous: HTMLElement;
-	current: HTMLElement;
-	next: HTMLElement;
 };
