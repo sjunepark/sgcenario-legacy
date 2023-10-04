@@ -7,6 +7,7 @@
 	import { generateId } from "$lib/utils/id";
 	import { kbd } from "$lib/utils/keyboard";
 	import type { SelectedOption } from "$lib/components/blocks/types";
+	import { tick } from "svelte";
 
 	/*! To prevent warning: "was created with unknown prop"
 			refer: https://github.com/sveltejs/svelte/issues/4652
@@ -21,6 +22,7 @@
 	export let options: WritableSortedList<ValueWithId>;
 
 	export let popupProps: PopupProps;
+	export let focusTextbox: () => void;
 
 	const {
 		popupId,
@@ -76,6 +78,7 @@
 			event.preventDefault();
 			event.stopPropagation();
 			selected.setWithElement(current);
+			focusTextbox();
 		}
 	}
 
@@ -83,8 +86,10 @@
 	bind:property
 	 */
 	// noinspection JSUnusedGlobalSymbols
-	export function focusFirstOption() {
+	export async function focusPopup() {
+		await tick();
 		firstLinkedList.focus();
+		debugger;
 	}
 	export let selected = createSelected(undefined);
 
@@ -162,13 +167,17 @@
 	id={popupId}
 	class="not-prose absolute left-0 top-0 z-10 flex max-h-48 w-[15ch] flex-col overflow-y-auto overflow-x-hidden text-ellipsis bg-stone-50 shadow-lg ring-1 ring-stone-500/50"
 	use:popupAction
-	on:focusin={() => {
+	on:focusin={async () => {
+		await tick();
 		isOpen.set(true);
 		console.log("ul focused");
+		debugger;
 	}}
-	on:focusout={() => {
+	on:focusout={async () => {
+		await tick();
 		isOpen.set(false);
 		console.log("ul blurred");
+		debugger;
 	}}
 	role="listbox"
 >
@@ -177,7 +186,7 @@
 		{@const isLast = index === $filtered.length - 1}
 		<li
 			id="{popupId}-{index}"
-			class="cursor-pointer space-y-2 whitespace-nowrap px-2 focus:bg-stone-200 focus:outline-none data-[disabled]:opacity-50"
+			class="cursor-pointer whitespace-nowrap px-2 focus:bg-stone-200 focus:outline-none"
 			use:createLink={{ value, isLast }}
 			tabindex="0"
 			on:focus={() => {
@@ -202,7 +211,7 @@
 			<li
 				id="{popupId}-{generateId()}"
 				role="option"
-				class="relative cursor-pointer scroll-my-2 whitespace-nowrap pl-2 data-[highlighted]:bg-stone-200 data-[disabled]:opacity-50"
+				class="cursor-pointer whitespace-nowrap px-2 focus:bg-stone-200 focus:outline-none"
 				aria-selected="false"
 			>
 				추가

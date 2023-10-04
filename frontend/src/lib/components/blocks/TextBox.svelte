@@ -10,21 +10,23 @@
 	import { sampleCharacters } from "$lib/store/stores";
 	import { kbd } from "$lib/utils/keyboard";
 	import type { SelectedOption } from "$lib/components/blocks/types";
+	import { tick } from "svelte";
 
 	/*!
-	bind:property
+	Ref
 	 */
-	let focusFirstOption: () => void;
-	let selected: SelectedOption;
+	let textbox: HTMLElement;
 
-	// !Props
+	/*!
+	Props
+	 */
 	export let tag: TextboxTag;
 	export let defaultText = "";
 	export let hasPopup = false;
 
-	// !Popup
-	let popupTextboxAction: Action = () => {};
-
+	/*!
+	Popup
+	 */
 	let popupProps: PopupProps = {
 		popupId: undefined,
 		state: {
@@ -35,12 +37,13 @@
 			popupAction: () => {},
 		},
 	};
+	let popupTextboxAction: Action = () => {};
 
-	// !Stores
-	const innerText = writable(defaultText);
-	// dev: For development purposes only
-	const characters = createSortedListStore<ValueWithId>(sampleCharacters);
+	// bind:property
+	let focusPopup: () => Promise<void>;
+	let selected: SelectedOption;
 
+	// builder
 	function createPopupStore() {
 		const popupId = generateId();
 		const focusedOption = writable<ValueWithId | undefined>();
@@ -58,19 +61,8 @@
 				state: { isOpen, focusedOption },
 				action: { popupAction },
 			},
-			textbox: {
-				action: { popupTextboxAction },
-			},
+			textbox: { action: { popupTextboxAction } },
 		};
-	}
-
-	if (hasPopup) {
-		({
-			popup: popupProps,
-			textbox: {
-				action: { popupTextboxAction },
-			},
-		} = createPopupStore());
 	}
 
 	const {
@@ -78,12 +70,39 @@
 		state: { isOpen },
 	} = popupProps;
 
+	/*!
+	Stores
+	 */
+	const innerText = writable(defaultText);
+	// dev: For development purposes only
+	const characters = createSortedListStore<ValueWithId>(sampleCharacters);
+
+	/*!
+	Handlers & Functions
+	 */
 	async function handleKeydown(e: KeyboardEvent) {
 		if (e.key === kbd.ARROW_DOWN) {
 			e.preventDefault();
 			e.stopPropagation();
-			focusFirstOption();
+			await tick();
+			await focusPopup();
 		}
+	}
+
+	function focusTextbox() {
+		textbox.focus();
+	}
+
+	/*!
+	Run
+	 */
+	if (hasPopup) {
+		({
+			popup: popupProps,
+			textbox: {
+				action: { popupTextboxAction },
+			},
+		} = createPopupStore());
 	}
 </script>
 
@@ -98,14 +117,17 @@
 <!--suppress RequiredAttributes -->
 <svelte:element
 	this={tag}
+	bind:this={textbox}
 	id={generateId()}
 	class="break-all outline-none"
 	use:popupTextboxAction
 	bind:innerText={$innerText}
-	on:focus={() => {
+	on:focus={async () => {
+		await tick();
 		isOpen.set(true);
 	}}
-	on:blur={() => {
+	on:blur={async () => {
+		await tick();
 		isOpen.set(false);
 	}}
 	on:keydown={handleKeydown}
@@ -118,5 +140,12 @@
 	aria-activedescendant={hasPopup ? $selected?.value : undefined}
 />
 {#if hasPopup && $isOpen}
-	<ListPopup bind:selected bind:focusFirstOption {innerText} options={characters} {popupProps} />
+	<ListPopup
+		bind:selected
+		bind:focusPopup
+		{focusTextbox}
+		{innerText}
+		options={characters}
+		{popupProps}
+	/>
 {/if}
