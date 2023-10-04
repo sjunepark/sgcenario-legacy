@@ -1,28 +1,91 @@
 <script lang="ts">
-	import { generateId } from "$lib/id.js";
-	import { handlePaste } from "$lib/utils/event.js";
-	import type { TextboxProps } from "$lib/types";
+	import { derived, writable, type Readable } from "svelte/store";
+	import type { Action } from "svelte/action";
+	import { createFloatingActions } from "svelte-floating-ui";
+	import type { TextboxTag } from "$lib/types";
+	import { generateId } from "$lib/utils/id";
+	import { handlePaste } from "$lib/utils/event";
+	import ListPopup from "$lib/components/blocks/ListPopup.svelte";
+	import { onMount } from "svelte";
 
-	export let props: TextboxProps;
-	const {
-		tag,
-		state: { textContent },
-		action,
-		handlers: { handleTextboxFocus, handleTextboxBlur },
-	} = props;
+	// !Props
+	export let tag: TextboxTag;
+	export let defaultText = "";
+	export let hasPopup = false;
+
+	// !Popup
+	let popupId: string;
+	let isOpen: Readable<boolean>;
+	let popupAction: Action = () => {};
+	let popupTextboxAction: Action = () => {};
+
+	// !Stores
+	const textContent = writable(defaultText);
+	const textboxIsFocused = writable(false);
+
+	function createPopupStore() {
+		const id = generateId();
+		// noinspection JSUnusedLocalSymbols
+		const isOpen = derived([textboxIsFocused], ([$textboxIsFocused]) => {
+			return $textboxIsFocused;
+		});
+		const [popupTextboxAction, popupAction] = createFloatingActions({
+			strategy: "absolute",
+			placement: "bottom-end",
+			autoUpdate: true,
+		});
+
+		return {
+			id,
+			isOpen,
+			action: {
+				popupTextboxAction,
+				popupAction,
+			},
+		};
+	}
+
+	if (hasPopup) {
+		const {
+			id: _popupId,
+			isOpen: _isOpen,
+			action: { popupTextboxAction: _popupTextboxAction, popupAction: _popupAction },
+		} = createPopupStore();
+
+		popupId = _popupId;
+		isOpen = _isOpen;
+		popupAction = _popupAction;
+		popupTextboxAction = _popupTextboxAction;
+	}
 </script>
 
+<!--dev: -->
+<p>
+	isOpen: {$isOpen}
+</p>
+
+<!--todo: change "aria-activedescendant" to selected element's id -->
 <!--suppress RequiredAttributes -->
 <svelte:element
 	this={tag}
 	id={generateId()}
-	bind:innerText={$textContent}
 	class="break-all outline-none"
-	use:action
-	on:focus={handleTextboxFocus}
-	on:blur={handleTextboxBlur}
+	use:popupTextboxAction
+	bind:innerText={$textContent}
+	on:focus={() => {
+		textboxIsFocused.set(true);
+	}}
+	on:blur={() => {
+		textboxIsFocused.set(false);
+	}}
 	on:paste={handlePaste}
 	contenteditable="true"
-	aria-autocomplete="list"
-	role="textbox"
+	role={hasPopup ? "combobox" : "textbox"}
+	aria-autocomplete={hasPopup ? "list" : undefined}
+	aria-controls={hasPopup ? popupId : undefined}
+	aria-expanded={hasPopup ? $isOpen : undefined}
+	aria-activedescendant={hasPopup ? popupId : undefined}
 />
+{#if hasPopup && $isOpen}
+	<ListPopup id={popupId} action={popupAction} {isOpen} {textContent} />
+{/if}

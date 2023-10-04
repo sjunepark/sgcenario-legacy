@@ -1,14 +1,11 @@
-<script>
+<script lang="ts">
 	import TextBox from "$lib/components/blocks/TextBox.svelte";
-	import ListPopup from "$lib/components/blocks/ListPopup.svelte";
 </script>
 
 <div class="prose prose-gray">
 	<!--eslint-disable-next-line @typescript-eslint/no-unused-vars-->
 	{#each Array(1) as _, i}
-		<ListPopup tag="p" let:textboxProps>
-			<TextBox props={textboxProps} />
-		</ListPopup>
+		<TextBox tag="p" hasPopup={true} />
 	{/each}
 
 	<p

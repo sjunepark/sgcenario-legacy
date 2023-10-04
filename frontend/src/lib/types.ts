@@ -27,3 +27,8 @@ export type TextboxProps = {
 		handleTextboxBlur: () => void;
 	};
 };
+
+export type PopupHTMLAttributes = {
+	"aria-activedescendant"?: string;
+	"aria-controls": string;
+};
