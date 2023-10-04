@@ -6,7 +6,6 @@
 	import { generateId } from "$lib/utils/id";
 	import { handlePaste } from "$lib/utils/event";
 	import ListPopup from "$lib/components/blocks/ListPopup.svelte";
-	import { onMount } from "svelte";
 
 	// !Props
 	export let tag: TextboxTag;
