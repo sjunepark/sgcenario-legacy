@@ -33,12 +33,10 @@
 	/*!
 	options
 	 */
-	const filtered = derived([options, innerText], ([options$, innerText$]) => {
+	const filtered = derived([options, innerText], ([$options, $innerText]) => {
 		// return: Early return when no innerText
-		if (isEmpty(tStoreValue)) {
-			return oStoreValue;
-		if (isEmpty(innerText$)) {
-			return options$;
+		if (isEmpty($innerText)) {
+			return $options;
 		}
 
 		// return: option found
@@ -91,7 +89,6 @@
 	export async function focusPopup() {
 		await tick();
 		firstLinkedList.focus();
-		debugger;
 	}
 	export let selected = createSelected(undefined);
 
@@ -173,13 +170,11 @@
 		await tick();
 		isOpen.set(true);
 		console.log("ul focused");
-		debugger;
 	}}
 	on:focusout={async () => {
 		await tick();
 		isOpen.set(false);
 		console.log("ul blurred");
-		debugger;
 	}}
 	role="listbox"
 >
