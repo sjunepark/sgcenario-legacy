@@ -55,18 +55,14 @@
 		},
 		/* eslint-enable @typescript-eslint/no-unused-vars */
 	);
-
-	$: if ($filteredCharacters.length === 0) {
-		console.log($selected);
-	}
 </script>
 
-<p class="flex items-start gap-x-4 break-keep text-justify">
-	<input {...$input} use:input class="w-[9ch]" />
-	<span class="break-all" contenteditable="true">
-		{textAreaValue}
-	</span>
-</p>
+<div class="my-[-1.25em] grid gap-x-4" style="grid-template-columns: 15ch 1fr">
+	<p>
+		<input {...$input} use:input class="w-full" placeholder="Character" />
+	</p>
+	<p contenteditable="true">{textAreaValue}</p>
+</div>
 
 {#if $open}
 	<ul
