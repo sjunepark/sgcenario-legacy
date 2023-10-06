@@ -17,7 +17,7 @@
 
 	const {
 		elements: { menu, input, option },
-		states: { open, inputValue, selected },
+		states: { open, inputValue },
 		helpers: { isSelected },
 	} = createCombobox({
 		preventScroll: false, // There's a bug
@@ -59,6 +59,7 @@
 
 <div class="my-[-1.25em] grid gap-x-4" style="grid-template-columns: 15ch 1fr">
 	<p>
+		<!--todo: warn when empty(can't use "required" since it's irrelevant to submit event)-->
 		<input {...$input} use:input class="w-full" placeholder="Character" />
 	</p>
 	<p contenteditable="true">{textAreaValue}</p>
