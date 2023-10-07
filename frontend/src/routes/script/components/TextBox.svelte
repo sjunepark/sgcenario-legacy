@@ -5,11 +5,11 @@
 	import type { PopupProps, TextboxTag, ValueWithId } from "$lib/types";
 	import { generateId } from "$lib/utils/id";
 	import { handlePaste } from "$lib/utils/event";
-	import ListPopup from "$lib/components/blocks/ListPopup.svelte";
+	import ListPopup from "./ListPopup.svelte";
 	import { createSortedListStore } from "$lib/store/sortedListStore";
 	import { sampleCharacters } from "$lib/store/stores";
 	import { kbd } from "$lib/utils/keyboard";
-	import type { SelectedOption } from "$lib/components/blocks/types";
+	import type { SelectedOption } from "./types";
 	import { tick } from "svelte";
 
 	/*!

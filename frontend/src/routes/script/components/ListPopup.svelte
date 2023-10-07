@@ -6,7 +6,7 @@
 	import { isEmpty } from "$lib/utils/string";
 	import { generateId } from "$lib/utils/id";
 	import { kbd } from "$lib/utils/keyboard";
-	import type { SelectedOption } from "$lib/components/blocks/types";
+	import type { SelectedOption } from "./types";
 	import { tick } from "svelte";
 
 	/*! To prevent warning: "was created with unknown prop"

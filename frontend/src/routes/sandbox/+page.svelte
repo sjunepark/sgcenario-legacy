@@ -1,5 +1,5 @@
 <script lang="ts">
-	import TextBox from "$lib/components/blocks/TextBox.svelte";
+	import TextBox from "../script/components/TextBox.svelte";
 </script>
 
 <div class="prose prose-gray">

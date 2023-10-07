@@ -1,15 +1,11 @@
 <script lang="ts">
-	import { writable } from "svelte/store";
+	export let url: URL;
+	$: pathname = url.pathname;
 
 	const navLinks: { name: string; url: string }[] = [
 		{ name: "대본", url: "/script" },
-		{ name: "서재", url: "/" },
-		{ name: "도움말", url: "/" },
-		{ name: "프로필", url: "/" },
 		{ name: "놀이터", url: "/sandbox" },
 	];
-
-	let activeLink = writable(0);
 </script>
 
 <header
@@ -25,7 +21,7 @@
 					{#each navLinks as link, index (index)}
 						<li class="">
 							<a class="relative block whitespace-nowrap px-3 py-2" href={link.url}>
-								{#if $activeLink === index}
+								{#if pathname === link.url}
 									<span
 										class="absolute inset-x-1 -bottom-px h-0.5 bg-gradient-to-r from-stone-500/0 via-stone-500/40 to-stone-500/0"
 									></span>

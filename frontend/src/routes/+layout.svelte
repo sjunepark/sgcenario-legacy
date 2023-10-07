@@ -5,6 +5,10 @@
 	import { type Options, OverlayScrollbars } from "overlayscrollbars";
 	import { onDestroy, onMount, setContext } from "svelte";
 	import type { DeepPartial } from "$lib/types";
+	import type { LayoutData } from "./$types";
+
+	export let data: LayoutData;
+	$: ({ url } = data);
 
 	const scrollbarStyle: DeepPartial<Options> = {
 		scrollbars: {
@@ -27,7 +31,7 @@
 </script>
 
 <div>
-	<NavHeader />
+	<NavHeader {url} />
 	<main class="global-container mt-20">
 		<slot />
 	</main>
