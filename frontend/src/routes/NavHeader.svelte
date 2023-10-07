@@ -1,23 +1,12 @@
 <script lang="ts">
 	import { writable } from "svelte/store";
 
-	const navLinks = [
-		{
-			name: "서재",
-			url: "/",
-		},
-		{
-			name: "도움말",
-			url: "/",
-		},
-		{
-			name: "프로필",
-			url: "/",
-		},
-		{
-			name: "놀이터",
-			url: "/sandbox",
-		},
+	const navLinks: { name: string; url: string }[] = [
+		{ name: "대본", url: "/script" },
+		{ name: "서재", url: "/" },
+		{ name: "도움말", url: "/" },
+		{ name: "프로필", url: "/" },
+		{ name: "놀이터", url: "/sandbox" },
 	];
 
 	let activeLink = writable(0);
