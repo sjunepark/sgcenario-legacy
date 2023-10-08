@@ -1,15 +1,18 @@
 <script lang="ts">
-	import BlockTitle from "./BlockTitle.svelte";
+	import BlockH2 from "./BlockH2.svelte";
 	import BlockScene from "./BlockScene.svelte";
 	import BlockAction from "./BlockAction.svelte";
 	import BlockDialogue from "./BlockDialogue.svelte";
 	import BlockTransition from "./BlockTransition.svelte";
 	import type { ComponentType } from "svelte";
+	import type { Block, BlockType } from "./types";
 
-	export let type: "title" | "scene" | "action" | "dialogue" | "transition";
+	export let type: BlockType;
 
-	let options: { type: typeof type; component: ComponentType }[] = [
-		{ type: "title", component: BlockTitle },
+	const props: Block
+
+	let options: { type: BlockType; component: ComponentType }[] = [
+		{ type: "h2", component: BlockH2 },
 		{ type: "scene", component: BlockScene },
 		{ type: "action", component: BlockAction },
 		{ type: "dialogue", component: BlockDialogue },

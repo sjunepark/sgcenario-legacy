@@ -1,6 +1,11 @@
-import type { ValueWithId } from "$lib/types";
-import type { Writable } from "svelte/store";
+export type BlockType = "h2" | "scene" | "action" | "dialogue" | "transition";
 
-export type SelectedOption = Writable<ValueWithId | undefined> & {
-	setWithElement: (e: HTMLElement) => void;
+export type Block = {
+	type: BlockType;
+	index: number;
+} & BlockContent;
+
+export type BlockContent = {
+	character?: string;
+	text: string;
 };
