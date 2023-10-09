@@ -5,7 +5,7 @@ export const scripts = sqliteTable("scripts", {
 	user_id: integer("user")
 		.notNull()
 		.references(() => users.user_id),
-	order: real("order").unique(),
+	seq: real("seq").unique(),
 	content: text("content"),
 	createdAt: text("created_at").default("CURRENT_TIMESTAMP"),
 	adjustedAt: text("adjusted_at").default("CURRENT_TIMESTAMP"),
