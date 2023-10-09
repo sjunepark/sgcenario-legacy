@@ -5,11 +5,9 @@
 	import BlockDialogue from "./BlockDialogue.svelte";
 	import BlockTransition from "./BlockTransition.svelte";
 	import type { ComponentType } from "svelte";
-	import type { Block, BlockType } from "./types";
+	import type { BlockType } from "./types";
 
 	export let type: BlockType;
-
-	const props: Block
 
 	let options: { type: BlockType; component: ComponentType }[] = [
 		{ type: "h2", component: BlockH2 },

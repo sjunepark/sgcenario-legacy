@@ -10,8 +10,6 @@
 	import { isEmpty } from "$lib/utils/string";
 	import Hangul from "hangul-js";
 
-	// DEV: For development purposes only
-	export let textAreaValue: string;
 	const scrollbarStyle = getContext("scrollbarStyle") satisfies DeepPartial<Options>;
 
 	const {
