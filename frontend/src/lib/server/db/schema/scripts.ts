@@ -1,17 +1,20 @@
 import { integer, real, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const scripts = sqliteTable("scripts", {
-	id: integer("id").primaryKey(),
-	user: text("user")
+	id: integer("id").primaryKey({ autoIncrement: true }),
+	user_id: integer("user")
 		.notNull()
-		.references(() => users.id),
-	index: real("index").unique(),
+		.references(() => users.user_id),
+	order: real("order").unique(),
 	content: text("content"),
-	createdAt: integer("created_at").notNull(),
-	adjustedAt: integer("adjusted_at").notNull(),
+	createdAt: text("created_at").default("CURRENT_TIMESTAMP"),
+	adjustedAt: text("adjusted_at").default("CURRENT_TIMESTAMP"),
 });
 
 export const users = sqliteTable("users", {
-	id: integer("id").primaryKey(),
+	user_id: integer("id").primaryKey(),
 	name: text("name").notNull(),
 });
+
+export type User = typeof users.$inferSelect;
+export type NewUser = typeof users.$inferInsert;

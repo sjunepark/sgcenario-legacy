@@ -14,7 +14,8 @@
 		"validate": "pnpm format && pnpm check && pnpm lint",
 		"db:generate": "drizzle-kit generate:sqlite",
 		"db:pull": "drizzle-kit introspect:sqlite",
-		"db:push": "drizzle-kit push:sqlite"
+		"db:push": "drizzle-kit push:sqlite",
+		"db:drop": "drizzle-kit drop"
 	},
 	"devDependencies": {
 		"@floating-ui/dom": "^1.5.3",
