@@ -14,6 +14,9 @@ devDependencies:
   '@lucia-auth/adapter-sqlite':
     specifier: ^2.0.0
     version: 2.0.0(@libsql/client@0.3.5)(better-sqlite3@8.7.0)(lucia@2.7.1)
+  '@lucia-auth/oauth':
+    specifier: ^3.3.1
+    version: 3.3.1(lucia@2.7.1)
   '@melt-ui/svelte':
     specifier: ^0.50.1
     version: 0.50.1(svelte@4.2.1)
@@ -577,6 +580,14 @@ packages:
     dependencies:
       '@libsql/client': 0.3.5
       better-sqlite3: 8.7.0
+      lucia: 2.7.1
+    dev: true
+
+  /@lucia-auth/oauth@3.3.1(lucia@2.7.1):
+    resolution: {integrity: sha512-2fGXPRXXQ58YGpN3zzbLSTWBXU4I3URcSXF7enR4cLugUcwdtYaGRL9b92tfZPHudr5BJRrrVqcs/VTjHTrdiw==}
+    peerDependencies:
+      lucia: ^2.0.0
+    dependencies:
       lucia: 2.7.1
     dev: true
 

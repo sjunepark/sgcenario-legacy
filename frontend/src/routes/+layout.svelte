@@ -8,7 +8,7 @@
 	import type { LayoutData } from "./$types";
 
 	export let data: LayoutData;
-	$: ({ url } = data);
+	$: ({ pathname } = data);
 
 	const scrollbarStyle: DeepPartial<Options> = {
 		scrollbars: {
@@ -31,7 +31,7 @@
 </script>
 
 <div>
-	<NavHeader {url} />
+	<NavHeader {pathname} />
 	<main class="global-container mt-20">
 		<slot />
 	</main>

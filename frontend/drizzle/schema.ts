@@ -19,6 +19,7 @@ export const scripts = sqliteTable(
 
 export const user = sqliteTable("user", {
 	id: numeric("id").primaryKey().notNull(),
+	userName: text("user_name").notNull(),
 });
 
 export const userKey = sqliteTable("user_key", {

@@ -4,14 +4,27 @@ import { libsql } from "@lucia-auth/adapter-sqlite";
 import { lucia } from "lucia";
 import { sveltekit } from "lucia/middleware";
 
+import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from "$env/static/private";
+import { github } from "@lucia-auth/oauth/providers";
+
 export const auth = lucia({
 	env: dev ? "DEV" : "PROD",
 	middleware: sveltekit(),
 	adapter: libsql(libsqlClient, {
-		user: "users",
-		session: "user_sessions",
-		key: "user_keys",
+		user: "user",
+		session: "user_session",
+		key: "user_key",
 	}),
+	getUserAttributes: (user) => {
+		return {
+			userName: user.user_name,
+		};
+	},
+});
+
+export const githubAuth = github(auth, {
+	clientId: GITHUB_CLIENT_ID,
+	clientSecret: GITHUB_CLIENT_SECRET,
 });
 
 export type Auth = typeof auth;

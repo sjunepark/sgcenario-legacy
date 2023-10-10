@@ -1,6 +1,5 @@
 <script lang="ts">
-	export let url: URL;
-	$: pathname = url.pathname;
+	export let pathname: string;
 
 	const navLinks: { name: string; url: string }[] = [
 		{ name: "대본", url: "/script" },

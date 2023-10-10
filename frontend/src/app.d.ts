@@ -13,8 +13,11 @@ declare global {
 
 	namespace Lucia {
 		type Auth = import("$lib/server/lucia").Auth;
+		// Has to match database column name
 		/* eslint-disable @typescript-eslint/ban-types */
-		type DatabaseUserAttributes = {};
+		type DatabaseUserAttributes = {
+			user_name: string;
+		};
 		/* eslint-disable @typescript-eslint/ban-types */
 		type DatabaseSessionAttributes = {};
 	}
