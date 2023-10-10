@@ -17,6 +17,7 @@ declare global {
 		type DatabaseUserAttributes = {
 			// Has to match database column name
 			user_name: string;
+			email: string | null;
 		};
 		/* eslint-disable @typescript-eslint/ban-types */
 		type DatabaseSessionAttributes = {};

@@ -14,13 +14,14 @@ export const scripts = sqliteTable("scripts", {
 export const user = sqliteTable("user", {
 	id: numeric("id").primaryKey().notNull(),
 	userName: text("user_name").notNull(),
+	email: text("email"),
 });
 
 export const userKey = sqliteTable("user_key", {
 	id: numeric("id").primaryKey().notNull(),
 	userId: numeric("user_id")
 		.notNull()
-		.references(() => user.id),
+		.references(() => user.id, { onUpdate: "cascade" }),
 	hashedPassword: numeric("hashed_password"),
 });
 
@@ -28,7 +29,7 @@ export const userSession = sqliteTable("user_session", {
 	id: numeric("id").primaryKey().notNull(),
 	userId: numeric("user_id")
 		.notNull()
-		.references(() => user.id),
+		.references(() => user.id, { onUpdate: "cascade" }),
 	activeExpires: integer("active_expires").notNull(),
 	idleExpires: integer("idle_expires").notNull(),
 });

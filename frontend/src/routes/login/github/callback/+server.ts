@@ -21,10 +21,11 @@ export const GET: RequestHandler = async ({ url, cookies, locals }) => {
 				console.log("User exists, returning existing user: ", existingUser.userName);
 				return existingUser;
 			}
-			console.log("Create user: ", githubUser.login);
+			console.log(`Create user with username ${githubUser.login} and email ${githubUser.email}`);
 			return await createUser({
 				attributes: {
 					user_name: githubUser.login,
+					email: githubUser.email,
 				},
 			});
 		};
