@@ -1,21 +1,15 @@
-import { integer, numeric, real, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
+// noinspection DuplicatedCode
 
-export const scripts = sqliteTable(
-	"scripts",
-	{
-		id: integer("id").primaryKey({ autoIncrement: true }).notNull(),
-		user: text("user").notNull(),
-		seq: real("seq"),
-		content: text("content"),
-		createdAt: text("created_at").default("CURRENT_TIMESTAMP"),
-		adjustedAt: text("adjusted_at").default("CURRENT_TIMESTAMP"),
-	},
-	(table) => {
-		return {
-			seqUnique: uniqueIndex("scripts_seq_unique").on(table.seq),
-		};
-	},
-);
+import { integer, numeric, real, sqliteTable, text } from "drizzle-orm/sqlite-core";
+
+export const scripts = sqliteTable("scripts", {
+	id: integer("id").primaryKey({ autoIncrement: true }),
+	user_id: text("user").notNull(),
+	seq: real("seq").unique(),
+	content: text("content"),
+	createdAt: text("created_at").default("CURRENT_TIMESTAMP"),
+	adjustedAt: text("adjusted_at").default("CURRENT_TIMESTAMP"),
+});
 
 export const user = sqliteTable("user", {
 	id: numeric("id").primaryKey().notNull(),

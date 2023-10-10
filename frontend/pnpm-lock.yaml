@@ -11,6 +11,9 @@ devDependencies:
   '@libsql/client':
     specifier: ^0.3.5
     version: 0.3.5
+  '@lucia-auth/adapter-sqlite':
+    specifier: ^2.0.0
+    version: 2.0.0(@libsql/client@0.3.5)(better-sqlite3@8.7.0)(lucia@2.7.1)
   '@melt-ui/svelte':
     specifier: ^0.50.1
     version: 0.50.1(svelte@4.2.1)
@@ -65,6 +68,9 @@ devDependencies:
   hangul-js:
     specifier: ^0.2.6
     version: 0.2.6
+  lucia:
+    specifier: ^2.7.1
+    version: 2.7.1
   lucide-svelte:
     specifier: ^0.279.0
     version: 0.279.0(svelte@4.2.1)
@@ -556,6 +562,23 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /@lucia-auth/adapter-sqlite@2.0.0(@libsql/client@0.3.5)(better-sqlite3@8.7.0)(lucia@2.7.1):
+    resolution: {integrity: sha512-Hiy8WND/1mi25r0M2ruSml+Ab5GJLr4XZEHApYw1lxybF+VlPUyX7oTtIVCSgvq/SWiP/tvnyPwnXAPmNr8/bg==}
+    peerDependencies:
+      '@libsql/client': ^0.3.0
+      better-sqlite3: ^8.0.0
+      lucia: ^2.0.0
+    peerDependenciesMeta:
+      '@libsql/client':
+        optional: true
+      better-sqlite3:
+        optional: true
+    dependencies:
+      '@libsql/client': 0.3.5
+      better-sqlite3: 8.7.0
+      lucia: 2.7.1
+    dev: true
 
   /@melt-ui/svelte@0.50.1(svelte@4.2.1):
     resolution: {integrity: sha512-MIenasd8a5jXgynNKmH5JNSrDBS0EKUK4BImgyD0R6Vbzrll6rQquBIxlh5PeqVhZ2azDIEh/yRkwaOFi2HEgw==}
@@ -2078,6 +2101,10 @@ packages:
     resolution: {integrity: sha512-BpdYkt9EvGl8OfWHDQPISVpcl5xZthb+XPsbELj5AQXxIC8IriDZIQYjBJPEm5rS420sjZ0TLEzRcq5KdBhYrQ==}
     dependencies:
       es5-ext: 0.10.62
+    dev: true
+
+  /lucia@2.7.1:
+    resolution: {integrity: sha512-EHDTajS1YWA7Q37jd29Far1l4nfZgsWLp4hDQeaQhVpJd2WKQqA3626kJYmOj1CTweVMkE54xFi5JIph+agZkQ==}
     dev: true
 
   /lucide-svelte@0.279.0(svelte@4.2.1):
