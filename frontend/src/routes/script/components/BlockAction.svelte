@@ -1,1 +1,1 @@
-<p contenteditable="true" data-placeholder="Action"></p>
+<p contenteditable="true" data-placeholder="Action" {...$$restProps}></p>
