@@ -1,4 +1,5 @@
 import { auth, githubAuth } from "$lib/server/lucia";
+import { logger } from "$lib/utils/logger";
 import { OAuthRequestError } from "@lucia-auth/oauth";
 import type { RequestHandler } from "@sveltejs/kit";
 
@@ -8,7 +9,7 @@ export const GET: RequestHandler = async ({ url, cookies, locals }) => {
 	const code = url.searchParams.get("code");
 	// validate state
 	if (!storedState || !state || storedState !== state || !code) {
-		console.log("Unmatched");
+		logger.debug({ storedState, state, code }, "Invalid state or code");
 		return new Response(null, {
 			status: 400,
 		});
@@ -18,16 +19,18 @@ export const GET: RequestHandler = async ({ url, cookies, locals }) => {
 		const getUser = async () => {
 			const existingUser = await getExistingUser();
 			if (existingUser) {
-				console.log("User exists, returning existing user: ", existingUser.userName);
+				logger.trace({ existingUser }, "Found existing user");
 				return existingUser;
 			}
-			console.log(`Create user with username ${githubUser.login} and email ${githubUser.email}`);
-			return await createUser({
+			const createdUser = await createUser({
 				attributes: {
 					user_name: githubUser.login,
 					email: githubUser.email,
 				},
 			});
+			logger.trace({ createdUser }, "Created new user");
+
+			return createdUser;
 		};
 
 		const user = await getUser();
@@ -37,23 +40,22 @@ export const GET: RequestHandler = async ({ url, cookies, locals }) => {
 		});
 		locals.auth.setSession(session);
 
-		console.log("Return 302 and redirect to /");
+		const redirectUrl = "/";
+		logger.trace(`Redirect to ${redirectUrl}`);
 		return new Response(null, {
 			status: 302,
 			headers: {
-				Location: "/",
+				Location: redirectUrl,
 			},
 		});
 	} catch (e) {
 		if (e instanceof OAuthRequestError) {
-			console.log("OAuthRequestError: ", e);
-			// invalid code
+			logger.error({ e }, "OAuth request error");
 			return new Response(null, {
 				status: 400,
 			});
 		}
-		console.log(`storedState: ${storedState}, urlState: ${state}, urlCode: ${code}`);
-		console.log("Unknown error", e);
+		logger.error({ e }, "Unexpected error");
 		return new Response(null, {
 			status: 500,
 		});
