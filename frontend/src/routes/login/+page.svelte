@@ -5,7 +5,7 @@
 	<h2 class="mb-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Login</h2>
 	<a
 		href="/login/github"
-		class="flex w-full items-center justify-center gap-3 rounded-md bg-[#24292F] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F]"
+		class="flex w-full items-center justify-center gap-3 rounded-md bg-[#24292F] px-3 py-1.5 text-white outline-none focus-visible:ring-2 focus-visible:ring-[#24292F] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
 		rel="external"
 	>
 		<svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
