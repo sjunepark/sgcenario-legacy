@@ -1,8 +1,6 @@
 <script lang="ts">
 	import Block from "./components/Block.svelte";
 	import { logger } from "$lib/utils/logger";
-
-	logger.info({ age: "june" }, "Hello, world!");
 </script>
 
 <div
