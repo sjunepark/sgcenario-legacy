@@ -22,6 +22,7 @@ export const GET: RequestHandler = async ({ url, cookies, locals }) => {
 				logger.trace({ existingUser }, "Found existing user");
 				return existingUser;
 			}
+
 			const createdUser = await createUser({
 				attributes: {
 					user_name: githubUser.login,
@@ -29,7 +30,6 @@ export const GET: RequestHandler = async ({ url, cookies, locals }) => {
 				},
 			});
 			logger.trace({ createdUser }, "Created new user");
-
 			return createdUser;
 		};
 
@@ -39,6 +39,7 @@ export const GET: RequestHandler = async ({ url, cookies, locals }) => {
 			attributes: {},
 		});
 		locals.auth.setSession(session);
+		logger.trace({ user, session }, "Logged in and set session");
 
 		const redirectUrl = "/";
 		logger.trace(`Redirect to ${redirectUrl}`);
