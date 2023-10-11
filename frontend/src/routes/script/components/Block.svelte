@@ -18,7 +18,4 @@
 	];
 </script>
 
-<svelte:component
-	this={options.find((o) => o.type === type)?.component}
-	class="focus-visible:focus:ring-offset-8 focus-visible:focus:ring-offset-white"
-/>
+<svelte:component this={options.find((o) => o.type === type)?.component} class="" />

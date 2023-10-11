@@ -22,7 +22,10 @@
 				>
 					{#each navLinks as link, index (index)}
 						<li class="">
-							<a class="relative block whitespace-nowrap px-3 py-2" href={link.url}>
+							<a
+								class="relative block whitespace-nowrap px-3 py-2 outline-none focus-visible:ring-2 focus-visible:ring-stone-500 focus-visible:ring-offset-1 focus-visible:ring-offset-stone-50"
+								href={link.url}
+							>
 								{#if pathname === link.url}
 									<span
 										class="absolute inset-x-1 -bottom-px h-0.5 bg-gradient-to-r from-stone-500/0 via-stone-500/40 to-stone-500/0"
@@ -36,12 +39,12 @@
 			</nav>
 		</div>
 		<div class="flex flex-1 items-center justify-end gap-x-3">
-			<TheButton size="lg" on:click={() => goto("/login")}><span>Log In</span></TheButton>
+			<TheButton size="lg" on:click={() => goto("/login")}>Log in</TheButton>
 			<div class="pointer-events-auto">
 				<button
 					type="button"
 					aria-label="Switch to light theme"
-					class="group rounded-full bg-white/90 px-3 py-2 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur transition dark:bg-zinc-800/90 dark:ring-white/10 dark:hover:ring-white/20"
+					class="group rounded-full bg-white/90 px-3 py-2 shadow-lg shadow-zinc-800/5 outline-none ring-1 ring-zinc-900/5 backdrop-blur transition focus-visible:outline-stone-500 dark:bg-zinc-800/90 dark:ring-white/10 dark:hover:ring-white/20"
 				>
 					<svg
 						viewBox="0 0 24 24"

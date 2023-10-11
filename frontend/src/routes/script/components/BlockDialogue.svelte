@@ -9,6 +9,9 @@
 	import { characters } from "$lib/store/stores";
 	import { isEmpty } from "$lib/utils/string";
 	import Hangul from "hangul-js";
+	import { twMerge } from "tailwind-merge";
+
+	let { class: classProps, ...restProps } = $$restProps;
 
 	const scrollbarStyle = getContext("scrollbarStyle") satisfies DeepPartial<Options>;
 
@@ -54,12 +57,25 @@
 	);
 </script>
 
-<div class="my-[-1.25em] grid gap-x-4" style="grid-template-columns: 15ch 1fr" {...$$restProps}>
+<div
+	class={twMerge(classProps, "my-[-1.25em] grid gap-x-4")}
+	style="grid-template-columns: 15ch 1fr"
+	{...restProps}
+>
 	<p>
 		<!--todo: warn when empty(can't use "required" since it's irrelevant to submit event)-->
-		<input {...$input} use:input class="w-full" placeholder="Character" />
+		<input
+			{...$input}
+			use:input
+			class="w-full focus-visible:ring-offset-8 focus-visible:ring-offset-white"
+			placeholder="Character"
+		/>
 	</p>
-	<p contenteditable="true" data-placeholder="Dialogue"></p>
+	<p
+		class="focus-visible:ring-offset-8 focus-visible:ring-offset-white"
+		contenteditable="true"
+		data-placeholder="Dialogue"
+	></p>
 </div>
 
 {#if $open}

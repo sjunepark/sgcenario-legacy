@@ -1,7 +1,7 @@
 <script lang="ts">
 </script>
 
-<div class="bg-whites mx-auto w-full max-w-[12rem] space-y-3 rounded-lg p-6 shadow">
+<div class="mx-auto w-full max-w-xs space-y-3 rounded-lg bg-white p-6 shadow">
 	<h2 class="mb-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Login</h2>
 	<a
 		href="/login/github"

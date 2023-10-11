@@ -19,34 +19,6 @@
 	}
 }
 
-/* Links and Areas */
-a[href]:focus-visible,
-area[href]:focus-visible,
-	/* Form Elements */
-input:not([type="hidden"]):focus-visible,
-textarea:focus-visible,
-button:focus-visible,
-select:focus-visible,
-	/* Embedded Content */
-iframe:focus-visible,
-embed:focus-visible,
-object:focus-visible,
-	/* Interactive Elements */
-details:focus-visible,
-summary:focus-visible,
-	/* Audio & Video */
-audio[controls]:focus-visible,
-video[controls]:focus-visible,
-	/* Draggable elements */
-[draggable="true"]:focus-visible,
-	/* Content editable elements */
-[contenteditable="true"]:focus-visible,
-	/* Elements with tabindex (this will also target elements that aren't natively focusable but are made focusable with tabindex) */
-[tabindex]:focus-visible {
-	/* Your focus styles here */
-	@apply outline-none focus:ring-2 focus:ring-stone-500 focus:ring-offset-1 focus:ring-offset-stone-50
-}
-
 .prose input {
 	font-size: inherit;
 	line-height: inherit;
