@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { tv } from "tailwind-variants";
+	import { createEventDispatcher } from "svelte";
 
 	export let size: "xs" | "sm" | "md" | "lg" | "xl";
 
@@ -15,8 +16,10 @@
 			},
 		},
 	});
+
+	const dispatch = createEventDispatcher();
 </script>
 
-<button type="button" class={button({ size })}>
+<button type="button" class={button({ size })} on:click={() => dispatch("click")}>
 	<slot />
 </button>

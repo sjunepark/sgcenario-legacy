@@ -1,5 +1,6 @@
 <script lang="ts">
 	import TheButton from "$lib/components/buttons/TheButton.svelte";
+	import { goto } from "$app/navigation";
 
 	export let pathname: string;
 
@@ -34,8 +35,8 @@
 				</ul>
 			</nav>
 		</div>
-		<div class="flex flex-1 items-center justify-end">
-			<TheButton size="lg"><span>Log In</span></TheButton>
+		<div class="flex flex-1 items-center justify-end gap-x-3">
+			<TheButton size="lg" on:click={() => goto("/login")}><span>Log In</span></TheButton>
 			<div class="pointer-events-auto">
 				<button
 					type="button"
