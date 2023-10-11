@@ -1,4 +1,6 @@
 <script lang="ts">
+	import TheButton from "$lib/components/buttons/TheButton.svelte";
+
 	export let pathname: string;
 
 	const navLinks: { name: string; url: string }[] = [
@@ -32,7 +34,8 @@
 				</ul>
 			</nav>
 		</div>
-		<div class="flex flex-1 justify-end">
+		<div class="flex flex-1 items-center justify-end">
+			<TheButton size="lg"><span>Log In</span></TheButton>
 			<div class="pointer-events-auto">
 				<button
 					type="button"
