@@ -3,7 +3,11 @@
 @tailwind utilities;
 
 @layer base {
-
+	.prose input {
+		font-size: inherit;
+		line-height: inherit;
+		@apply break-words;
+	}
 }
 
 @layer components {
@@ -19,8 +23,4 @@
 	}
 }
 
-.prose input {
-	font-size: inherit;
-	line-height: inherit;
-	@apply break-words;
-}
+

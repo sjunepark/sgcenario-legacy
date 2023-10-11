@@ -1,6 +1,5 @@
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
-/// <reference types="lucia" />
 declare global {
 	namespace App {
 		// interface Error {}
