@@ -1,3 +1,3 @@
 export async function load() {
-  return { page: "page" };
+	return { page: "page" };
 }

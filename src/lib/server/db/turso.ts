@@ -4,7 +4,7 @@ import { drizzle } from "drizzle-orm/libsql";
 import * as schema from "./schema";
 
 export const libsqlClient = createClient({
-  url: TURSO_SCRIPTS_URL,
-  authToken: TURSO_SCRIPTS_AUTH,
+	url: TURSO_SCRIPTS_URL,
+	authToken: TURSO_SCRIPTS_AUTH,
 });
 export const db = drizzle(libsqlClient, { logger: true, schema });
