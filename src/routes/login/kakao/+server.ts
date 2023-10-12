@@ -1,12 +1,12 @@
 import { dev } from "$app/environment";
-import { githubAuth } from "$lib/server/lucia";
+import { kakaoAuth } from "$lib/server/lucia";
 import { logger } from "$lib/utils/logger";
 import type { RequestHandler } from "@sveltejs/kit";
 
 export const GET: RequestHandler = async ({ cookies }) => {
-	const [url, state] = await githubAuth.getAuthorizationUrl();
-	logger.trace({ url, state }, "Got github auth url and state");
-	cookies.set("github_oauth_state", state, {
+	const [url, state] = await kakaoAuth.getAuthorizationUrl();
+	logger.trace({ url, state }, "Got kakao auth url and state");
+	cookies.set("kakao_oauth_state", state, {
 		httpOnly: true,
 		secure: !dev,
 		path: "/",

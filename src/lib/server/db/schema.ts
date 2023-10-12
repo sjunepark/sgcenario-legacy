@@ -13,7 +13,7 @@ export const scripts = sqliteTable("scripts", {
 
 export const user = sqliteTable("user", {
 	id: numeric("id").primaryKey().notNull(),
-	userName: text("user_name").notNull(),
+	userName: text("user_name"),
 	email: text("email"),
 });
 

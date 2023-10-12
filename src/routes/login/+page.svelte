@@ -29,7 +29,7 @@
 					clip-rule="evenodd"
 			/>
 		</svg>
-		<span class="text-sm font-semibold leading-6">GitHub</span>
+		<span class="text-sm font-semibold leading-6">Kakao</span>
 	</a>
 
 </div>
