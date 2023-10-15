@@ -9,5 +9,5 @@ export default {
 	dbCredentials: {
 		connectionString: process.env.NEON_DB_URL!,
 	},
-	schemaFilter: ["script"],
+	schemaFilter: ["business"],
 } satisfies Config;

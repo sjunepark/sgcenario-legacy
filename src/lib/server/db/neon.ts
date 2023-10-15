@@ -4,7 +4,7 @@ import postgres from "postgres";
 
 export const queryClient = postgres(NEON_DB_URL, {
 	connection: {
-		search_path: "script",
+		search_path: "business",
 	},
 });
 export const db: PostgresJsDatabase = drizzle(queryClient);

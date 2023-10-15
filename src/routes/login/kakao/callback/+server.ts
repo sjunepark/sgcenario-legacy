@@ -2,8 +2,8 @@ import { auth, kakaoAuth } from "$lib/server/lucia";
 import { logger } from "$lib/utils/logger";
 import { OAuthRequestError } from "@lucia-auth/oauth";
 import type { RequestHandler } from "@sveltejs/kit";
+import { createCallbackResponse } from "../../github/callback/utils";
 
-// todo: remove duplicate code and add provider to db
 export const GET: RequestHandler = async ({ url, cookies, locals }) => {
 	const storedState = cookies.get("kakao_oauth_state");
 	const state = url.searchParams.get("state");
@@ -17,7 +17,7 @@ export const GET: RequestHandler = async ({ url, cookies, locals }) => {
 	}
 	try {
 		const { getExistingUser, kakaoUser, createUser } = await kakaoAuth.validateCallback(code);
-		const getUser = async () => {
+		const getOrCreateUser = async () => {
 			const existingUser = await getExistingUser();
 			if (existingUser) {
 				logger.trace({ existingUser }, "Found existing user");
@@ -34,22 +34,13 @@ export const GET: RequestHandler = async ({ url, cookies, locals }) => {
 			return createdUser;
 		};
 
-		const user = await getUser();
+		const user = await getOrCreateUser();
 		const session = await auth.createSession({
 			userId: user.userId,
 			attributes: {},
 		});
-		locals.auth.setSession(session);
-		logger.trace({ user, session }, "Logged in and set session");
 
-		const redirectUrl = "/";
-		logger.trace(`Redirect to ${redirectUrl}`);
-		return new Response(null, {
-			status: 302,
-			headers: {
-				Location: redirectUrl,
-			},
-		});
+		return createCallbackResponse(user, session, locals);
 	} catch (e) {
 		if (e instanceof OAuthRequestError) {
 			logger.error({ e }, "OAuth request error");

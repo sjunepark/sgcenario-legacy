@@ -1,7 +1,8 @@
 import { auth, githubAuth } from "$lib/server/lucia";
 import { logger } from "$lib/utils/logger";
-import { OAuthRequestError } from "@lucia-auth/oauth";
+import { OAuthRequestError, type OAuth2ProviderAuth } from "@lucia-auth/oauth";
 import type { RequestHandler } from "@sveltejs/kit";
+import { createCallbackResponse } from "./utils";
 
 export const GET: RequestHandler = async ({ url, cookies, locals }) => {
 	const storedState = cookies.get("github_oauth_state");
@@ -18,10 +19,8 @@ export const GET: RequestHandler = async ({ url, cookies, locals }) => {
 	}
 	try {
 		const { getExistingUser, githubUser, createUser } = await githubAuth.validateCallback(code);
-		const getUser = async () => {
-			logger.trace("Inside getUser");
+		const getOrCreateUser = async () => {
 			const existingUser = await getExistingUser();
-			logger.trace("After getExistingUser");
 			if (existingUser) {
 				logger.trace({ existingUser }, "Found existing user");
 				return existingUser;
@@ -33,26 +32,18 @@ export const GET: RequestHandler = async ({ url, cookies, locals }) => {
 					email: githubUser.email,
 				},
 			});
+
 			logger.trace({ createdUser }, "Created new user");
 			return createdUser;
 		};
 
-		const user = await getUser();
+		const user = await getOrCreateUser();
 		const session = await auth.createSession({
 			userId: user.userId,
 			attributes: {},
 		});
-		locals.auth.setSession(session);
-		logger.trace({ user, session }, "Logged in and set session");
 
-		const redirectUrl = "/";
-		logger.trace(`Redirect to ${redirectUrl}`);
-		return new Response(null, {
-			status: 302,
-			headers: {
-				Location: redirectUrl,
-			},
-		});
+		return createCallbackResponse(user, session, locals);
 	} catch (e) {
 		if (e instanceof OAuthRequestError) {
 			logger.error(e, "OAuth request error");
