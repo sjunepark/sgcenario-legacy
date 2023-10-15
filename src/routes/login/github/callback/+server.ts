@@ -7,6 +7,8 @@ export const GET: RequestHandler = async ({ url, cookies, locals }) => {
 	const storedState = cookies.get("github_oauth_state");
 	const state = url.searchParams.get("state");
 	const code = url.searchParams.get("code");
+	logger.trace({ url: { code } }, "Starting callback");
+
 	// validate state
 	if (!storedState || !state || storedState !== state || !code) {
 		logger.debug({ storedState, state, code }, "Invalid state or code");
@@ -17,7 +19,9 @@ export const GET: RequestHandler = async ({ url, cookies, locals }) => {
 	try {
 		const { getExistingUser, githubUser, createUser } = await githubAuth.validateCallback(code);
 		const getUser = async () => {
+			logger.trace("Inside getUser");
 			const existingUser = await getExistingUser();
+			logger.trace("After getExistingUser");
 			if (existingUser) {
 				logger.trace({ existingUser }, "Found existing user");
 				return existingUser;
@@ -51,12 +55,12 @@ export const GET: RequestHandler = async ({ url, cookies, locals }) => {
 		});
 	} catch (e) {
 		if (e instanceof OAuthRequestError) {
-			logger.error({ e }, "OAuth request error");
+			logger.error(e, "OAuth request error");
 			return new Response(null, {
 				status: 400,
 			});
 		}
-		logger.error({ e }, "Unexpected error");
+		logger.error(e, "Unexpected error");
 		return new Response(null, {
 			status: 500,
 		});

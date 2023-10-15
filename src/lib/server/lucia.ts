@@ -1,24 +1,23 @@
 import { dev } from "$app/environment";
-import { libsqlClient } from "$lib/server/db/turso";
-import { libsql } from "@lucia-auth/adapter-sqlite";
-import { lucia } from "lucia";
-import { sveltekit } from "lucia/middleware";
-
 import {
 	GITHUB_CLIENT_ID,
 	GITHUB_CLIENT_SECRET,
 	KAKAO_CLIENT_ID,
 	KAKAO_CLIENT_SECRET,
 } from "$env/static/private";
+import { queryClient } from "$lib/server/db/neon";
+import { postgres as postgresAdapter } from "@lucia-auth/adapter-postgresql";
 import { github, kakao } from "@lucia-auth/oauth/providers";
+import { lucia } from "lucia";
+import { sveltekit } from "lucia/middleware";
 
 export const auth = lucia({
 	env: dev ? "DEV" : "PROD",
 	middleware: sveltekit(),
-	adapter: libsql(libsqlClient, {
-		user: "user",
-		session: "user_session",
-		key: "user_key",
+	adapter: postgresAdapter(queryClient, {
+		user: "users",
+		session: "user_sessions",
+		key: "user_keys",
 	}),
 	getUserAttributes: (user) => {
 		return {

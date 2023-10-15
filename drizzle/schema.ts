@@ -1,41 +1,33 @@
-import { integer, numeric, real, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
+import { bigint, pgSchema, serial, varchar } from "drizzle-orm/pg-core";
 
-export const scripts = sqliteTable(
-	"scripts",
-	{
-		id: integer("id").primaryKey({ autoIncrement: true }).notNull(),
-		user: text("user").notNull(),
-		seq: real("seq"),
-		content: text("content"),
-		createdAt: text("created_at").default("CURRENT_TIMESTAMP"),
-		adjustedAt: text("adjusted_at").default("CURRENT_TIMESTAMP"),
-	},
-	(table) => {
-		return {
-			seqUnique: uniqueIndex("scripts_seq_unique").on(table.seq),
-		};
-	},
-);
+export const script = pgSchema("script");
 
-export const user = sqliteTable("user", {
-	id: numeric("id").primaryKey().notNull(),
-	userName: text("user_name").notNull(),
-	email: text("email"),
+export const users = script.table("users", {
+	id: varchar("id", { length: 15 }).primaryKey().notNull(),
+	userName: varchar("user_name", { length: 255 }),
+	email: varchar("email", { length: 255 }),
 });
 
-export const userKey = sqliteTable("user_key", {
-	id: numeric("id").primaryKey().notNull(),
-	userId: numeric("user_id")
-		.notNull()
-		.references(() => user.id, { onUpdate: "cascade" }),
-	hashedPassword: numeric("hashed_password"),
+export const scripts = script.table("scripts", {
+	id: serial("id").primaryKey().notNull(),
+	userId: varchar("user_id").references(() => users.id, { onUpdate: "cascade" }),
 });
 
-export const userSession = sqliteTable("user_session", {
-	id: numeric("id").primaryKey().notNull(),
-	userId: numeric("user_id")
+export const userKeys = script.table("user_keys", {
+	id: varchar("id", { length: 255 }).primaryKey().notNull(),
+	userId: varchar("user_id", { length: 15 })
 		.notNull()
-		.references(() => user.id, { onUpdate: "cascade" }),
-	activeExpires: integer("active_expires").notNull(),
-	idleExpires: integer("idle_expires").notNull(),
+		.references(() => users.id, { onUpdate: "cascade" }),
+	hashedPassword: varchar("hashed_password", { length: 255 }),
+});
+
+export const userSessions = script.table("user_sessions", {
+	id: varchar("id", { length: 128 }).primaryKey().notNull(),
+	userId: varchar("user_id", { length: 15 })
+		.notNull()
+		.references(() => users.id, { onUpdate: "cascade" }),
+	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
+	activeExpires: bigint("active_expires", { mode: "number" }).notNull(),
+	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
+	idleExpires: bigint("idle_expires", { mode: "number" }).notNull(),
 });

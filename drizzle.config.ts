@@ -1,13 +1,13 @@
-import * as dotenv from "dotenv";
+import { config } from "dotenv";
 import type { Config } from "drizzle-kit";
-dotenv.config();
+config();
 
 export default {
-	schema: "./src/lib/server/db/schema.ts",
+	schema: "./drizzle/schema.ts",
 	out: "./drizzle",
-	driver: "turso",
+	driver: "pg",
 	dbCredentials: {
-		url: process.env.TURSO_SCRIPTS_URL ?? "",
-		authToken: process.env.TURSO_SCRIPTS_AUTH ?? "",
+		connectionString: process.env.NEON_DB_URL!,
 	},
+	schemaFilter: ["script"],
 } satisfies Config;
