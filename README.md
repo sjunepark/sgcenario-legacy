@@ -1,3 +1,3 @@
 # TODO
 
-- [ ] Undo/Redo inside contenteditable tag
+-   [ ] Undo/Redo inside contenteditable tag
