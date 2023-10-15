@@ -2,7 +2,7 @@ import { auth, kakaoAuth } from "$lib/server/lucia";
 import { logger } from "$lib/utils/logger";
 import { OAuthRequestError } from "@lucia-auth/oauth";
 import type { RequestHandler } from "@sveltejs/kit";
-import { createCallbackResponse } from "../../github/callback/utils";
+import { createCallbackResponse } from "../../utils";
 
 export const GET: RequestHandler = async ({ url, cookies, locals }) => {
 	const storedState = cookies.get("kakao_oauth_state");

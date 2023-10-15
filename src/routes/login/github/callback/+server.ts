@@ -1,8 +1,8 @@
 import { auth, githubAuth } from "$lib/server/lucia";
 import { logger } from "$lib/utils/logger";
-import { OAuthRequestError, type OAuth2ProviderAuth } from "@lucia-auth/oauth";
+import { OAuthRequestError } from "@lucia-auth/oauth";
 import type { RequestHandler } from "@sveltejs/kit";
-import { createCallbackResponse } from "./utils";
+import { createCallbackResponse } from "../../utils";
 
 export const GET: RequestHandler = async ({ url, cookies, locals }) => {
 	const storedState = cookies.get("github_oauth_state");
