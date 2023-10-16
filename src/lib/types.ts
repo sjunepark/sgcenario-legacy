@@ -2,9 +2,7 @@ import type { Action } from "svelte/action";
 import type { Writable } from "svelte/store";
 
 export type DeepPartial<T> = {
-    [P in keyof T]?: T[P] extends Record<string, unknown>
-        ? DeepPartial<T[P]>
-        : T[P];
+    [P in keyof T]?: T[P] extends Record<string, unknown> ? DeepPartial<T[P]> : T[P];
 };
 
 export type ValueWithId = {
@@ -13,9 +11,7 @@ export type ValueWithId = {
 };
 
 export function isValueWithId(obj: unknown): obj is ValueWithId {
-    return (
-        typeof obj === "object" && obj !== null && "id" in obj && "value" in obj
-    );
+    return typeof obj === "object" && obj !== null && "id" in obj && "value" in obj;
 }
 
 export function compareValueWithId(a: ValueWithId, b: ValueWithId): number {
@@ -25,16 +21,7 @@ export function compareDefault(a: unknown, b: unknown): number {
     return String(a).localeCompare(String(b), "ko-KR", { sensitivity: "base" });
 }
 
-export type TextboxTag =
-    | "p"
-    | "span"
-    | "div"
-    | "h1"
-    | "h2"
-    | "h3"
-    | "h4"
-    | "h5"
-    | "h6";
+export type TextboxTag = "p" | "span" | "div" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 
 export type PopupProps = {
     popupId: string | undefined;

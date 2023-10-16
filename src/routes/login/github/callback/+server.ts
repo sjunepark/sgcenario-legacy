@@ -18,8 +18,7 @@ export const GET: RequestHandler = async ({ url, cookies, locals }) => {
         });
     }
     try {
-        const { getExistingUser, githubUser, createUser } =
-            await githubAuth.validateCallback(code);
+        const { getExistingUser, githubUser, createUser } = await githubAuth.validateCallback(code);
         const getOrCreateUser = async () => {
             const existingUser = await getExistingUser();
             if (existingUser) {

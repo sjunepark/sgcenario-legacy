@@ -1,5 +1,6 @@
 {
-    "useTabs": true,
+    "useTabs": false,
+    "tabWidth": 4,
     "singleQuote": false,
     "trailingComma": "all",
     "printWidth": 100,
@@ -8,13 +9,6 @@
         "prettier-plugin-tailwindcss",
         "prettier-plugin-organize-imports"
     ],
-    "overrides": [
-        {
-            "files": "*.svelte",
-            "options": {
-                "parser": "svelte"
-            }
-        }
-    ],
-    "tailwindFunctions": ["tv", "twMerge"]
+    "tailwindFunctions": ["tv", "twMerge"],
+    "svelteStrictMode": true
 }

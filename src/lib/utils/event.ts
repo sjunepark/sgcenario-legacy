@@ -17,10 +17,7 @@ export function handlePaste(event: ClipboardEvent) {
     } else if (mimeTypes.includes("text/html")) {
         textToPaste = clipboardData.getData("text/html");
         event.preventDefault();
-    } else if (
-        mimeTypes.includes("application/x-moz-file") ||
-        mimeTypes.includes("Files")
-    ) {
+    } else if (mimeTypes.includes("application/x-moz-file") || mimeTypes.includes("Files")) {
         const items = clipboardData.items;
         const textsToPaste: string[] = [];
         for (let i = 0; i < items.length; i++) {

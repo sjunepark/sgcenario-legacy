@@ -9,12 +9,7 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: [
-                    "Inter",
-                    "Noto Sans Kr",
-                    "Roboto",
-                    ...defaultTheme.fontFamily.sans,
-                ],
+                sans: ["Inter", "Noto Sans Kr", "Roboto", ...defaultTheme.fontFamily.sans],
             },
         },
     },

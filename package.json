@@ -2,9 +2,6 @@
     "name": "sgcenario",
     "version": "0.0.1",
     "private": true,
-    "prettier": {
-        "tabWidth": 4
-    },
     "scripts": {
         "dev": "vite dev | pino-pretty",
         "build": "vite build",
@@ -13,7 +10,7 @@
         "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
         "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
         "lint": "prettier --check . && eslint .",
-        "format": "prettier --write .",
+        "format": "prettier --plugin prettier-plugin-svelte --plugin prettier-plugin-tailwindcss --plugin prettier-plugin-organize-imports --write .",
         "validate": "pnpm format && pnpm check && pnpm lint",
         "db:generate": "drizzle-kit generate:pg",
         "db:generate-empty": "drizzle-kit generate:pg --custom",

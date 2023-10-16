@@ -16,8 +16,7 @@ export const GET: RequestHandler = async ({ url, cookies, locals }) => {
         });
     }
     try {
-        const { getExistingUser, kakaoUser, createUser } =
-            await kakaoAuth.validateCallback(code);
+        const { getExistingUser, kakaoUser, createUser } = await kakaoAuth.validateCallback(code);
         const getOrCreateUser = async () => {
             const existingUser = await getExistingUser();
             if (existingUser) {

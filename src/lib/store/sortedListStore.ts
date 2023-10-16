@@ -10,9 +10,7 @@ type WritableList<T> = {
 
 export type WritableSortedList<T> = WritableList<T>;
 
-export function createSortedListStore<T>(
-    initialElements: T[],
-): WritableSortedList<T> {
+export function createSortedListStore<T>(initialElements: T[]): WritableSortedList<T> {
     function compare(a: T, b: T) {
         if (isValueWithId(a) && isValueWithId(b)) {
             return compareValueWithId(a, b);
@@ -49,9 +47,7 @@ export function createSortedListStore<T>(
         }
 
         update((elements) =>
-            elements.filter((originalElement) =>
-                compare(originalElement, element),
-            ),
+            elements.filter((originalElement) => compare(originalElement, element)),
         );
     }
 
