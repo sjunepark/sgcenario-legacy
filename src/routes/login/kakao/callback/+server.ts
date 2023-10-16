@@ -44,12 +44,12 @@ export const GET: RequestHandler = async ({ url, cookies, locals }) => {
         return createCallbackResponse(user, session, locals);
     } catch (e) {
         if (e instanceof OAuthRequestError) {
-            logger.error({ e }, "OAuth request error");
+            logger.error(e, "OAuth request error");
             return new Response(null, {
                 status: 400,
             });
         }
-        logger.error({ e }, "Unexpected error");
+        logger.error(e, "Unexpected error");
         return new Response(null, {
             status: 500,
         });
