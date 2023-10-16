@@ -8,7 +8,7 @@
 	import type { BlockType } from "./types";
 
 	export let type: BlockType;
-	export let text: string;
+	let text: string;
 
 	let options: { type: BlockType; component: ComponentType }[] = [
 		{ type: "h2", component: BlockH2 },
