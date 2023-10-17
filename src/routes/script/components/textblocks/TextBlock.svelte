@@ -8,15 +8,12 @@
 	import Hangul from "hangul-js";
 	import { OverlayScrollbarsComponent } from "overlayscrollbars-svelte";
 	import { fly } from "svelte/transition";
-	import { getContext } from "svelte";
-	import type { DeepPartial } from "$lib/types";
-	import type { Options } from "overlayscrollbars";
+	import { twMerge } from "tailwind-merge";
+	import { scrollbarStyle } from "$lib/configs/configs";
 
 	export let type: TextBlockType;
 
 	let listboxOptions = createSortedListStore<string>([]);
-
-	const scrollbarStyle = getContext("scrollbarStyle") satisfies DeepPartial<Options>;
 
 	const {
 		elements: { menu, input, option },
@@ -63,12 +60,16 @@
 	this="{textBlockComponents.find((element) => element.type === type)?.component}"
 	{input}
 	{listboxOptions}
-	class=""
+	class="outline-none focus-visible:ring-2 focus-visible:ring-stone-500 focus-visible:ring-offset-8 focus-visible:ring-offset-white"
+	contenteditable="true"
 />
 
 {#if $open}
 	<ul
-		class="prose z-10 flex max-h-48 w-[15ch] flex-col overflow-hidden bg-stone-50 shadow-lg ring-1 ring-stone-500/50"
+		class="{twMerge(
+			$filtered.length > 0 ? 'outline' : '',
+			'prose z-10 flex max-h-48 w-[15ch] flex-col overflow-hidden bg-white shadow-lg outline-1 outline-stone-500/50',
+		)}"
 		{...$menu}
 		use:menu
 		transition:fly="{{ duration: 150, y: -5 }}"
@@ -82,7 +83,7 @@
 						label: value,
 					})}
 					use:option
-					class="not-prose relative cursor-pointer scroll-my-2 whitespace-nowrap pl-2 data-[highlighted]:bg-stone-200 data-[disabled]:opacity-50"
+					class="not-prose relative cursor-pointer scroll-my-2 whitespace-nowrap pl-2 data-[highlighted]:bg-stone-200/50 data-[highlighted]:font-semibold data-[disabled]:opacity-50"
 					class:bg-stone-200="{$isSelected(value)}"
 				>
 					<span>{value}</span>

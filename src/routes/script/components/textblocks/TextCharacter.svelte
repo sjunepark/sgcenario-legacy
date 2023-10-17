@@ -2,20 +2,16 @@
 	import { createCombobox } from "@melt-ui/svelte";
 	import { fly } from "svelte/transition";
 	import { OverlayScrollbarsComponent } from "overlayscrollbars-svelte";
-	import type { Options } from "overlayscrollbars";
-	import type { DeepPartial } from "$lib/types";
-	import { getContext } from "svelte";
 	import { derived } from "svelte/store";
 	import { characters } from "$lib/store/stores";
 	import { isEmpty } from "$lib/utils/string";
 	import Hangul from "hangul-js";
 	import { twMerge } from "tailwind-merge";
+	import { scrollbarStyle } from "$lib/configs/configs";
 
 	let { class: classProps, ...restProps } = $$restProps;
 
 	export let text: string;
-
-	const scrollbarStyle = getContext("scrollbarStyle") satisfies DeepPartial<Options>;
 
 	const {
 		elements: { menu, input, option },
