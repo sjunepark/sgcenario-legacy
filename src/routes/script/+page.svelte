@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Block from "./components/Block.svelte";
+	import Block from "./components/textblocks/TextBlock.svelte";
 </script>
 
 <div

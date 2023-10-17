@@ -29,8 +29,6 @@
 		},
 	});
 
-	export { inputValue };
-
 	// noinspection JSUnusedLocalSymbols
 	let filteredCharacters = derived(
 		[inputValue, characters],
@@ -66,15 +64,8 @@
 	style="grid-template-columns: 15ch 1fr"
 	{...restProps}
 >
-	<p>
-		<!--todo: warn when empty(can't use "required" since it's irrelevant to submit event)-->
-		<input
-			{...$input}
-			use:input
-			class="w-full focus-visible:ring-offset-8 focus-visible:ring-offset-white"
-			placeholder="Character"
-		/>
-	</p>
+	<!--todo: warn when empty(can't use "required" since it's irrelevant to submit event)-->
+	<p {...$input} use:input contenteditable="true"></p>
 	<p
 		class="focus-visible:ring-offset-8 focus-visible:ring-offset-white"
 		contenteditable="true"
