@@ -1,10 +1,3 @@
-import type { Action } from "svelte/action";
-import type { Writable } from "svelte/store";
-
-export type DeepPartial<T> = {
-	[P in keyof T]?: T[P] extends Record<string, unknown> ? DeepPartial<T[P]> : T[P];
-};
-
 export type ValueWithId = {
 	id: number;
 	value: string;
@@ -21,13 +14,20 @@ export function compareDefault(a: unknown, b: unknown): number {
 	return String(a).localeCompare(String(b), "ko-KR", { sensitivity: "base" });
 }
 
-export type TextboxTag = "p" | "span" | "div" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
-
-export type PopupProps = {
-	popupId: string | undefined;
-	state: {
-		isOpen: Writable<boolean>;
-		focusedOption: Writable<ValueWithId | undefined>;
-	};
-	action: { popupAction: Action };
+export type DeepPartial<T> = {
+	[P in keyof T]?: T[P] extends Record<string, unknown> ? DeepPartial<T[P]> : T[P];
 };
+//
+// export type DeepPartial<Thing> = Thing extends Function
+// 	? Thing
+// 	: Thing extends Array<infer InferredArrayMember>
+// 	? DeepPartialArray<InferredArrayMember>
+// 	: Thing extends object
+// 	? DeepPartialObject<Thing>
+// 	: Thing | undefined;
+//
+// interface DeepPartialArray<Thing> extends Array<DeepPartial<Thing>> {}
+//
+// type DeepPartialObject<Thing> = {
+// 	[Key in keyof Thing]?: DeepPartial<Thing[Key]>;
+// };

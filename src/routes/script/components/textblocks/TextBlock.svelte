@@ -15,6 +15,10 @@
 
 	let listboxOptions = createSortedListStore<string>([]);
 
+	// todo: for dev
+	listboxOptions.clearElements();
+	listboxOptions.addElements(["짱구", "짱아", "/h", "/char"]);
+
 	const {
 		elements: { menu, input, option },
 		states: { open, inputValue },
@@ -26,6 +30,11 @@
 			sameWidth: false,
 		},
 	});
+
+	const meltProps = {
+		elements: { input },
+		states: { inputValue, selected, highlighted },
+	};
 
 	// noinspection JSUnusedLocalSymbols
 	let filtered = derived(
@@ -60,18 +69,19 @@
 	this="{textBlockComponents.find((element) => element.type === type)?.component}"
 	{input}
 	{listboxOptions}
+	{meltProps}
 	class="outline-none focus-visible:ring-2 focus-visible:ring-stone-500 focus-visible:ring-offset-8 focus-visible:ring-offset-white"
 	contenteditable="true"
 />
 
 {#if $open}
 	<ul
+		{...$menu}
+		use:menu
 		class="{twMerge(
 			$filtered.length > 0 ? 'outline' : '',
 			'prose z-10 flex max-h-48 w-[15ch] flex-col overflow-hidden bg-white shadow-lg outline-1 outline-stone-500/50',
 		)}"
-		{...$menu}
-		use:menu
 		transition:fly="{{ duration: 150, y: -5 }}"
 	>
 		<OverlayScrollbarsComponent options="{scrollbarStyle}" defer>
