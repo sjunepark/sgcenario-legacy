@@ -14,11 +14,11 @@
 		),
 		variants: {
 			size: {
-				xs: "px-2.5 py-1 text-xs",
-				sm: "px-2.5 py-1 text-sm",
-				md: "px-3 py-1.5 text-sm",
-				lg: "px-3.5 py-2 text-sm",
-				xl: "px-4 py-2.5 text-sm",
+				xs: "px-2.5 py-1 text-sm",
+				sm: "px-2.5 py-1 text-md",
+				md: "px-3 py-1.5 text-md",
+				lg: "px-3.5 py-2 text-md",
+				xl: "px-4 py-2.5 text-md",
 			},
 		},
 	});

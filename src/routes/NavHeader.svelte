@@ -14,7 +14,7 @@
 </script>
 
 <header
-	class="global-container fixed left-1/2 top-0 z-10 min-w-max -translate-x-1/2 transform py-4"
+	class="global-container absolute left-1/2 top-0 z-10 min-w-max -translate-x-1/2 transform py-4"
 >
 	<div class="flex items-center">
 		<h1 class="flex-1 text-xl">
@@ -23,7 +23,7 @@
 		<div class="max-w-min flex-1 justify-center">
 			<nav class="pointer-events-auto block">
 				<ul
-					class="flex rounded-full bg-white/90 px-3 text-sm font-medium shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur"
+					class="flex rounded-full bg-white/90 px-3 font-medium shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur"
 				>
 					{#each navLinks as link, index (index)}
 						<li class="">

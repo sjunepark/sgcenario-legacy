@@ -1,5 +1,6 @@
 <script lang="ts">
 	import TextBlock from "./components/textblocks/TextBlock.svelte";
+	import Toolbar from "./components/toolbar/Toolbar.svelte";
 </script>
 
 <div
@@ -14,3 +15,4 @@
 		<TextBlock type="transition" text="" />
 	</article>
 </div>
+<Toolbar />
