@@ -21,7 +21,9 @@
 
 <div>
 	<NavHeader {pathname} {user} />
-	<main class="global-container relative mt-20">
-		<slot />
+	<main class="global-container mt-20">
+		<div class="relative">
+			<slot />
+		</div>
 	</main>
 </div>

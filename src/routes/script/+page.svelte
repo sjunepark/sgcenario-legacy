@@ -1,6 +1,6 @@
 <script lang="ts">
 	import TextBlock from "./components/textblocks/TextBlock.svelte";
-	import Toolbar from "./components/toolbar/Toolbar.svelte";
+	import Dropdown from "./components/dropdown/Dropdown.svelte";
 </script>
 
 <div
@@ -13,6 +13,51 @@
 		<TextBlock type="action" text="" />
 		<TextBlock type="dialogue" text="" />
 		<TextBlock type="transition" text="" />
+		<TextBlock type="h2" text="" />
+		<TextBlock type="scene" text="" />
+		<TextBlock type="action" text="" />
+		<TextBlock type="dialogue" text="" />
+		<TextBlock type="transition" text="" />
+		<TextBlock type="h2" text="" />
+		<TextBlock type="scene" text="" />
+		<TextBlock type="action" text="" />
+		<TextBlock type="dialogue" text="" />
+		<TextBlock type="transition" text="" />
+		<TextBlock type="h2" text="" />
+		<TextBlock type="scene" text="" />
+		<TextBlock type="action" text="" />
+		<TextBlock type="dialogue" text="" />
+		<TextBlock type="transition" text="" />
+		<TextBlock type="h2" text="" />
+		<TextBlock type="scene" text="" />
+		<TextBlock type="action" text="" />
+		<TextBlock type="dialogue" text="" />
+		<TextBlock type="transition" text="" />
+		<TextBlock type="h2" text="" />
+		<TextBlock type="scene" text="" />
+		<TextBlock type="action" text="" />
+		<TextBlock type="dialogue" text="" />
+		<TextBlock type="transition" text="" />
+		<TextBlock type="h2" text="" />
+		<TextBlock type="scene" text="" />
+		<TextBlock type="action" text="" />
+		<TextBlock type="dialogue" text="" />
+		<TextBlock type="transition" text="" />
+		<TextBlock type="h2" text="" />
+		<TextBlock type="scene" text="" />
+		<TextBlock type="action" text="" />
+		<TextBlock type="dialogue" text="" />
+		<TextBlock type="transition" text="" />
+		<TextBlock type="h2" text="" />
+		<TextBlock type="scene" text="" />
+		<TextBlock type="action" text="" />
+		<TextBlock type="dialogue" text="" />
+		<TextBlock type="transition" text="" />
+		<TextBlock type="h2" text="" />
+		<TextBlock type="scene" text="" />
+		<TextBlock type="action" text="" />
+		<TextBlock type="dialogue" text="" />
+		<TextBlock type="transition" text="" />
 	</article>
 </div>
-<Toolbar />
+<Dropdown />
