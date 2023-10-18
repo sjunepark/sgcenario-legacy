@@ -1,17 +1,14 @@
 <script lang="ts">
 	import { createCombobox } from "@melt-ui/svelte";
-	import { fly } from "svelte/transition";
-	import { OverlayScrollbarsComponent } from "overlayscrollbars-svelte";
 	import { derived } from "svelte/store";
-	import { characters } from "$lib/store/stores";
 	import { isEmpty } from "$lib/utils/string";
 	import Hangul from "hangul-js";
+	import Listbox from "../Listbox.svelte";
+	import { createSortedListStore } from "$lib/store/sortedListStore";
 	import { twMerge } from "tailwind-merge";
-	import { scrollbarStyle } from "$lib/configs/configs";
 
-	let { class: classProps, ...restProps } = $$restProps;
-
-	export let text: string;
+	export let character: string;
+	export let twClass: string = "";
 
 	const {
 		elements: { menu, input, option },
@@ -25,85 +22,54 @@
 		},
 	});
 
+	const listboxProps = {
+		elements: { menu, option },
+		helpers: { isSelected },
+	};
+
+	let listboxOptions = createSortedListStore<string>([]);
+	// todo: for dev
+	listboxOptions.clearElements();
+	listboxOptions.addElements(["짱구", "짱아", "/h", "/char"]);
+
 	// noinspection JSUnusedLocalSymbols
-	let filteredCharacters = derived(
-		[inputValue, characters],
+	let filtered = derived(
+		[inputValue, listboxOptions],
 		/* eslint-disable @typescript-eslint/no-unused-vars */
-		([$inputValue, $characters]) => {
-			// return: Early return when no inputValue
+		([$inputValue, $listboxOptions]) => {
+			// return1: Early return when no inputValue
 			if (isEmpty($inputValue)) {
-				return $characters;
+				return $listboxOptions;
 			}
 
-			// return: character found
+			// return2: character found
 			// Computed in advance to prevent unnecessary additional computation
 			const disassembled = Hangul.disassemble($inputValue).join("").trim();
 
-			const filteredOptions = $characters.filter((character) => {
-				const disassembledValue = Hangul.disassemble(character.value).join("").trim();
+			const filteredOptions = $listboxOptions.filter((option) => {
+				const disassembledValue = Hangul.disassemble(option).join("").trim();
 				return disassembledValue.indexOf(disassembled) >= 0;
 			});
 
 			if (filteredOptions.length > 0) {
 				return filteredOptions;
-				// return: no character found
+				// return3: no character found
 			} else {
 				return [];
 			}
 		},
-		/* eslint-enable @typescript-eslint/no-unused-vars */
 	);
 </script>
 
-<div
-	class="{twMerge(classProps, 'my-[-1.25em] grid gap-x-4')}"
-	style="grid-template-columns: 15ch 1fr"
-	{...restProps}
->
-	<!--todo: warn when empty(can't use "required" since it's irrelevant to submit event)-->
-	<p {...$input} use:input contenteditable="true"></p>
-	<p
-		class="focus-visible:ring-offset-8 focus-visible:ring-offset-white"
-		contenteditable="true"
-		data-placeholder="Dialogue"
-		bind:innerText="{text}"
-	></p>
-</div>
+<p
+	{...$input}
+	use:input
+	class="{twMerge(twClass, 'w-[15ch]')}"
+	bind:innerText="{character}"
+	contenteditable="true"
+	data-placeholder="Character"
+></p>
 
 {#if $open}
-	<ul
-		class="prose z-10 flex max-h-48 w-[15ch] flex-col overflow-hidden bg-stone-50 shadow-lg ring-1 ring-stone-500/50"
-		{...$menu}
-		use:menu
-		transition:fly="{{ duration: 150, y: -5 }}"
-	>
-		<OverlayScrollbarsComponent options="{scrollbarStyle}" defer>
-			{#each $filteredCharacters as { value, id } (id)}
-				<!--suppress JSCheckFunctionSignatures -->
-				<li
-					{...$option({
-						value: value,
-						label: value,
-					})}
-					use:option
-					class="not-prose relative cursor-pointer scroll-my-2 whitespace-nowrap pl-2 data-[highlighted]:bg-stone-200 data-[disabled]:opacity-50"
-					class:bg-stone-200="{$isSelected(value)}"
-				>
-					<span>{value}</span>
-				</li>
-			{:else}
-				<!--suppress JSCheckFunctionSignatures -->
-				<li
-					class="not-prose relative cursor-pointer scroll-my-2 whitespace-nowrap pl-2 data-[highlighted]:bg-stone-200 data-[disabled]:opacity-50"
-					{...$option({
-						value: $inputValue,
-						label: $inputValue,
-					})}
-					use:option
-				>
-					<span>추가</span>
-				</li>
-			{/each}
-		</OverlayScrollbarsComponent>
-	</ul>
+	<Listbox comboboxProps="{listboxProps}" listOptions="{filtered}" />
 {/if}

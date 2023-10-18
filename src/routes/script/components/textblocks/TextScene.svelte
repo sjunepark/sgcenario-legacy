@@ -1,15 +1,11 @@
 <script lang="ts">
-	import { twMerge } from "tailwind-merge";
-
-	let { class: classProps, ...restProps } = $$restProps;
-
 	export let text: string;
+	export let twClass: string = "";
 </script>
 
 <p
-	class="{twMerge(classProps, '')}"
+	class="{twClass}"
+	bind:innerText="{text}"
 	contenteditable="true"
 	data-placeholder="Location, INT. EXT. I/E. INT/EXT."
-	bind:innerText="{text}"
-	{...restProps}
 ></p>

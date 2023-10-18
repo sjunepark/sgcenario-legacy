@@ -2,13 +2,12 @@
 	import { twMerge } from "tailwind-merge";
 
 	export let text: string;
-	let { class: classProps, ...restProps } = $$restProps;
+	export let twClass: string = "";
 </script>
 
 <p
-	class="{twMerge(classProps, '')}"
+	class="{twMerge(twClass, 'flex-1')}"
 	bind:innerText="{text}"
 	contenteditable="true"
 	data-placeholder="대사"
-	{...restProps}
 ></p>
