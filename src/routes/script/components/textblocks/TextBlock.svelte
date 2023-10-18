@@ -31,9 +31,8 @@
 		},
 	});
 
-	const meltProps = {
+	const comboboxProps = {
 		elements: { input },
-		states: { inputValue, selected, highlighted },
 	};
 
 	// noinspection JSUnusedLocalSymbols
@@ -69,7 +68,7 @@
 	this="{textBlockComponents.find((element) => element.type === type)?.component}"
 	{input}
 	{listboxOptions}
-	{meltProps}
+	{comboboxProps}
 	class="outline-none focus-visible:ring-2 focus-visible:ring-stone-500 focus-visible:ring-offset-8 focus-visible:ring-offset-white"
 	contenteditable="true"
 />

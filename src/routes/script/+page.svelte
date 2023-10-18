@@ -10,7 +10,8 @@
 		<Block type="h2" />
 		<Block type="scene" />
 		<Block type="action" />
-		<Block type="dialogue" />
+		<Block type="character" />
+		<Block type="line" />
 		<Block type="transition" />
 	</article>
 </div>
