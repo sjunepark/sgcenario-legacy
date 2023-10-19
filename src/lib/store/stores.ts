@@ -41,4 +41,4 @@ export const sampleCharacters: ValueWithId[] = [
 ];
 export const characters = createSortedListStore(sampleCharacters);
 
-export const currentTextType = writable<TextBlock>("dialogue");
+export const currentType = writable<TextBlock>("dialogue");

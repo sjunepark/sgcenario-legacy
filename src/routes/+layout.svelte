@@ -8,7 +8,7 @@
 	import { scrollbarStyle } from "$lib/configs/configs";
 
 	export let data: LayoutData;
-	$: ({ pathname, user } = data);
+	$: ({ user } = data);
 
 	let osInstance: OverlayScrollbars;
 	onMount(() => {
@@ -20,8 +20,8 @@
 </script>
 
 <div>
-	<NavHeader {pathname} {user} />
-	<main class="global-container relative mt-20">
+	<NavHeader {user} />
+	<main class="global-container relative mt-24">
 		<slot />
 	</main>
 </div>

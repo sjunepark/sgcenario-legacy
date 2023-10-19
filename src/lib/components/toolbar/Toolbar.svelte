@@ -5,13 +5,12 @@
 		Clapperboard,
 		Heading1,
 		Heading2,
-		MessageCircle,
-		Image,
 		type IconEvents,
 		type IconProps,
+		Image,
+		MessageCircle,
 	} from "lucide-svelte";
 	import type { ComponentType, SvelteComponent } from "svelte";
-	import TextTypeButton from "./TextTypeButton.svelte";
 
 	const {
 		elements: { root },
@@ -42,14 +41,18 @@
 <div
 	{...$root}
 	use:root
-	class="absolute top-0 bg-white p-6 shadow-xl shadow-gray-700/10 ring-1 ring-gray-900/5"
+	class="flex rounded-full bg-white/90 px-3 font-medium shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur"
 >
-	<div class="flex flex-col gap-y-6" {...$typeGroup} use:typeGroup>
+	<div class="flex flex-row gap-x-6" {...$typeGroup} use:typeGroup>
 		{#each types as { name, label, icon }, i (i)}
-			<TextTypeButton {name} item="{typeItem}" let:twClass>
-				<svelte:component this="{icon}" class="{twClass}" />
-				{label}
-			</TextTypeButton>
+			<button
+				{...$typeItem(name)}
+				use:typeItem
+				class="flex items-center gap-x-3 p-3 text-gray-900 outline-none focus-visible:ring-2 focus-visible:ring-stone-500 focus-visible:ring-offset-0 focus-visible:ring-offset-stone-50"
+			>
+				<svelte:component this="{icon}" class="h-9 w-9 stroke-1 text-gray-700" />
+			</button>
+			{label}
 		{/each}
 	</div>
 </div>
