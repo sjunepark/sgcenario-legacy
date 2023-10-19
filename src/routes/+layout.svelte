@@ -21,7 +21,7 @@
 
 <div>
 	<NavHeader {user} />
-	<main class="global-container relative mt-24">
+	<main class="global-container relative mt-28">
 		<slot />
 	</main>
 </div>

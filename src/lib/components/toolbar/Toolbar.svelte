@@ -16,7 +16,7 @@
 		elements: { root },
 		builders: { createToolbarGroup },
 	} = createToolbar({
-		orientation: "vertical",
+		orientation: "horizontal",
 	});
 	const {
 		elements: { group: typeGroup, item: typeItem },
@@ -48,11 +48,11 @@
 			<button
 				{...$typeItem(name)}
 				use:typeItem
-				class="flex items-center gap-x-3 p-3 text-gray-900 outline-none focus-visible:ring-2 focus-visible:ring-stone-500 focus-visible:ring-offset-0 focus-visible:ring-offset-stone-50"
+				class="relative m-1.5 flex flex-col items-center rounded-full p-1.5 outline-none focus-visible:ring-2 focus-visible:ring-stone-500 focus-visible:ring-offset-0 focus-visible:ring-offset-stone-50"
 			>
 				<svelte:component this="{icon}" class="h-9 w-9 stroke-1 text-gray-700" />
+				<span class="absolute -bottom-8 whitespace-nowrap text-gray-700">{label}</span>
 			</button>
-			{label}
 		{/each}
 	</div>
 </div>
