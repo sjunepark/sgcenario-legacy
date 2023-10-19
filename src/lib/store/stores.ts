@@ -1,5 +1,5 @@
 // DEV: For development purposes only
-import type { TextBlock } from "$lib/components/textblocks/textblock";
+import type { Block } from "$lib/components/blocks/block";
 import { createSortedListStore } from "$lib/store/sortedListStore";
 import type { ValueWithId } from "$lib/types";
 import { writable } from "svelte/store";
@@ -41,4 +41,4 @@ export const sampleCharacters: ValueWithId[] = [
 ];
 export const characters = createSortedListStore(sampleCharacters);
 
-export const currentType = writable<TextBlock>("dialogue");
+export const currentType = writable<Block>("dialogue");

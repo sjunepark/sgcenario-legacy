@@ -1,5 +1,5 @@
 <script lang="ts">
-	import TextBlock from "$lib/components/textblocks/TextBlock.svelte";
+	import Block from "$lib/components/blocks/Block.svelte";
 </script>
 
 <div
@@ -7,10 +7,10 @@
 	class="relative mx-auto w-full max-w-3xl bg-white p-12 shadow-xl shadow-gray-700/10 ring-1 ring-gray-900/5 lg:p-16"
 >
 	<article class="prose-p:xtext-justify prose prose-stone mx-auto min-w-[45ch] max-w-[75ch]">
-		<TextBlock type="h2" text="" />
-		<TextBlock type="scene" text="" />
-		<TextBlock type="action" text="" />
-		<TextBlock type="dialogue" text="" />
-		<TextBlock type="transition" text="" />
+		<Block type="h2" text="" />
+		<Block type="scene" text="" />
+		<Block type="action" text="" />
+		<Block type="dialogue" text="" />
+		<Block type="transition" text="" />
 	</article>
 </div>
