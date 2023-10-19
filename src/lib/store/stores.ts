@@ -1,6 +1,8 @@
 // DEV: For development purposes only
+import type { TextBlock } from "$lib/components/textblocks/textblock";
 import { createSortedListStore } from "$lib/store/sortedListStore";
 import type { ValueWithId } from "$lib/types";
+import { writable } from "svelte/store";
 
 // DEV: For development purposes only
 export const sampleCharacters: ValueWithId[] = [
@@ -38,3 +40,5 @@ export const sampleCharacters: ValueWithId[] = [
 	{ id: 32, value: "영희" },
 ];
 export const characters = createSortedListStore(sampleCharacters);
+
+export const currentTextType = writable<TextBlock>("dialogue");

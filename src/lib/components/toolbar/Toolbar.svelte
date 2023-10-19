@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { createToolbar } from "@melt-ui/svelte";
+	import { createToolbar } from "../../../../../melt-ui";
 	import {
 		ArrowLeftRight,
 		Clapperboard,
