@@ -29,12 +29,12 @@
 		label: string;
 		icon: ComponentType<SvelteComponent<IconProps, IconEvents, Record<string, never>>>;
 	}[] = [
-		{ name: "dialogue", label: "Dialogue", icon: Clapperboard },
-		{ name: "action", label: "Action", icon: MessageCircle },
-		{ name: "scene", label: "Scene", icon: Image },
-		{ name: "transition", label: "Transition", icon: ArrowLeftRight },
 		{ name: "title", label: "Heading 1", icon: Heading1 },
 		{ name: "subtitle", label: "Heading 2", icon: Heading2 },
+		{ name: "dialogue", label: "Dialogue", icon: MessageCircle },
+		{ name: "action", label: "Action", icon: Clapperboard },
+		{ name: "scene", label: "Scene", icon: Image },
+		{ name: "transition", label: "Transition", icon: ArrowLeftRight },
 	];
 </script>
 
