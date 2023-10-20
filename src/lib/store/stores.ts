@@ -39,6 +39,6 @@ export const sampleCharacters: ValueWithId[] = [
 	{ id: 31, value: "철쭉이랑놀자" },
 	{ id: 32, value: "영희" },
 ];
-export const characters = createSortedListStore(sampleCharacters);
+export const characters = createSortedListStore(sampleCharacters, "id", "id");
 
 export const currentType = writable<Block>("dialogue");
