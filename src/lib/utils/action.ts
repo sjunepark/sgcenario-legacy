@@ -1,8 +1,8 @@
 import type { Action } from "svelte/action";
 
 export const autofocus: Action = (node) => {
+	// On mount
 	node.focus();
-
 	const moveCaretToEnd = () => {
 		const range = document.createRange();
 		range.selectNodeContents(node);
@@ -14,9 +14,9 @@ export const autofocus: Action = (node) => {
 			selection.addRange(range);
 		}
 	};
-
 	moveCaretToEnd();
 
+	// On focus
 	node.addEventListener("focus", moveCaretToEnd);
 
 	return {

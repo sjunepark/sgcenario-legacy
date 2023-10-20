@@ -1,6 +1,6 @@
 // DEV: For development purposes only
 import type { Block, BlockType } from "$lib/components/blocks/blockTypes";
-import { createSortedListStore } from "$lib/store/sortedListStore";
+import { createSortedBlocksStore } from "$lib/store/sortedBlocksStore";
 import { writable } from "svelte/store";
 
 // DEV: For development purposes only
@@ -116,6 +116,6 @@ const sampleBlocks: Block[] = [
 	// ... additional script lines would follow
 ];
 
-export const blocks = createSortedListStore<Block>(sampleBlocks, "id", "id");
+export const blocks = createSortedBlocksStore(sampleBlocks);
 
 export const currentType = writable<BlockType>("dialogue");

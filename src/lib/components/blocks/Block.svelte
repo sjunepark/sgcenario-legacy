@@ -45,21 +45,21 @@
 	class="focus-visible:ring-8"
 >
 	{#if type === "h2"}
-		<H2Block twClass="{twCommon}" bind:text />
+		<H2Block twClass="{twCommon}" {id} {type} bind:text />
 	{/if}
 	{#if type === "action"}
-		<ActionBlock twClass="{twCommon}" bind:text />
+		<ActionBlock twClass="{twCommon}" {id} {type} bind:text />
 	{/if}
 	{#if type === "dialogue"}
 		<div class="-my-5 flex gap-3">
-			<CharacterBlock twClass="{twCommon}" bind:character />
-			<LineBlock twClass="{twCommon}" bind:text />
+			<CharacterBlock twClass="{twCommon}" {id} {type} bind:character />
+			<LineBlock twClass="{twCommon}" {id} {type} bind:text />
 		</div>
 	{/if}
 	{#if type === "scene"}
-		<SceneBlock twClass="{twCommon}" bind:text />
+		<SceneBlock twClass="{twCommon}" {id} {type} bind:text />
 	{/if}
 	{#if type === "transition"}
-		<TransitionBlock twClass="{twCommon}" bind:text />
+		<TransitionBlock twClass="{twCommon}" {id} {type} bind:text />
 	{/if}
 </div>
