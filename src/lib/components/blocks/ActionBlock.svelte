@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { twMerge } from "tailwind-merge";
 
-	export let index: number;
-
 	export let text: string;
 	export let twClass: string = "";
 </script>
@@ -12,5 +10,4 @@
 	bind:innerText="{text}"
 	contenteditable="true"
 	data-placeholder="Action"
-	data-index="{index}"
 ></p>

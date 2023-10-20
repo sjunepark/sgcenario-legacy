@@ -13,7 +13,7 @@
 >
 	<div class="flex items-center">
 		<h1 class="flex-1 text-xl">
-			<span class="font-semibold text-emerald-600">SG</span>cenario
+			<a href="/"><span class="font-semibold text-emerald-600">SG</span>cenario</a>
 		</h1>
 		<div class="max-w-min flex-1 justify-center">
 			<Toolbar />

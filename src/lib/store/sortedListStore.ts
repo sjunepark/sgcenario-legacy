@@ -17,14 +17,15 @@ export function createSortedListStore<T>(
 	sortKey?: keyof T,
 ): WritableSortedList<T> {
 	const compare = (a: T, b: T) => {
-		const customLocaleCompare = (a: unknown, b: unknown) => {
+		const customCompare = (a: unknown, b: unknown) => {
+			if (typeof a === "number" && typeof b === "number") return a - b;
 			return String(a).localeCompare(String(b), "ko-KR", { sensitivity: "base" });
 		};
 
 		if (sortKey) {
-			return customLocaleCompare(a[sortKey], b[sortKey]);
+			return customCompare(a[sortKey], b[sortKey]);
 		}
-		return customLocaleCompare(a, b);
+		return customCompare(a, b);
 	};
 
 	const ids = new Set<T[keyof T] | T>();

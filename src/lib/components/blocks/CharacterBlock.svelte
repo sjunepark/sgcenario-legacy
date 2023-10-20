@@ -7,7 +7,6 @@
 	import { createSortedListStore } from "$lib/store/sortedListStore";
 	import { twMerge } from "tailwind-merge";
 
-	export let index: number;
 	export let character: string;
 	export let twClass: string = "";
 
@@ -69,7 +68,6 @@
 	bind:innerText="{character}"
 	contenteditable="true"
 	data-placeholder="Character"
-	data-index="{index}"
 ></p>
 
 {#if $open}
