@@ -11,10 +11,10 @@ type WritableList<T> = {
 
 export type WritableSortedList<T> = WritableList<T>;
 
-export function createSortedListStore<T, K extends keyof T>(
+export function createSortedListStore<T>(
 	initialElements: T[],
-	idKey?: K,
-	sortKey?: K,
+	idKey?: keyof T,
+	sortKey?: keyof T,
 ): WritableSortedList<T> {
 	const compare = (a: T, b: T) => {
 		const customLocaleCompare = (a: unknown, b: unknown) => {
@@ -27,7 +27,7 @@ export function createSortedListStore<T, K extends keyof T>(
 		return customLocaleCompare(a, b);
 	};
 
-	const ids = new Set<T[K] | T>();
+	const ids = new Set<T[keyof T] | T>();
 	for (const element of initialElements) {
 		if (idKey) ids.add(element[idKey]);
 		else ids.add(element);
