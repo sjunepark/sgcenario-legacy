@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { createCombobox } from "../../../../../melt-ui";
+	import { createCombobox } from "@melt-ui/svelte";
 	import { derived } from "svelte/store";
 	import { isEmpty } from "$lib/utils/string";
 	import Hangul from "hangul-js";

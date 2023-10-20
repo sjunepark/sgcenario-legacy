@@ -1,5 +1,4 @@
 <script lang="ts">
-	import type { Block } from "./blockType";
 	import H2Block from "./H2Block.svelte";
 	import ActionBlock from "./ActionBlock.svelte";
 	import CharacterBlock from "./CharacterBlock.svelte";
@@ -7,18 +6,44 @@
 	import SceneBlock from "./SceneBlock.svelte";
 	import TransitionBlock from "./TransitionBlock.svelte";
 	import { mountLogger } from "$lib/utils/action";
+	import type { Action } from "svelte/action";
+	import { blockTypes } from "$lib/components/blocks/blockTypes";
 
 	export let index: number;
-
-	export let blockProps: Block;
-
-	let { id, type, character, text } = blockProps;
+	export let id: number;
+	export let type: string;
+	export let text: string;
+	export let character: string;
 
 	const twCommon =
 		"outline-none focus-visible:ring-2 focus-visible:ring-stone-500 focus-visible:ring-offset-8 focus-visible:ring-offset-white break-all";
+
+	const addKeyboardShortcuts: Action = (node) => {
+		for (const blockType of blockTypes) {
+			node.addEventListener("keydown", (e) => {
+				if (e.altKey && e.code === blockType.keyCode) {
+					e.preventDefault();
+				}
+			});
+
+			node.addEventListener("keydown", (e) => {
+				if (e.altKey && e.code === blockType.keyCode) {
+					e.preventDefault();
+					type = blockType.type;
+				}
+			});
+		}
+	};
 </script>
 
-<div data-index="{index}" data-id="{id}" data-text="{text}" use:mountLogger>
+<div
+	data-index="{index}"
+	data-id="{id}"
+	data-text="{text}"
+	use:mountLogger
+	use:addKeyboardShortcuts
+	class="focus-visible:ring-8"
+>
 	{#if type === "h2"}
 		<H2Block twClass="{twCommon}" bind:text />
 	{/if}

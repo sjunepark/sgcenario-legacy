@@ -1,5 +1,5 @@
 // DEV: For development purposes only
-import type { Block, BlockType } from "$lib/components/blocks/blockType";
+import type { Block, BlockType } from "$lib/components/blocks/blockTypes";
 import { createSortedListStore } from "$lib/store/sortedListStore";
 import { writable } from "svelte/store";
 
