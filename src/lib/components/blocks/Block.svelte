@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Block } from "./block";
+	import type { BlockType } from "./blockType";
 	import H2Block from "./H2Block.svelte";
 	import ActionBlock from "./ActionBlock.svelte";
 	import CharacterBlock from "./CharacterBlock.svelte";
@@ -7,7 +7,7 @@
 	import SceneBlock from "./SceneBlock.svelte";
 	import TransitionBlock from "./TransitionBlock.svelte";
 
-	export let type: Block;
+	export let type: BlockType;
 	export let character: string = "";
 	export let text: string;
 
@@ -22,7 +22,7 @@
 	<ActionBlock twClass="{twCommon}" bind:text />
 {/if}
 {#if type === "dialogue"}
-	<div class="flex gap-3">
+	<div class="-my-5 flex gap-3">
 		<CharacterBlock twClass="{twCommon}" bind:character />
 		<LineBlock twClass="{twCommon}" bind:text />
 	</div>
