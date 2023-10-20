@@ -1,65 +1,115 @@
-import { compareDefault, compareValueWithId, isValueWithId } from "$lib/types";
+import { logger } from "$lib/utils/logger";
 import { writable, type Readable } from "svelte/store";
 
 type WritableList<T> = {
 	addElement: (element: T) => void;
-	addElements: (elements: Iterable<T>) => void;
+	addElements: (elements: T[]) => void;
 	removeElement: (element: T) => void;
+	removeElements: (elements: T[]) => void;
 	clearElements: () => void;
 } & Readable<T[]>;
 
 export type WritableSortedList<T> = WritableList<T>;
 
-export function createSortedListStore<T>(initialElements: T[]): WritableSortedList<T> {
-	function compare(a: T, b: T) {
-		if (isValueWithId(a) && isValueWithId(b)) {
-			return compareValueWithId(a, b);
+export function createSortedListStore<T>(
+	initialElements: T[],
+	idKey?: keyof T,
+	sortKey?: keyof T,
+): WritableSortedList<T> {
+	const compare = (a: T, b: T) => {
+		const customLocaleCompare = (a: unknown, b: unknown) => {
+			return String(a).localeCompare(String(b), "ko-KR", { sensitivity: "base" });
+		};
+
+		if (sortKey) {
+			return customLocaleCompare(a[sortKey], b[sortKey]);
 		}
-		return compareDefault(a, b);
+		return customLocaleCompare(a, b);
+	};
+
+	const ids = new Set<T[keyof T] | T>();
+	for (const element of initialElements) {
+		if (idKey) ids.add(element[idKey]);
+		else ids.add(element);
 	}
 
-	const sortedInitialElements = [...new Set(initialElements)].sort(compare);
+	const elementExists = (element: T) => {
+		if (idKey) return ids.has(element[idKey]);
+		else return ids.has(element);
+	};
+
+	const allElementsExist = (elements: T[]) => {
+		return elements.every(elementExists);
+	};
+
+	const sortedInitialElements = [...initialElements].sort(compare);
 	const { subscribe, set, update } = writable<T[]>(sortedInitialElements);
 
-	function addElement(element: T) {
-		update((elements) => {
-			if (elements.includes(element)) {
-				return elements;
-			}
-			return [...elements, element].sort(compare);
-		});
-	}
-
-	function addElements(elements: Iterable<T>) {
-		update((oldElements) => {
-			const newElements = [...new Set(elements)];
-			const mergedElements = [...oldElements, ...newElements];
-			return mergedElements.sort(compare);
-		});
-	}
-
-	function removeElement(element: T) {
-		function compare(a: T, b: T) {
-			if (isValueWithId(a) && isValueWithId(b)) {
-				return a.id === b.id;
-			}
-			return a === b;
+	const addElement = (elementToAdd: T) => {
+		if (elementExists(elementToAdd)) {
+			logger.error("Element already exists");
+			return;
 		}
 
-		update((elements) =>
-			elements.filter((originalElement) => compare(originalElement, element)),
-		);
-	}
+		update((originalElements) => {
+			let exists: boolean;
 
-	function clearElements() {
+			if (idKey) {
+				exists = originalElements.some((e) => e[idKey] === elementToAdd[idKey]);
+			} else {
+				exists = originalElements.includes(elementToAdd);
+			}
+
+			if (!exists) {
+				originalElements.push(elementToAdd);
+				originalElements.sort(compare);
+			}
+			return originalElements;
+		});
+	};
+
+	const addElements = (elementsToAdd: T[]) => {
+		if (allElementsExist(elementsToAdd)) {
+			logger.error("Elements already exist");
+			return;
+		}
+
+		update((originalElements) => {
+			originalElements.push(...elementsToAdd);
+			originalElements.sort(compare);
+			return originalElements;
+		});
+	};
+
+	const removeElement = (element: T) => {
+		if (!elementExists(element)) {
+			logger.info("Element does not exist");
+			return;
+		}
+
+		update((originalElements) =>
+			originalElements.filter((originalElement) => {
+				return compare(originalElement, element) === 0;
+			}),
+		);
+	};
+
+	const removeElements = (elements: T[]) => {
+		for (const element of elements) {
+			removeElement(element);
+		}
+	};
+
+	const clearElements = () => {
 		set([]);
-	}
+	};
 
 	return {
 		subscribe,
 		addElement,
 		addElements,
 		removeElement,
+		removeElements,
 		clearElements,
 	};
 }

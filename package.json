@@ -3,7 +3,7 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"dev": "vite dev | pino-pretty",
+		"dev": "vite dev | pino-pretty -t 'UTC:yyyy-mm-dd HH:MM:ss.l o'",
 		"build": "vite build",
 		"preview": "vite preview",
 		"sync": "svelte-kit sync",
