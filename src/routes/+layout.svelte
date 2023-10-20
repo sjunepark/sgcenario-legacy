@@ -6,6 +6,7 @@
 	import { onDestroy, onMount } from "svelte";
 	import type { LayoutData } from "./$types";
 	import { scrollbarStyle } from "$lib/configs/configs";
+	import { logger } from "$lib/utils/logger";
 
 	export let data: LayoutData;
 	$: ({ user } = data);
@@ -17,6 +18,8 @@
 	onDestroy(() => {
 		osInstance && osInstance.destroy();
 	});
+
+	logger.info(data, "from root layout");
 </script>
 
 <div>
