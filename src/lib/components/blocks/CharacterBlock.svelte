@@ -6,6 +6,7 @@
 	import Listbox from "../Listbox.svelte";
 	import { createSortedListStore } from "$lib/store/sortedListStore";
 	import { twMerge } from "tailwind-merge";
+	import { autofocus } from "$lib/utils/action";
 
 	export let character: string;
 	export let twClass: string = "";
@@ -63,9 +64,10 @@
 
 <p
 	{...$input}
-	use:input
-	class="{twMerge(twClass, 'w-[15ch]')}"
 	bind:innerText="{character}"
+	use:input
+	use:autofocus
+	class="{twMerge(twClass, 'w-[15ch]')}"
 	contenteditable="true"
 	data-placeholder="Character"
 ></p>

@@ -1,5 +1,6 @@
 import { dev } from "$app/environment";
 import pino from "pino";
+import type { Action } from "svelte/action";
 
 const logLevel = dev ? "trace" : "info";
 
@@ -11,3 +12,15 @@ const pinoConfig = {
 };
 
 export const logger = pino(pinoConfig);
+
+export const mountLogger: Action = (node) => {
+	if (node.dataset) {
+		logger.info({ ...node.dataset }, "Mounted");
+	}
+
+	return {
+		destroy() {
+			logger.info(node, "Unmounted");
+		},
+	};
+};

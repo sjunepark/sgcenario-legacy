@@ -5,9 +5,9 @@
 	import LineBlock from "./LineBlock.svelte";
 	import SceneBlock from "./SceneBlock.svelte";
 	import TransitionBlock from "./TransitionBlock.svelte";
-	import { mountLogger } from "$lib/utils/action";
 	import type { Action } from "svelte/action";
 	import { blockTypes } from "$lib/components/blocks/blockTypes";
+	import { mountLogger } from "$lib/utils/logger";
 
 	export let index: number;
 	export let id: number;

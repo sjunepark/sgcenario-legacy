@@ -1,12 +1,25 @@
-import { logger } from "$lib/utils/logger";
 import type { Action } from "svelte/action";
 
-export const mountLogger: Action = (node) => {
-	if (node.dataset) logger.info({ ...node.dataset });
+export const autofocus: Action = (node) => {
+	node.focus();
+
+	const moveCaretToEnd = () => {
+		const range = document.createRange();
+		range.selectNodeContents(node);
+		range.collapse(false); // Collapse the range to the end point. false means collapse to end rather than the start
+
+		const selection = window.getSelection();
+		if (selection) {
+			selection.removeAllRanges();
+			selection.addRange(range);
+		}
+	};
+
+	moveCaretToEnd();
+
+	node.addEventListener("focus", moveCaretToEnd);
 
 	return {
-		destroy() {
-			logger.info(node, "Unmounted");
-		},
+		destroy() {},
 	};
 };
