@@ -20,7 +20,7 @@ export const GET: RequestHandler = async ({ url, cookies, locals }) => {
 		const getOrCreateUser = async () => {
 			const existingUser = await getExistingUser();
 			if (existingUser) {
-				logger.trace({ existingUser }, "Found existing user");
+				logger.debug({ existingUser }, "Found existing user");
 				return existingUser;
 			}
 
@@ -30,7 +30,7 @@ export const GET: RequestHandler = async ({ url, cookies, locals }) => {
 					email: kakaoUser.kakao_account?.email || null,
 				},
 			});
-			logger.trace({ createdUser }, "Created new user");
+			logger.debug({ createdUser }, "Created new user");
 			return createdUser;
 		};
 

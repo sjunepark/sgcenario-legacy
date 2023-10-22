@@ -18,8 +18,6 @@
 	onDestroy(() => {
 		osInstance && osInstance.destroy();
 	});
-
-	logger.info(data, "from root layout");
 </script>
 
 <div>

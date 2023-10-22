@@ -9,13 +9,10 @@
 		node.addEventListener("keydown", (e: KeyboardEvent) => {
 			if (e.key === kbd.ALT) {
 				if (!(e.target instanceof HTMLElement)) return;
-
-				logger.info(e.target.dataset);
 			}
 		});
 		node.addEventListener("keyup", (e: KeyboardEvent) => {
 			if (e.key === kbd.ALT) {
-				console.log("alt key up");
 			}
 		});
 	};

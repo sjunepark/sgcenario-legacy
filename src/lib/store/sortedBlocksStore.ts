@@ -35,6 +35,7 @@ export function createSortedBlocksStore(initialBlocks: Block[]): WritableSortedB
 			}
 
 			originalBlocks.push(blockToAdd);
+			logger.debug(blockToAdd, "Added block");
 			originalBlocks.sort(compare);
 			return originalBlocks;
 		});
@@ -49,13 +50,14 @@ export function createSortedBlocksStore(initialBlocks: Block[]): WritableSortedB
 	const removeBlock = (blockToRemove: Block) => {
 		update((originalBlocks) => {
 			if (!blockExists(blockToRemove, originalBlocks)) {
-				logger.info(blockToRemove, "Block does not exist");
+				logger.debug(blockToRemove, "Block does not exist");
 				return originalBlocks;
 			}
 
 			originalBlocks.filter((originalBlock) => {
 				return compare(originalBlock, blockToRemove) === 0;
 			});
+			logger.debug(blockToRemove, "Removed block");
 			return originalBlocks;
 		});
 	};
@@ -74,7 +76,7 @@ export function createSortedBlocksStore(initialBlocks: Block[]): WritableSortedB
 				return originalBlocks;
 			}
 			originalBlocks[index] = newBlock;
-			logger.info(originalBlocks[index], "Updated block");
+			logger.debug(originalBlocks[index], "Updated block");
 			return originalBlocks;
 		});
 	};

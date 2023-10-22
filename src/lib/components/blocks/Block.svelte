@@ -8,6 +8,7 @@
 	import type { Action } from "svelte/action";
 	import { blockTypes } from "$lib/components/blocks/blockTypes";
 	import { mountLogger } from "$lib/utils/logger";
+	import { logger, mountLogger } from "$lib/utils/logger";
 
 	export let index: number;
 	export let id: number;
@@ -30,6 +31,7 @@
 				if (e.altKey && e.code === blockType.keyCode) {
 					e.preventDefault();
 					type = blockType.type;
+					console.log(`Change block ${id} from ${type} to ${pressedBlockType.type}`);
 				}
 			});
 		}

@@ -1,11 +1,9 @@
 import { dev } from "$app/environment";
 import { githubAuth } from "$lib/server/lucia";
-import { logger } from "$lib/utils/logger";
 import type { RequestHandler } from "@sveltejs/kit";
 
 export const GET: RequestHandler = async ({ cookies }) => {
 	const [url, state] = await githubAuth.getAuthorizationUrl();
-	logger.trace({ url, state }, "Got github auth url and state");
 	cookies.set("github_oauth_state", state, {
 		httpOnly: true,
 		secure: !dev,
@@ -14,7 +12,6 @@ export const GET: RequestHandler = async ({ cookies }) => {
 	});
 
 	const redirectUrl = url.toString();
-	logger.trace(`Redirect to ${redirectUrl}`);
 	return new Response(null, {
 		status: 302,
 		headers: {

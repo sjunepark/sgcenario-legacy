@@ -84,7 +84,7 @@ export function createSortedListStore<T>(
 
 	const removeElement = (element: T) => {
 		if (!elementExists(element)) {
-			logger.info("Element does not exist");
+			logger.error("Element does not exist");
 			return;
 		}
 

@@ -15,12 +15,12 @@ export const logger = pino(pinoConfig);
 
 export const mountLogger: Action = (node) => {
 	if (node.dataset) {
-		logger.info({ ...node.dataset }, "Mounted");
+		logger.debug({ ...node.dataset }, "Mounted");
 	}
 
 	return {
 		destroy() {
-			logger.info(node, "Unmounted");
+			logger.debug(node, "Unmounted");
 		},
 	};
 };
