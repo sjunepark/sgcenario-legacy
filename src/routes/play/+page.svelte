@@ -3,16 +3,17 @@
 	import type { Action } from "svelte/action";
 	import { kbd } from "$lib/utils/keyboard";
 	import { blocks } from "$lib/store/stores";
-	import { logger } from "$lib/utils/logger";
 
 	const addKeyboardShortcuts: Action = (node) => {
 		node.addEventListener("keydown", (e: KeyboardEvent) => {
 			if (e.key === kbd.ALT) {
 				if (!(e.target instanceof HTMLElement)) return;
+				console.log("ALT key down");
 			}
 		});
 		node.addEventListener("keyup", (e: KeyboardEvent) => {
 			if (e.key === kbd.ALT) {
+				console.log("ALT key up");
 			}
 		});
 	};
