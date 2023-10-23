@@ -6,6 +6,8 @@
 	import type { Action } from "svelte/action";
 	import { blockTypes } from "$lib/components/blocks/blockTypes";
 	import { mountLogger } from "$lib/utils/logger";
+	import { list } from "postcss";
+	import { listen } from "$lib/utils/event";
 
 	export let index: number;
 	export let id: number;
@@ -16,34 +18,45 @@
 	const twCommon =
 		"outline-none focus-visible:ring-2 focus-visible:ring-stone-500 focus-visible:ring-offset-8 focus-visible:ring-offset-white break-all";
 
+	// start here
 	const addKeyboardShortcuts: Action = (node) => {
+		const removers: (() => void)[] = [];
+
 		for (const blockType of blockTypes) {
-			node.addEventListener("keydown", (e) => {
+			const remover = listen(node, "keydown", (e) => {
 				if (e.altKey && e.code === blockType.keyCode) {
 					e.preventDefault();
 				}
-			});
 
-			node.addEventListener("keydown", (e) => {
 				if (e.altKey && e.code === blockType.keyCode) {
 					e.preventDefault();
 					type = blockType.type;
 					console.log(`Change block ${id} from ${type} to ${type}`);
 				}
 			});
+
+			removers.push(remover);
 		}
+
+		return {
+			destroy() {
+				for (const remover of removers) {
+					remover();
+				}
+			},
+		};
 	};
 </script>
 
 <div
+	use:mountLogger
+	use:addKeyboardShortcuts
+	class="focus-visible:ring-8"
 	data-index="{index}"
 	data-id="{id}"
 	data-type="{type}"
 	data-character="{character}"
 	data-text="{text}"
-	use:mountLogger
-	use:addKeyboardShortcuts
-	class="focus-visible:ring-8"
 >
 	{#if type === "h2"}
 		<H2Block twClass="{twCommon}" bind:text />

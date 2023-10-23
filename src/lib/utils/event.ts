@@ -1,4 +1,16 @@
 // Without this handler, raw html or contents could be pasted
+
+// from sveltejs/svelte
+export function listen<K extends keyof HTMLElementEventMap>(
+	node: HTMLElement,
+	type: K,
+	listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => unknown,
+	options?: boolean | AddEventListenerOptions,
+): () => void {
+	node.addEventListener(type, listener, options);
+	return () => node.removeEventListener(type, listener, options);
+}
+
 export function handlePaste(event: ClipboardEvent) {
 	const targetElement = event.target;
 	if (!(targetElement instanceof HTMLElement)) return;
