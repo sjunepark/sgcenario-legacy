@@ -6,7 +6,6 @@
 	import type { Action } from "svelte/action";
 	import { blockTypes } from "$lib/components/blocks/blockTypes";
 	import { mountLogger } from "$lib/utils/logger";
-	import { list } from "postcss";
 	import { listen } from "$lib/utils/event";
 
 	export let index: number;
