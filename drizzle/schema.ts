@@ -1,4 +1,6 @@
-import { bigint, pgSchema, serial, varchar } from "drizzle-orm/pg-core";
+import { pgTable, pgSchema, varchar, bigint, serial } from "drizzle-orm/pg-core"
+
+import { sql } from "drizzle-orm"
 
 export const business = pgSchema("business");
 

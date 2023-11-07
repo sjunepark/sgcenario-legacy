@@ -1,7 +1,6 @@
 <script lang="ts">
 	import TheButton from "$lib/components/buttons/TheButton.svelte";
 	import { goto } from "$app/navigation";
-	import Toolbar from "$lib/components/toolbar/Toolbar.svelte";
 	import type { User } from "lucia";
 
 	export let user: User | undefined;
@@ -15,9 +14,6 @@
 		<h1 class="flex-1 text-xl">
 			<a href="/"><span class="font-semibold text-emerald-600">SG</span>cenario</a>
 		</h1>
-		<div class="max-w-min flex-1 justify-center">
-			<Toolbar />
-		</div>
 		<div class="flex flex-1 items-center justify-end gap-x-3">
 			{#if displayedUser}
 				Hi, {displayedUser}
